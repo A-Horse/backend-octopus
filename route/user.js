@@ -12,8 +12,8 @@ UserRouter.put('/login', (req, res, next) => {
       password = req.body.password;
   console.log(username);
   console.log(password);
-  res.status(204);
-  res.end();
+  res.status(200);
+  res.send({id_token: '1024'});
 });
 
 export {UserRouter};
