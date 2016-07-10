@@ -8,18 +8,17 @@ var knex = require('knex')({
 });
 
 function createTables(cb) {
-  var promise1 = knex.schema.createTableIfNotExists('users', function (table) {
+  var promise1 = knex.schema.createTableIfNotExists('user', function (table) {
     table.increments();
-    table.string('name');
+    table.string('username');
     table.string('password');
     table.timestamps();
   });
 
-  var promise2 = knex.schema.createTableIfNotExists('pages', function (table) {
+  var promise2 = knex.schema.createTableIfNotExists('task-wall', function (table) {
     table.increments();
-    table.string('title');
-    table.string('content');
-    table.string('type');
+    table.string('name');
+    table.integer('ownerId');
     table.timestamps();
   });
   
@@ -35,8 +34,8 @@ function createTables(cb) {
 }
 
 function dropTables(cb) {
-  var promise1 = knex.schema.dropTable('users');
-  var promise2 = knex.schema.dropTable('pages');
+  var promise1 = knex.schema.dropTableIfExists('user');
+  var promise2 = knex.schema.dropTableIfExists('task-wall');
   Promise.all([promise1, promise2]).then(function(){
     if( cb ){
       cb(() => {

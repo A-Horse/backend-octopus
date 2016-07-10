@@ -21,11 +21,10 @@ app.use(require('cookie-parser')());
 
 
 import {UserRouter} from './route/user.js';
-import {PageRouter} from './route/page.js';
-import {PageViewRouter} from './route/page-view.js';
 app.use('/api', UserRouter);
-app.use('/api', PageRouter);
-app.use('/', PageViewRouter);
+
+import {TaskWallRouter} from './route/task/task-wall';
+app.use('/api', TaskWallRouter);
 
 
 function startHttp() {
