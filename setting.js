@@ -1,5 +1,3 @@
 
 
-export default {
-  
-}
+export const JWTs_SECRET = 'bblist';
