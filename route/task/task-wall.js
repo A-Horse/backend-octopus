@@ -16,8 +16,7 @@ TaskWallRouter.get('/task-wall', (req, res, next) => {
     ownerId: jw.user.id
   }).fetchAll().then(data => {
     res.status(200).send(data)
-  })
-  
+  });
 });
 
 TaskWallRouter.post('/task-wall', (req, res, next) => {
