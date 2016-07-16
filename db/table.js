@@ -26,6 +26,7 @@ function createTables(cb) {
     table.increments();
     table.string('name');
     table.integer('ownerId');
+    table.integer('taskCardId');
     table.string('content');
     table.timestamps();
   });
