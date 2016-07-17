@@ -7,6 +7,7 @@ let express = require('express'),
 import {authJwt} from '../middle/jwt';
 
 import {TaskCard} from '../../model/task-card';
+import {TaskWallAccess} from '../../model/Task-wall-access';
 
 TaskCardRouter.use(authJwt);
 
@@ -23,20 +24,41 @@ TaskCardRouter.get('/task-card', (req, res, next) => {
 });
 
 TaskCardRouter.post('/task-card', (req, res, next) => {
-  let {name, taskWallId, content} = req.body;
+  let {title, taskWallId, ownerId, content} = req.body;
   
   let {jw} = req;
+
+  console.log(req.body);
   
-  new TaskWall({
-    name,
-    ownerId: jw.user.id,
+  TaskWallAccess.getModel().where({
     taskWallId: taskWallId,
-    content: content
-  }).model.save().thaen(taskWall => {
-    res.status(201).send(taskWall)
-  }).catch(error => {
-    console.error(error);
-  });
+    userId: jw.user.id
+  }).fetch()
+    .then(function(access){
+
+      if( access ){
+        new TaskCard({
+          title,
+          createrId: jw.user.id,
+          taskWallId: taskWallId,
+          //ownerId: ownerId || 1,
+          content: content
+        }).model.save().then(taskWall => {
+          return res.status(201).send(taskWall)
+        }).catch(error => {
+          console.error(error);
+        });
+        
+      } else {
+        return res.status(401).send({
+          message: 'can access this task wall'
+        });
+      }
+
+      
+    });
+  
+  
   
 });
 

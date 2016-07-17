@@ -5,16 +5,12 @@ import {
 } from '../db/bookshelf.js';
 
 const TaskCardModel = bookshelf.Model.extend({
-  tableName: 'task-wall'
+  tableName: 'task-card'
 });
 
 export class TaskCard {
   constructor(info) {
-    this.model = new TaskCardModel({
-      name: info.name,
-      ownerId: info.ownerId,
-      content: info.content
-    });
+    this.model = new TaskCardModel(info);
   }
 
   // TODO validate field (chekit package)

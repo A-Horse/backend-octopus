@@ -19,19 +19,28 @@ function createTables(cb) {
     table.increments();
     table.string('name');
     table.integer('ownerId');
+    table.boolean('isPublic');
     table.timestamps();
   });
 
   var promise3 = knex.schema.createTableIfNotExists('task-card', function (table) {
     table.increments();
-    table.string('name');
+    table.string('title');
+    table.integer('createrId');
     table.integer('ownerId');
-    table.integer('taskCardId');
+    table.integer('taskWallId');
     table.string('content');
     table.timestamps();
   });
+
+  var promise4 = knex.schema.createTableIfNotExists('task-wall-access', function (table) {
+    table.increments();
+    table.integer('taskWallId');
+    table.integer('userId');
+    table.integer('accessLevel');
+  });
   
-  Promise.all([promise1, promise2, promise3]).then(function(){
+  Promise.all([promise1, promise2, promise3, promise4]).then(function(){
     if( cb ){
       cb(() => {
         process.exit(0);
@@ -46,7 +55,8 @@ function dropTables(cb) {
   var promise1 = knex.schema.dropTableIfExists('user');
   var promise2 = knex.schema.dropTableIfExists('task-wall');
   var promise3 = knex.schema.dropTableIfExists('task-card');
-  Promise.all([promise1, promise2, promise3]).then(function(){
+  var promise4 = knex.schema.dropTableIfExists('task-wall-access');
+  Promise.all([promise1, promise2, promise3, promise4]).then(function(){
     if( cb ){
       cb(() => {
         process.exit(0);
