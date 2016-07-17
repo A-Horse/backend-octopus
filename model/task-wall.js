@@ -8,11 +8,38 @@ const TaskWallModel = bookshelf.Model.extend({
   tableName: 'task-wall'
 });
 
+import {TaskWallAccess} from './Task-wall-access';
+
+
 export class TaskWall {
   constructor(info) {
     this.model = new TaskWallModel({
       name: info.name,
       ownerId: info.ownerId
+    });
+    return this;
+  }
+
+  save() {
+    let self = this;
+    return new Promise(function(resolve, reject){
+      bookshelf.transaction(function(t){
+        
+        self.model.save(null, {transacting: t})
+          .tap(function(taskWall){
+            
+            new TaskWallAccess({
+              taskWallId: taskWall.get('id'),
+              userId: taskWall.get('ownerId')
+            }).model.save(null, {transacting: t})
+              .then(function(){
+                t.commit();
+                resolve(taskWall);
+              })
+              .catch(reject);
+            
+          });
+      });
     });
   }
 

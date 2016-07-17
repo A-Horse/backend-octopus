@@ -26,6 +26,9 @@ app.use('/api', UserRouter);
 import {TaskWallRouter} from './route/task/task-wall';
 app.use('/api', TaskWallRouter);
 
+import {TaskCardRouter} from './route/task/task-card';
+app.use('/api', TaskCardRouter);
+
 
 function startHttp() {
   let server = http.createServer(app);
