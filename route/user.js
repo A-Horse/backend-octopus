@@ -41,7 +41,7 @@ UserRouter.put('/login', (req, res, next) => {
     }
     return res.send({
       id_token: '',
-      user: user
+      user: signJwt({user: user})
     });
   }).catch(error => {
     res.status(500).send();
@@ -50,10 +50,12 @@ UserRouter.put('/login', (req, res, next) => {
 });
 
 UserRouter.post('/sign-up', (req, res, next) => {
-  let {username, password} = req.body;
+  let {username, password, email} = req.body;
+  
   User.createUser({
     username,
-    password
+    password,
+    email
   }).then((user) => {
     user.save().then((user) => {
       let json = user.omit('password');
