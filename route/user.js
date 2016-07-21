@@ -1,22 +1,52 @@
 'use strict';
 
 let express = require('express'),
-    jwt = require('jsonwebtoken'),
+    //jwt = require('jsonwebtoken'),
     UserRouter = express.Router();
 
 import {User} from '../model/user';
 
-import {JWTs_SECRET} from '../setting';
+//import {JWTs_SECRET} from '../setting';
+
+import {signJwt} from '../service/auth';
 
 UserRouter.get('/login', (req, res, next) => {
   res.send('valar morghulis');
 });
 
 UserRouter.put('/login', (req, res, next) => {
-  let username = req.body.username,
+  let usernameOrEmail = req.body.usernameOrEmail,
       password = req.body.password;
+
+  if( !usernameOrEmail && !password ){
+    return res.status(400).send();
+  }
+
+  let queryInfo;
+  if( usernameOrEmail.indexOf('@') > 0 ){
+    queryInfo = {
+      email: usernameOrEmail,
+      password: password
+    }
+  } else {
+    queryInfo = {
+      username: usernameOrEmail,
+      password: password
+    }
+  }
   
-  res.send({id_token: '1024'});
+  User.authUser(queryInfo).then(user => {
+    if( !user ){
+      return res.status(401).send();
+    }
+    return res.send({
+      id_token: '',
+      user: user
+    });
+  }).catch(error => {
+    res.status(500).send();
+    throw error;
+  });
 });
 
 UserRouter.post('/sign-up', (req, res, next) => {
@@ -26,13 +56,15 @@ UserRouter.post('/sign-up', (req, res, next) => {
     password
   }).then((user) => {
     user.save().then((user) => {
-      const json = user.omit('password');
-      const token = jwt.sign({user: json}, JWTs_SECRET);
-      res.header('jwts-token', token);
+      let json = user.omit('password');
+      const token = signJwt({user: json});
       
-      res.status(201)
-        .send(json);
+      res.header('jwts-token', token);
+      res.status(201).send(json);
     });
+  }).catch(error => {
+    res.status(500).send();
+    throw error;
   });
 });
 
