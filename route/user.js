@@ -21,7 +21,7 @@ UserRouter.put('/login', (req, res, next) => {
   if( !usernameOrEmail && !password ){
     return res.status(400).send();
   }
-
+  
   let queryInfo;
   if( usernameOrEmail.indexOf('@') > 0 ){
     queryInfo = {
@@ -34,14 +34,16 @@ UserRouter.put('/login', (req, res, next) => {
       password: password
     }
   }
+
+  console.log(queryInfo);
   
   User.authUser(queryInfo).then(user => {
     if( !user ){
       return res.status(401).send();
     }
     return res.send({
-      id_token: '',
-      user: signJwt({user: user})
+      id_token: signJwt({user: user}),
+      user: user
     });
   }).catch(error => {
     res.status(500).send();

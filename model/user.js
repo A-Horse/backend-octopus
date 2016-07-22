@@ -17,10 +17,16 @@ export class User {
   }
 
   static authUser(queryInfo) {
-    new Promise((resolve, reject) => {
-      UserModel.where(R.omit(queryInfo, 'password'))
+    return new Promise((resolve, reject) => {
+      console.log(R.omit('password', queryInfo));
+      UserModel.where(R.omit('password', queryInfo))
         .fetch()
         .then((user) => {
+          console.log('user', user);
+          if( !user ){
+            return reject(null);
+          }
+
           bcrypt.compare(queryInfo.password, user.get('password'), (error, res) => {
             if (error) return reject(error);
             if (res === true) {
