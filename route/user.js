@@ -8,10 +8,12 @@ import {User} from '../model/user';
 
 //import {JWTs_SECRET} from '../setting';
 
+import {authJwt} from './middle/jwt';
+
 import {signJwt} from '../service/auth';
 
-UserRouter.get('/login', (req, res, next) => {
-  res.send('valar morghulis');
+UserRouter.get('/login', authJwt, (req, res, next) => {
+  res.status(200).send(req.jw.user);
 });
 
 UserRouter.put('/login', (req, res, next) => {
@@ -34,8 +36,6 @@ UserRouter.put('/login', (req, res, next) => {
       password: password
     }
   }
-
-  console.log(queryInfo);
   
   User.authUser(queryInfo).then(user => {
     if( !user ){
