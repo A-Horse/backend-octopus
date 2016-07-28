@@ -14,7 +14,7 @@ TaskWallRouter.use(authJwt);
 
 TaskWallRouter.get('/task-wall', (req, res, next) => {
   let {jw} = req;
-  
+  console.log(jw.user);
   TaskWall.getModel().where({
     ownerId: jw.user.id
   }).fetchAll().then(data => {
@@ -77,11 +77,12 @@ TaskWallRouter.post('/task-wall', (req, res, next) => {
   let {name, isPublic} = req.body;
   
   let {jw} = req;
-  
+  console.log('-----------');
+  console.log(jw.user);
   new TaskWall({
     name,
     ownerId: jw.user.id,
-    public: isPublic || false
+    isPublic: isPublic || false
   }).save().then(taskWall => {
     res.status(201).send(taskWall)
   }).catch(error => {

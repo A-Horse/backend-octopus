@@ -54,10 +54,25 @@ TaskCardRouter.post('/task-card', (req, res, next) => {
           message: 'can access this task wall'
         });
       }
+    });  
+});
 
-      
-    });
-  
+TaskCardRouter.patch('/task-card', (req, res, next) => {
+  let {status, id} = req.body;
+
+  //TODO check status name
+  new TaskCard({
+    id
+  }).model.fetch().then((card) => {
+    if( !card ){
+      return res.status(400).send({message: 'can not found task-card'});
+    }
+    return new Promise(resovle => resovle(card));
+  }).then(card => {
+    
+    
+    
+  });
   
   
 });

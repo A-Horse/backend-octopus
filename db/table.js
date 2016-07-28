@@ -34,6 +34,7 @@ function createTables(cb) {
     table.integer('ownerId');
     table.integer('taskWallId');
     table.string('content');
+    table.string('status');
     table.timestamps();
   });
 
