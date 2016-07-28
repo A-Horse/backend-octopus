@@ -21,7 +21,7 @@ export class TaskCard {
   static getTaskWall() {
     
   }
-
+  
   static getModel() {
     return TaskCardModel;
   }
