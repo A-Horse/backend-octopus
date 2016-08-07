@@ -14,21 +14,37 @@ TaskWallRouter.use(authJwt);
 
 TaskWallRouter.get('/task-wall', (req, res, next) => {
   let {jw} = req;
-  console.log(jw.user);
   TaskWall.getModel().where({
     ownerId: jw.user.id
   }).fetchAll().then(data => {
-    res.send(data)
+    res.send(data);
   });
 });
 
-TaskWallRouter.get('/task-wall/:id', (req, res, next) => {
-  let {id} = req.params;
+TaskWallRouter.delete('/task-wall/:id', (req, res, next) => {
+  const {id} = req.params;
 
-  let {jw} = req;
+  TaskWall.getTaskWall({id})
+    .destroy()
+    .then(result => {
+      res.status(200).send();
+    }, err => {
+      // TODO:
+      throw err;
+    });
+});
+
+TaskWallRouter.get('/task-wall/:id', (req, res, next) => {
+  
+});
+
+TaskWallRouter.get('/task-wall/:id', (req, res, next) => {
+  const {id} = req.params;
+
+  const {jw} = req;
   
   TaskWall.getModel().where({
-    id: id
+    id
   }).fetch()
     .then(taskWall => {
       if( !taskWall ){
@@ -52,39 +68,32 @@ TaskWallRouter.get('/task-wall/:id', (req, res, next) => {
           .then(function(access){
 
             if( access ){
-
               TaskCard.getModel().where({
                 taskWallId: taskWall.id
               }).fetchAll()
                 .then(function(cards){
                   return res.send(cards);
                 });
-              
             } else {
               return res.status(401).send({
                 message: 'cann not access this task wall'
               });
             }
-          });
-        
+          }); 
       }
-
     });
-  
 });
 
 TaskWallRouter.post('/task-wall', (req, res, next) => {
   let {name, isPublic} = req.body;
-  
   let {jw} = req;
-  console.log('-----------');
   console.log(jw.user);
   new TaskWall({
     name,
     ownerId: jw.user.id,
     isPublic: isPublic || false
   }).save().then(taskWall => {
-    res.status(201).send(taskWall)
+    res.status(201).send(taskWall);
   }).catch(error => {
     console.error(error);
   });

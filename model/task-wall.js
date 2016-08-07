@@ -10,27 +10,19 @@ const TaskWallModel = bookshelf.Model.extend({
 
 import {TaskWallAccess} from './Task-wall-access';
 
-
 export class TaskWall {
   constructor(info) {
-    console.log('info', info);
-    this.model = new TaskWallModel({
-      name: info.name,
-      ownerId: info.ownerId,
-      isPublic: info.isPublic
-    });
+    this.model = new TaskWallModel(info);
     return this;
   }
 
   save() {
     let self = this;
     return new Promise(function(resolve, reject){
-      console.log('---0');
       bookshelf.transaction(function(t){
         
         self.model.save(null, {transacting: t})
           .tap(function(taskWall){
-            console.log('---1');
             new TaskWallAccess({
               taskWallId: taskWall.get('id'),
               userId: taskWall.get('ownerId'),
@@ -41,19 +33,19 @@ export class TaskWall {
                 resolve(taskWall);
               })
               .catch(reject);
-            
           });
       });
     });
   }
 
+
   // TODO validate field (chekit package)
   static createTaskWall(info) {
     return new TaskWall(info);
   }
-  
-  static getTaskWall() {
-    
+
+  static getTaskWall(info) {
+    return new TaskWallModel(info);
   }
 
   static getModel() {
