@@ -12,8 +12,20 @@ import {authJwt} from './middle/jwt';
 
 import {signJwt} from '../service/auth';
 
+import {checkIsEmailIdentity} from '../util';
+
 UserRouter.get('/login', authJwt, (req, res, next) => {
   res.status(200).send(req.jw.user);
+});
+
+UserRouter.get('/user', authJwt, (req, res, next) => {
+  const {search} = req.query;
+
+  if( checkIsEmailIdentity(search) ){
+    
+  } else {
+    //User.
+  }
 });
 
 UserRouter.put('/login', (req, res, next) => {
@@ -29,12 +41,12 @@ UserRouter.put('/login', (req, res, next) => {
     queryInfo = {
       email: usernameOrEmail,
       password: password
-    }
+    };
   } else {
     queryInfo = {
       username: usernameOrEmail,
       password: password
-    }
+    };
   }
   
   User.authUser(queryInfo).then(user => {
