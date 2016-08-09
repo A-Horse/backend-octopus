@@ -10,6 +10,10 @@ const TaskWallModel = bookshelf.Model.extend({
 
 import {TaskWallAccess} from './Task-wall-access';
 
+export const TASKWALL_TYPE = {
+  NORMAL: 'NORMAL'
+}
+
 export class TaskWall {
   constructor(info) {
     this.model = new TaskWallModel(info);
