@@ -1,20 +1,18 @@
-'use strict';
-
-let express = require('express'),
-    jwt = require('express-jwt'),
-    TaskCardRouter = express.Router();
-
+import express from 'express';
+import jwt from 'express-jwt';
 import {authJwt} from '../middle/jwt';
-
 import {TaskCard} from '../../model/task-card';
 import {TaskWallAccess} from '../../model/Task-wall-access';
+import {validateRequest} from '../../service/validate';
+import R from 'fw-ramda';
+
+const TaskCardRouter = express.Router();
 
 TaskCardRouter.use(authJwt);
 
-TaskCardRouter.get('/task-card', (req, res, next) => {
+TaskCardRouter.get('/task-card', (req, res) => {
   let {jw} = req;
   let {taskWallId} = req.body;
-  
   TaskCard.getModel().where({
     ownerId: jw.user.id,
     taskWallId: taskWallId
@@ -23,37 +21,27 @@ TaskCardRouter.get('/task-card', (req, res, next) => {
   });
 });
 
-TaskCardRouter.post('/task-card', (req, res, next) => {
-  let {title, taskWallId, ownerId, content} = req.body;
+TaskCardRouter.post('/task-card', (req, res) => {
+  validateRequest(req.body, 'title', ['required']);
+  validateRequest(req.body, 'taskWallId', ['required']);
+  validateRequest(req.body, 'content', ['required']);
   
-  let {jw} = req;
-
-  console.log(req.body);
-  
+  const data = R.pick(['title', 'taskWallId', 'ownerId', 'content'], req.body);
+  const defaultData = {dimensions: data.dimensions || 'default', category: 'default' || data.category};
+  const {jw} = req;
   TaskWallAccess.getModel().where({
-    taskWallId: taskWallId,
+    taskWallId: data.taskWallId,
     userId: jw.user.id
-  }).fetch()
-    .then(function(access){
-
+  }).fetch().then((access) => {
       if( access ){
-        new TaskCard({
-          title,
-          createrId: jw.user.id,
-          taskWallId: taskWallId,
-          //ownerId: ownerId || 1,
-          content: content
-        }).model.save().then(taskWall => {
+        return new TaskCard(Object.assign({}, data, defaultData)).model.save().then(taskWall => {
           return res.status(201).send(taskWall)
-        }).catch(error => {
-          console.error(error);
-        });
-        
-      } else {
-        return res.status(401).send({
-          message: 'can access this task wall'
         });
       }
+      // TODO: throw out handle
+      return res.status(401).send({
+        message: 'can access this task wall'
+      });
     });  
 });
 
@@ -69,7 +57,6 @@ TaskCardRouter.patch('/task-card', (req, res, next) => {
     }
     return new Promise(resovle => resovle(card));
   }).then(card => {
-    
     
     
   });

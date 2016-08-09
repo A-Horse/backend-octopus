@@ -6,7 +6,7 @@ let express = require('express'),
 
 import {authJwt} from '../middle/jwt';
 
-import {TaskWall} from '../../model/task-wall';
+import {TaskWall, TASKWALL_TYPE} from '../../model/task-wall';
 import {TaskCard} from '../../model/task-card';
 import {TaskWallAccess} from '../../model/Task-wall-access';
 
@@ -34,11 +34,7 @@ TaskWallRouter.delete('/task-wall/:id', (req, res, next) => {
     });
 });
 
-TaskWallRouter.get('/task-wall/:id', (req, res, next) => {
-  
-});
-
-TaskWallRouter.get('/task-wall/:id', (req, res, next) => {
+TaskWallRouter.get('/task-wall/:id/all', (req, res, next) => {
   const {id} = req.params;
 
   const {jw} = req;
@@ -60,7 +56,7 @@ TaskWallRouter.get('/task-wall/:id', (req, res, next) => {
           });
         
       } else {
-
+        // TODO: do this with relativeship
         TaskWallAccess.getModel().where({
           taskWallId: taskWall.id,
           userId: jw.user.id
@@ -72,7 +68,11 @@ TaskWallRouter.get('/task-wall/:id', (req, res, next) => {
                 taskWallId: taskWall.id
               }).fetchAll()
                 .then(function(cards){
-                  return res.send(cards);
+                  return res.send({
+                    // TODO omit sensitive field
+                    info: taskWall,
+                    cards: cards
+                  });
                 });
             } else {
               return res.status(401).send({
@@ -84,14 +84,15 @@ TaskWallRouter.get('/task-wall/:id', (req, res, next) => {
     });
 });
 
+
 TaskWallRouter.post('/task-wall', (req, res, next) => {
   let {name, isPublic} = req.body;
   let {jw} = req;
-  console.log(jw.user);
   new TaskWall({
     name,
     ownerId: jw.user.id,
-    isPublic: isPublic || false
+    isPublic: isPublic || false,
+    type: TASKWALL_TYPE.NORMAL
   }).save().then(taskWall => {
     res.status(201).send(taskWall);
   }).catch(error => {

@@ -24,12 +24,16 @@ function createTables(cb) {
     table.string('name');
     table.integer('ownerId');
     table.boolean('isPublic');
+    table.boolean('type');
+    table.string('defaultDimensions'); // 维度
     table.timestamps();
   });
 
   var promise3 = knex.schema.createTableIfNotExists('task-card', function (table) {
     table.increments();
     table.string('title');
+    table.string('category');
+    table.string('dimensions'); // 维度
     table.integer('createrId');
     table.integer('ownerId');
     table.integer('taskWallId');
