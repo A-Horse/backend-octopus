@@ -23,7 +23,6 @@ TaskWallRouter.get('/task-wall', (req, res, next) => {
 
 TaskWallRouter.delete('/task-wall/:id', (req, res, next) => {
   const {id} = req.params;
-
   TaskWall.getTaskWall({id})
     .destroy()
     .then(result => {

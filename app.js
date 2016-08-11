@@ -29,6 +29,8 @@ app.use('/api', TaskWallRouter);
 import {TaskCardRouter} from './route/task/task-card';
 app.use('/api', TaskCardRouter);
 
+import {StatusErrorHandleMiddle} from './route/middle/error-handle';
+app.use(StatusErrorHandleMiddle);
 
 function startHttp() {
   let server = http.createServer(app);

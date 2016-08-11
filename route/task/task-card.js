@@ -1,5 +1,4 @@
 import express from 'express';
-import jwt from 'express-jwt';
 import {authJwt} from '../middle/jwt';
 import {TaskCard} from '../../model/task-card';
 import {TaskWallAccess} from '../../model/Task-wall-access';
@@ -11,8 +10,8 @@ const TaskCardRouter = express.Router();
 TaskCardRouter.use(authJwt);
 
 TaskCardRouter.get('/task-card', (req, res) => {
-  let {jw} = req;
-  let {taskWallId} = req.body;
+  const {jw} = req;
+  const {taskWallId} = req.body;
   TaskCard.getModel().where({
     ownerId: jw.user.id,
     taskWallId: taskWallId
@@ -21,10 +20,21 @@ TaskCardRouter.get('/task-card', (req, res) => {
   });
 });
 
+TaskCardRouter.delete('/task-card/:id', (req, res) => {
+  const {id} = req.params;
+  TaskCard.getTaskCard({id})
+    .destroy()
+    .then(() => {
+      res.status(200).send()
+    })
+    .catch(error => {
+      throw error;
+    })
+});
+
 TaskCardRouter.post('/task-card', (req, res) => {
   validateRequest(req.body, 'title', ['required']);
   validateRequest(req.body, 'taskWallId', ['required']);
-  validateRequest(req.body, 'content', ['required']);
   
   const data = R.pick(['title', 'taskWallId', 'ownerId', 'content'], req.body);
   const defaultData = {dimensions: data.dimensions || 'default', category: 'default' || data.category};
@@ -57,11 +67,8 @@ TaskCardRouter.patch('/task-card', (req, res, next) => {
     }
     return new Promise(resovle => resovle(card));
   }).then(card => {
-    
-    
-  });
-  
-  
+
+  });  
 });
 
 export {TaskCardRouter};
