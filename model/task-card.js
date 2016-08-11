@@ -25,4 +25,8 @@ export class TaskCard {
   static getModel() {
     return TaskCardModel;
   }
+
+  static getTaskCard(info) {
+    return new TaskCard(info)
+  }
 }
