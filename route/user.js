@@ -18,6 +18,10 @@ UserRouter.get('/login', authJwt, (req, res, next) => {
   res.status(200).send(req.jw.user);
 });
 
+UserRouter.get('/logout', authJwt, (req, res, next) => {
+  res.status(200).send(req.jw.user);
+});
+
 UserRouter.get('/user', authJwt, (req, res, next) => {
   const {search} = req.query;
 
