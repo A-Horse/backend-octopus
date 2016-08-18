@@ -1,30 +1,23 @@
 'use strict';
 
-let express = require('express'),
-    //jwt = require('jsonwebtoken'),
-    UserRouter = express.Router();
-
+import express from'express';
 import {User} from '../model/user';
-
-//import {JWTs_SECRET} from '../setting';
-
 import {authJwt} from './middle/jwt';
-
 import {signJwt} from '../service/auth';
-
 import {checkIsEmailIdentity} from '../util';
+
+const UserRouter = express.Router();
 
 UserRouter.get('/login', authJwt, (req, res, next) => {
   res.status(200).send(req.jw.user);
 });
 
-UserRouter.get('/logout', authJwt, (req, res, next) => {
-  res.status(200).send(req.jw.user);
+UserRouter.post('/logout', authJwt, (req, res) => {
+  
 });
 
-UserRouter.get('/user', authJwt, (req, res, next) => {
+UserRouter.get('/user', authJwt, (req, res) => {
   const {search} = req.query;
-
   if( checkIsEmailIdentity(search) ){
     
   } else {
