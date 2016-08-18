@@ -42,14 +42,21 @@ function createTables(cb) {
     table.timestamps();
   });
 
-  var promise4 = knex.schema.createTableIfNotExists('task-wall-access', function (table) {
+  var promise4 = knex.schema.createTableIfNotExists('group', function (table) {
+    table.increments();
+    table.integer('taskWallId');
+    table.integer('userId');
+    table.integer('accessLevel');
+  });
+
+  var promise5 = knex.schema.createTableIfNotExists('task-list', function (table) {
     table.increments();
     table.integer('taskWallId');
     table.integer('userId');
     table.integer('accessLevel');
   });
   
-  Promise.all([promise1, promise2, promise3, promise4]).then(function(){
+  Promise.all([promise1, promise2, promise3, promise4, promise5]).then(function(){
     if( cb ){
       cb(() => {
         process.exit(0);
