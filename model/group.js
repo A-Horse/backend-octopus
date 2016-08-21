@@ -4,14 +4,13 @@ import {
   bookshelf
 } from '../db/bookshelf.js';
 
-const TaskWallAccessModel = bookshelf.Model.extend({
-  tableName: 'task-wall-access'
+const GroupModel = bookshelf.Model.extend({
+  tableName: 'group'
 });
 
-
-export class TaskWallAccess {
+export class Group {
   constructor(info) {
-    this.model = new TaskWallAccessModel({
+    this.model = new GroupModel({
       taskWallId: info.taskWallId,
       userId: info.userId
     });
@@ -22,8 +21,7 @@ export class TaskWallAccess {
     
   }
 
-  
   static getModel() {
-    return TaskWallAccessModel;
+    return GroupModel;
   }
 }

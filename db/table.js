@@ -52,8 +52,8 @@ function createTables(cb) {
   var promise5 = knex.schema.createTableIfNotExists('task-list', function (table) {
     table.increments();
     table.integer('taskWallId');
-    table.integer('userId');
-    table.integer('accessLevel');
+    table.string('name');
+    table.string('type');
   });
   
   Promise.all([promise1, promise2, promise3, promise4, promise5]).then(function(){

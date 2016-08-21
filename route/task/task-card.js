@@ -1,7 +1,9 @@
 import express from 'express';
 import {authJwt} from '../middle/jwt';
 import {TaskCard} from '../../model/task-card';
-import {TaskWallAccess} from '../../model/Task-wall-access';
+import {TaskList} from '../../model/task-list';
+import {Group} from '../../model/group';
+import {AccessLimitError} from '../../service/error';
 import {validateRequest} from '../../service/validate';
 import R from 'fw-ramda';
 
@@ -35,24 +37,32 @@ TaskCardRouter.delete('/task-card/:id', (req, res) => {
 TaskCardRouter.post('/task-card', (req, res) => {
   validateRequest(req.body, 'title', ['required']);
   validateRequest(req.body, 'taskWallId', ['required']);
+  validateRequest(req.body, 'category', ['required']);
   
-  const data = R.pick(['title', 'taskWallId', 'ownerId', 'content'], req.body);
-  const defaultData = {dimensions: data.dimensions || 'default', category: 'default' || data.category};
+  const data = R.pick(['title', 'taskWallId', 'category'], req.body);
+  const defaultData = {dimensions: data.dimensions || 'default'};
   const {jw} = req;
-  TaskWallAccess.getModel().where({
+  Group.getModel().where({
     taskWallId: data.taskWallId,
     userId: jw.user.id
   }).fetch().then((access) => {
-      if( access ){
-        return new TaskCard(Object.assign({}, data, defaultData)).model.save().then(taskWall => {
-          return res.status(201).send(taskWall)
-        });
-      }
-      // TODO: throw out handle
-      return res.status(401).send({
-        message: 'can access this task wall'
-      });
-    });  
+    console.log({
+      taskWallId: data.taskWallId,
+      name: data.category
+    });
+    if( access ){
+      return TaskList.getModel().where({
+        taskWallId: data.taskWallId,
+        name: data.category
+      }).fetch()
+        .then(() => {
+          new TaskCard(Object.assign({}, data, defaultData)).model.save().then(taskCard => {
+            res.status(201).send(taskCard)
+          }).catch(error => {throw error});
+        }).catch(error => {throw error});
+    }
+    throw new AccessLimitError('can access this task wall');
+  }).catch(error => {throw error});
 });
 
 TaskCardRouter.patch('/task-card', (req, res, next) => {

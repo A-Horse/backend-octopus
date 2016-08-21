@@ -16,3 +16,19 @@ export class ErrorParamsError extends ExtendableBuiltin(Error) {
     this.message = message;
   }
 }
+
+export class AccessLimitError extends ExtendableBuiltin(Error) {
+  constructor(message = 'access limit error') {
+    super(message);
+    this.name = this.constructor.name;
+    this.message = message;
+  }
+}
+
+export class NotFoundError extends ExtendableBuiltin(Error) {
+  constructor(message = 'resource not found') {
+    super(message);
+    this.name = this.constructor.name;
+    this.message = message;
+  }
+}
