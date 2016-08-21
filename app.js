@@ -26,6 +26,9 @@ app.use('/api', UserRouter);
 import {TaskWallRouter} from './route/task/task-wall';
 app.use('/api', TaskWallRouter);
 
+import {TaskListRouter} from './route/task/task-list';
+app.use('/api', TaskListRouter);
+
 import {TaskCardRouter} from './route/task/task-card';
 app.use('/api', TaskCardRouter);
 

@@ -5,10 +5,11 @@ let express = require('express'),
     TaskWallRouter = express.Router();
 
 import {authJwt} from '../middle/jwt';
-
+import {AccessLimitError, NotFoundError} from '../../service/error';
 import {TaskWall, TASKWALL_TYPE} from '../../model/task-wall';
 import {TaskCard} from '../../model/task-card';
-import {TaskWallAccess} from '../../model/Task-wall-access';
+import {TaskList} from '../../model/task-list';
+import {Group} from '../../model/group';
 
 TaskWallRouter.use(authJwt);
 
@@ -35,51 +36,34 @@ TaskWallRouter.delete('/task-wall/:id', (req, res, next) => {
 
 TaskWallRouter.get('/task-wall/:id/all', (req, res, next) => {
   const {id} = req.params;
-
   const {jw} = req;
-  
-  TaskWall.getModel().where({
-    id
-  }).fetch()
+
+  TaskWall.getModel().where({id}).fetch()
     .then(taskWall => {
-      if( !taskWall ){
-        return res.status(404).send({message: 'task wall not found'});
-      }
-
-      if( taskWall.isPublic ){
-        TaskCard.getModel().where({
-          taskWallId: taskWall.id
-        }).fetchAll()
-          .then(function(cards){
-            return res.send(cards);
+      if( !taskWall ) throw new NotFoundError('task wall not found')
+      
+      // TODO check is public
+      Group.getModel().where({
+        taskWallId: taskWall.id,
+        userId: jw.user.id
+      }).fetch().then(function(access){
+        if( !access ) throw new AccessLimitError('can access this task wall');        
+        return Promise.all([
+          TaskCard.getModel().where({
+            taskWallId: taskWall.id
+          }).fetchAll(),
+          TaskList.getModel().where({
+            taskWallId: taskWall.id
+          }).fetchAll()
+        ]).then(values => {
+          let [cards, categorys] = values;
+          return res.send({
+            info: taskWall,
+            cards: cards,
+            category: categorys
           });
-        
-      } else {
-        // TODO: do this with relativeship
-        TaskWallAccess.getModel().where({
-          taskWallId: taskWall.id,
-          userId: jw.user.id
-        }).fetch()
-          .then(function(access){
-
-            if( access ){
-              TaskCard.getModel().where({
-                taskWallId: taskWall.id
-              }).fetchAll()
-                .then(function(cards){
-                  return res.send({
-                    // TODO omit sensitive field
-                    info: taskWall,
-                    cards: cards
-                  });
-                });
-            } else {
-              return res.status(401).send({
-                message: 'cann not access this task wall'
-              });
-            }
-          }); 
-      }
+        }).catch(error => {throw error});
+      });
     });
 });
 
@@ -87,17 +71,15 @@ TaskWallRouter.get('/task-wall/:id/all', (req, res, next) => {
 TaskWallRouter.post('/task-wall', (req, res, next) => {
   let {name, isPublic} = req.body;
   let {jw} = req;
+  
   new TaskWall({
     name,
     ownerId: jw.user.id,
     isPublic: isPublic || false,
     type: TASKWALL_TYPE.NORMAL
-  }).save().then(taskWall => {
+  }).bundleCreate().then(taskWall => {
     res.status(201).send(taskWall);
-  }).catch(error => {
-    console.error(error);
-  });
-  
+  }).catch(error => {throw error});
 });
 
 export {TaskWallRouter};
