@@ -37,31 +37,19 @@ TaskCardRouter.delete('/task-card/:id', (req, res) => {
 TaskCardRouter.post('/task-card', (req, res) => {
   validateRequest(req.body, 'title', ['required']);
   validateRequest(req.body, 'taskWallId', ['required']);
-  validateRequest(req.body, 'category', ['required']);
+  validateRequest(req.body, 'taskListId', ['required']);
   
-  const data = R.pick(['title', 'taskWallId', 'category'], req.body);
+  const data = R.pick(['title', 'taskWallId', 'taskListId'], req.body);
   const defaultData = {dimensions: data.dimensions || 'default'};
   const {jw} = req;
   Group.getModel().where({
     taskWallId: data.taskWallId,
     userId: jw.user.id
   }).fetch().then((access) => {
-    console.log({
-      taskWallId: data.taskWallId,
-      name: data.category
-    });
-    if( access ){
-      return TaskList.getModel().where({
-        taskWallId: data.taskWallId,
-        name: data.category
-      }).fetch()
-        .then(() => {
-          new TaskCard(Object.assign({}, data, defaultData)).model.save().then(taskCard => {
-            res.status(201).send(taskCard)
-          }).catch(error => {throw error});
-        }).catch(error => {throw error});
-    }
-    throw new AccessLimitError('can access this task wall');
+    if( !access ) throw new AccessLimitError('can access this task wall');
+    new TaskCard(Object.assign({}, data, defaultData)).model.save().then(taskCard => {
+      res.status(201).send(taskCard)
+    }).catch(error => {throw error});
   }).catch(error => {throw error});
 });
 

@@ -34,12 +34,23 @@ TaskListRouter.post('/task-wall/:wallId/list', (req, res) => {
 });
 
 TaskListRouter.patch('/task-wall/:wallId/list/:listId', (req, res) => {
-  const {listId} = this.params;
-  const info = this.body;
+  const {listId} = req.params;
+  const info = req.body;
   TaskList.getModel().where({id: listId}).save(info).then(taskList => {
     return res.send(taskList);
   })
 });
 
+TaskListRouter.delete('/task-wall/:wallId/list/:listId', (req, res) => {
+  const {wallId, listId} = req.params;
+  const {jw} = req;
+  Group.getModel().where({taskWallId: wallId, userId: jw.user.id}).fetch()
+    .then(access => {
+      if (!access) throw new AccessLimitError('can access this task wall');
+      new TaskList({id: listId}).bundleDelete().then(() => {
+        res.status(201).send();
+      }).catch(error => {throw error});
+    });
+});
 
 export {TaskListRouter};

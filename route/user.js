@@ -1,5 +1,3 @@
-'use strict';
-
 import express from'express';
 import {User} from '../model/user';
 import {authJwt} from './middle/jwt';
@@ -8,21 +6,21 @@ import {checkIsEmailIdentity} from '../util';
 
 const UserRouter = express.Router();
 
+UserRouter.get('/user', authJwt, (req, res) => {
+  const {search} = req.query;
+  if( checkIsEmailIdentity(search) ){
+    
+  } else {
+    // User.
+  }
+});
+
 UserRouter.get('/login', authJwt, (req, res, next) => {
   res.status(200).send(req.jw.user);
 });
 
 UserRouter.post('/logout', authJwt, (req, res) => {
   
-});
-
-UserRouter.get('/user', authJwt, (req, res) => {
-  const {search} = req.query;
-  if( checkIsEmailIdentity(search) ){
-    
-  } else {
-    //User.
-  }
 });
 
 UserRouter.put('/login', (req, res, next) => {
@@ -75,12 +73,7 @@ UserRouter.post('/sign-up', (req, res, next) => {
       res.header('jwts-token', token);
       res.status(201).send(json);
     });
-  }).catch(error => {
-    res.status(500).send();
-    throw error;
-  });
+  }).catch(error => {throw error});
 });
-
-
 
 export {UserRouter};
