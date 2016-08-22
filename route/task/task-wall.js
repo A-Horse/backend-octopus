@@ -1,9 +1,4 @@
-'use strict';
-
-let express = require('express'),
-    jwt = require('express-jwt'),
-    TaskWallRouter = express.Router();
-
+import express from 'express';
 import {authJwt} from '../middle/jwt';
 import {AccessLimitError, NotFoundError} from '../../service/error';
 import {TaskWall, TASKWALL_TYPE} from '../../model/task-wall';
@@ -11,6 +6,7 @@ import {TaskCard} from '../../model/task-card';
 import {TaskList} from '../../model/task-list';
 import {Group} from '../../model/group';
 
+const TaskWallRouter = express.Router();
 TaskWallRouter.use(authJwt);
 
 TaskWallRouter.get('/task-wall', (req, res, next) => {
@@ -60,6 +56,7 @@ TaskWallRouter.get('/task-wall/:id/all', (req, res, next) => {
           return res.send({
             info: taskWall,
             cards: cards,
+            lists: categorys,
             category: categorys
           });
         }).catch(error => {throw error});

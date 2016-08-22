@@ -32,7 +32,7 @@ function createTables(cb) {
   var promise3 = knex.schema.createTableIfNotExists('task-card', function (table) {
     table.increments();
     table.string('title');
-    table.string('category');
+    table.integer('taskListId');
     table.string('dimensions'); // 维度
     table.integer('createrId');
     table.integer('ownerId');
