@@ -4,7 +4,7 @@ import {
   bookshelf
 } from '../db/bookshelf.js';
 
-const TaskCardModel = bookshelf.Model.extend({
+export const TaskCardModel = bookshelf.Model.extend({
   tableName: 'task-card'
 });
 
