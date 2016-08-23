@@ -22,8 +22,12 @@ export class TaskList {
         new TaskListModel({taskListId: this.model.id}).fetchAll().then((s) => {
           console.log(s);
         })
+        TaskListModel.where({taskListId: this.model.id}).destroy({transacting: t}).then(function(e){
+          console.log(e);
+        })
+        return;
         return Promise.all([
-          new TaskListModel({taskListId: this.model.id}).destroy({transacting: t}),
+          TaskListModel.where({taskListId: this.model.id}).destroy({transacting: t}),
           this.model.destroy({transacting: t})
         ]).then(() => {
           console.log('hihihi then');
