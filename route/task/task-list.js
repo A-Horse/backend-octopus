@@ -1,6 +1,6 @@
 import express from 'express';
 import {authJwt} from '../middle/jwt';
-import {TaskList} from '../../model/task-list';
+import {TaskList, TaskListModel} from '../../model/task-list';
 import {Group} from '../../model/group';
 import {AccessLimitError, NotFoundError} from '../../service/error';
 import {validateRequest} from '../../service/validate';
@@ -47,7 +47,7 @@ TaskListRouter.delete('/task-wall/:wallId/list/:listId', (req, res) => {
   Group.getModel().where({taskWallId: wallId, userId: jw.user.id}).fetch()
     .then(access => {
       if (!access) throw new AccessLimitError('can access this task wall');
-      new TaskList({id: listId}).bundleDelete().then(() => {
+      new TaskListModel({id: listId}).bundleDelete().then(() => {
         res.status(201).send();
       }).catch(error => {throw error});
     });

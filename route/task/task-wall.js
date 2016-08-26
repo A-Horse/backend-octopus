@@ -13,44 +13,33 @@ TaskWallRouter.get('/task-wall', (req, res, next) => {
   let {jw} = req;
   TaskWall.getModel().where({
     ownerId: jw.user.id
-  }).fetchAll().then(data => {
-    res.send(data);
-  });
+  }).fetchAll().then(data => res.send(data));
 });
 
-TaskWallRouter.delete('/task-wall/:id', (req, res, next) => {
+TaskWallRouter.delete('/task-wall/:id', (req, res) => {
   const {id} = req.params;
   TaskWall.getTaskWall({id})
     .destroy()
-    .then(result => {
-      res.status(200).send();
-    }, err => {
-      // TODO:
-      throw err;
-    });
+    .then(() => res.send())
+    .catch(error => {throw error});
 });
 
-TaskWallRouter.get('/task-wall/:id/all', (req, res, next) => {
+TaskWallRouter.get('/task-wall/:id/all', (req, res) => {
   const {id} = req.params;
   const {jw} = req;
 
   TaskWall.getModel().where({id}).fetch()
     .then(taskWall => {
       if( !taskWall ) throw new NotFoundError('task wall not found')
-      
       // TODO check is public
-      Group.getModel().where({
+      return Group.getModel().where({
         taskWallId: taskWall.id,
         userId: jw.user.id
-      }).fetch().then(function(access){
+      }).fetch().then(access => {
         if( !access ) throw new AccessLimitError('can access this task wall');        
         return Promise.all([
-          TaskCard.getModel().where({
-            taskWallId: taskWall.id
-          }).fetchAll(),
-          TaskList.getModel().where({
-            taskWallId: taskWall.id
-          }).fetchAll()
+          TaskCard.getModel().where({taskWallId: taskWall.id}).fetchAll(),
+          TaskList.getModel().where({taskWallId: taskWall.id}).fetchAll()
         ]).then(values => {
           let [cards, categorys] = values;
           return res.send({
@@ -59,9 +48,9 @@ TaskWallRouter.get('/task-wall/:id/all', (req, res, next) => {
             lists: categorys,
             category: categorys
           });
-        }).catch(error => {throw error});
-      });
-    });
+        })
+      })
+    }).catch(error => {console.log('sdsd'); throw error})
 });
 
 

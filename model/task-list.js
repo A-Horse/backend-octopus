@@ -2,10 +2,20 @@ import {
   bookshelf
 } from '../db/bookshelf.js';
 
-import {TaskCard, TaskCardModel} from './task-card';
+import {TaskCardModel} from './task-card';
 
 export const TaskListModel = bookshelf.Model.extend({
-  tableName: 'task-list'
+  tableName: 'task-list',
+  bundleDelete() {
+    return new Promise((resolve, reject) => {
+      bookshelf.transaction(t => {
+        return Promise.all([
+          TaskCardModel.where({taskListId: this.id}).destroy({transacting: t}),
+          this.destroy({transacting: t})
+        ]).then(resolve).catch(error => reject(error))
+      });
+    });
+  }
 });
 
 export const DEFAULT_LIST_NAME = 'default';
@@ -13,32 +23,6 @@ export const DEFAULT_LIST_NAME = 'default';
 export class TaskList {
   constructor(info) {
     this.model = new TaskListModel(info);
-  }
-
-  bundleDelete() {
-    return new Promise((resolve, reject) => {
-      bookshelf.transaction(t => {
-        console.log(this.model.id);
-        new TaskListModel({taskListId: this.model.id}).fetchAll().then((s) => {
-          console.log(s);
-        })
-        TaskListModel.where({taskListId: this.model.id}).destroy({transacting: t}).then(function(e){
-          console.log(e);
-        })
-        return;
-        return Promise.all([
-          TaskListModel.where({taskListId: this.model.id}).destroy({transacting: t}),
-          this.model.destroy({transacting: t})
-        ]).then(() => {
-          console.log('hihihi then');
-          resolve()
-        }).catch(error => {
-          console.log('hihihierrr');
-          
-          reject(error);
-        })
-      });
-    });
   }
 
   static createTaskList(info) {

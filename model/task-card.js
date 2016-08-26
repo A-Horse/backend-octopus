@@ -1,5 +1,3 @@
-'use strict';
-
 import {
   bookshelf
 } from '../db/bookshelf.js';
@@ -12,8 +10,7 @@ export class TaskCard {
   constructor(info) {
     this.model = new TaskCardModel(info);
   }
-
-  // TODO validate field (chekit package)
+  
   static createTaskCard(info) {
     return new TaskCard(info);
   }
