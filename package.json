@@ -15,6 +15,7 @@
     "bcrypt": "^0.8.7",
     "bcryptjs": "^2.3.0",
     "bluebird": "^3.4.3",
+    "blueimp-md5": "^2.3.0",
     "body-parser": "^1.15.2",
     "bookshelf": "^0.10.0",
     "cookie-parser": "^1.4.3",
