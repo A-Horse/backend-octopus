@@ -1,15 +1,8 @@
-'use strict';
+import bcrypt from 'bcryptjs';
+import R from 'fw-ramda';
+import {bookshelf} from '../db/bookshelf.js';
 
-let bcrypt = require('bcryptjs');
-let R = require('fw-ramda');
-
-import {
-  bookshelf
-} from '../db/bookshelf.js';
-
-let UserModel = bookshelf.Model.extend({
-  tableName: 'user'
-});
+export const UserModel = bookshelf.Model.extend({tableName: 'user'});
 
 export class User {
   constructor() {

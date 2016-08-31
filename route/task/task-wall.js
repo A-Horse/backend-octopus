@@ -10,7 +10,7 @@ const TaskWallRouter = express.Router();
 TaskWallRouter.use(authJwt);
 
 TaskWallRouter.get('/task-wall', (req, res, next) => {
-  let {jw} = req;
+  const {jw} = req;
   TaskWall.getModel().where({
     ownerId: jw.user.id
   }).fetchAll().then(data => res.send(data));
@@ -41,7 +41,7 @@ TaskWallRouter.get('/task-wall/:id/all', (req, res) => {
           TaskCard.getModel().where({taskWallId: taskWall.id}).fetchAll(),
           TaskList.getModel().where({taskWallId: taskWall.id}).fetchAll()
         ]).then(values => {
-          let [cards, categorys] = values;
+          const [cards, categorys] = values;
           return res.send({
             info: taskWall,
             cards: cards,

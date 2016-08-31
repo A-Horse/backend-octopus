@@ -1,8 +1,10 @@
 import express from'express';
-import {User} from '../model/user';
+import {User, UserModel} from '../model/user';
+import {AccessLimitError, NotFoundError} from '../service/error';
 import {authJwt} from './middle/jwt';
 import {signJwt} from '../service/auth';
 import {checkIsEmailIdentity} from '../util';
+import {makeGravatarUrl} from '../service/gravator.js';
 
 const UserRouter = express.Router();
 
@@ -15,6 +17,14 @@ UserRouter.get('/user', authJwt, (req, res) => {
   }
 });
 
+UserRouter.get('/user/:id/avator', (req, res, next) => {
+  const {id} = req.params;
+  UserModel({id}).fetch().then(user => {
+    if (!user) throw new NotFoundError();
+    res.send({result: makeGravatarUrl(user.email)});
+  }).catch(next);
+});
+
 UserRouter.get('/login', authJwt, (req, res, next) => {
   res.status(200).send(req.jw.user);
 });
@@ -24,25 +34,17 @@ UserRouter.post('/logout', authJwt, (req, res) => {
 });
 
 UserRouter.put('/login', (req, res, next) => {
-  let usernameOrEmail = req.body.usernameOrEmail,
+  const email = req.body.usernameOrEmail,
       password = req.body.password;
 
-  if( !usernameOrEmail && !password ){
+  if (!email && !password) {
     return res.status(400).send();
   }
   
-  let queryInfo;
-  if( usernameOrEmail.indexOf('@') > 0 ){
-    queryInfo = {
-      email: usernameOrEmail,
-      password: password
-    };
-  } else {
-    queryInfo = {
-      username: usernameOrEmail,
-      password: password
-    };
-  }
+  const queryInfo = {
+    email: email,
+    password: password
+  };
   
   User.authUser(queryInfo).then(user => {
     if( !user ){

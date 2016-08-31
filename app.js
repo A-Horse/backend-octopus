@@ -14,7 +14,6 @@ app.use(require('body-parser').urlencoded({
 }));
 app.use(require('cookie-parser')());
 
-
 import {UserRouter} from './route/user.js';
 import {TaskWallRouter} from './route/task/task-wall';
 import {TaskListRouter} from './route/task/task-list';
@@ -27,9 +26,9 @@ app.use('/api', TaskListRouter);
 app.use('/api', TaskCardRouter);
 app.use(StatusErrorHandleMiddle);
 
-function startHttp() {
+function startServer() {
   const server = http.createServer(app);
   server.listen(5000);
 }
 
-startHttp();
+startServer();
