@@ -1,85 +1,30 @@
-'use strict';
+import fs from 'fs';
 
-var knex = require('knex')({
+export const knex = require('knex')({
   client: 'sqlite3',
   connection: {
     filename: "./db.sqlite"
   }
 });
 
+function readAllLib() {
+  return fs.readdirSync('./table').filter(fileName => /\.js$/.test(fileName))
+    .map(fileName => require(`./table/${fileName}`));
+}
+
 function createTables(cb) {
-  var promise1 = knex.schema.createTableIfNotExists('user', function (table) {
-    table.increments();
-    table.string('username');
-    table.string('email');
-    table.string('status');
-    table.string('type');
-    table.string('password');
-    table.string('desc');
-    table.timestamps();
-  });
-
-  var promise2 = knex.schema.createTableIfNotExists('task-wall', function (table) {
-    table.increments();
-    table.string('name');
-    table.integer('ownerId');
-    table.boolean('isPublic');
-    table.boolean('type');
-    table.string('defaultDimensions'); // 维度
-    table.timestamps();
-  });
-
-  var promise3 = knex.schema.createTableIfNotExists('task-card', function (table) {
-    table.increments();
-    table.string('title');
-    table.integer('taskListId');
-    table.string('dimensions'); // 维度
-    table.integer('createrId');
-    table.integer('ownerId');
-    table.integer('taskWallId');
-    table.string('content');
-    table.string('status');
-    table.timestamps();
-  });
-
-  var promise4 = knex.schema.createTableIfNotExists('group', function (table) {
-    table.increments();
-    table.integer('taskWallId');
-    table.integer('userId');
-    table.integer('accessLevel');
-  });
-
-  var promise5 = knex.schema.createTableIfNotExists('task-list', function (table) {
-    table.increments();
-    table.integer('taskWallId');
-    table.string('name');
-    table.string('type');
-  });
-  
-  Promise.all([promise1, promise2, promise3, promise4, promise5]).then(function(){
-    if( cb ){
-      cb(() => {
-        process.exit(0);
-      });
-    } else {
-      process.exit(0);
-    }
+  const createPromises = readAllLib().map(module => module.createPromise);
+  Promise.all(createPromises).then(() => {
+    cb && cb(() => {process.exit(0)});
+    !cb && process.exit(0);
   });
 }
 
 function dropTables(cb) {
-  var promise1 = knex.schema.dropTableIfExists('user');
-  var promise2 = knex.schema.dropTableIfExists('task-wall');
-  var promise3 = knex.schema.dropTableIfExists('task-card');
-  var promise4 = knex.schema.dropTableIfExists('task-wall-access');
-  Promise.all([promise1, promise2, promise3, promise4]).then(function(){
-    if( cb ){
-      cb(() => {
-        process.exit(0);
-      });
-    } else {
-      process.exit(0);
-    }
+  const dropPromises = readAllLib().map(module => module.dropPromise);
+  Promise.all(dropPromises).then(() => {
+    cb && cb(() => {process.exit(0)});
+    !cb && process.exit(0);
   });
 }
 
