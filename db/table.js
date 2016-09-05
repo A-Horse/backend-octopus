@@ -17,7 +17,7 @@ function createTables(cb) {
   Promise.all(createPromises).then(() => {
     cb && cb(() => {process.exit(0)});
     !cb && process.exit(0);
-  });
+  }).catch(error => console.error(error));
 }
 
 function dropTables(cb) {
@@ -25,7 +25,7 @@ function dropTables(cb) {
   Promise.all(dropPromises).then(() => {
     cb && cb(() => {process.exit(0)});
     !cb && process.exit(0);
-  });
+  }).catch(error => console.error(error));
 }
 
 
