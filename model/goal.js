@@ -1,3 +1,3 @@
 import {bookshelf} from '../db/bookshelf.js';
 
-export const GoalModel = bookshelf.Model.extend({tableName: 'user'});
+export const GoalModel = bookshelf.Model.extend({tableName: 'goal'});
