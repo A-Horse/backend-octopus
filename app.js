@@ -7,12 +7,10 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', '../views');
-app.use('/static',  express.static('../static'));
+app.use('/static', express.static('../static'));
 app.use(morgan('combined'));
 app.use(require('body-parser').json());
-app.use(require('body-parser').urlencoded({
-  extended: true
-}));
+app.use(require('body-parser').urlencoded({extended: true}));
 app.use(require('cookie-parser')());
 
 import {UserRouter} from './route/user.js';
