@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import http from 'http';
+import {apiPrefix} from './constant';
 
 const app = express();
 
@@ -18,12 +19,14 @@ import {UserRouter} from './route/user.js';
 import {TaskWallRouter} from './route/task/task-wall';
 import {TaskListRouter} from './route/task/task-list';
 import {TaskCardRouter} from './route/task/task-card';
+import {GoalListRouter} from './route/goal/list';
 import {StatusErrorHandleMiddle} from './route/middle/error-handle';
 
-app.use('/api', UserRouter);
-app.use('/api', TaskWallRouter);
-app.use('/api', TaskListRouter);
-app.use('/api', TaskCardRouter);
+app.use(apiPrefix, UserRouter);
+app.use(apiPrefix, TaskWallRouter);
+app.use(apiPrefix, TaskListRouter);
+app.use(apiPrefix, TaskCardRouter);
+app.use(apiPrefix, GoalListRouter);
 app.use(StatusErrorHandleMiddle);
 
 function startServer() {
