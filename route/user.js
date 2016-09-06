@@ -33,20 +33,17 @@ UserRouter.post('/logout', authJwt, (req, res) => {
   
 });
 
-UserRouter.put('/login', (req, res, next) => {
-  const email = req.body.usernameOrEmail,
+UserRouter.post('/login', (req, res, next) => {
+  const email = req.body.email,
       password = req.body.password;
 
   if (!email && !password) {
     return res.status(400).send();
   }
   
-  const queryInfo = {
-    email: email,
-    password: password
-  };
+  const creds = {email: email, password: password};
   
-  User.authUser(queryInfo).then(user => {
+  User.authUser(creds).then(user => {
     if( !user ){
       return res.status(401).send();
     }
