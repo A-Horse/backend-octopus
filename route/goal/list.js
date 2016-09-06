@@ -9,8 +9,12 @@ const GoalListRouter = express.Router();
 
 GoalListRouter.use(authJwt);
 
-GoalListRouter.get('/goal', (req, res) => {
+GoalListRouter.get('/user/:userId/goal', (req, res) => {
   const {jw} = req;
+  const {userId} = req.params;
+  if (jw.user.id !== userId) {
+    return new AccessLimitError();
+  }
   new GoalModel({userId: jw.user.id})
     .fetch().then(goals => res.send(goals)).
     catch();
