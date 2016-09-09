@@ -1,5 +1,7 @@
 import fs from 'fs';
 
+// TODO log which table created
+
 export const knex = require('knex')({
   client: 'sqlite3',
   connection: {
