@@ -39,7 +39,11 @@ TaskWallRouter.get('/user/:userId/task-wall/:id/all', (req, res) => {
       }).fetch().then(access => {
         if( !access ) throw new AccessLimitError('can access this task wall');        
         return Promise.all([
-          TaskCard.getModel().where({taskWallId: taskWall.id}).fetchAll({withRelated: ['creater']}),
+          TaskCard.getModel().where({taskWallId: taskWall.id}).fetchAll({withRelated: [{
+            creater: function(qb){
+              qb.select('email', 'id')
+            }
+          }]}),
           TaskList.getModel().where({taskWallId: taskWall.id}).fetchAll()
         ]).then(values => {
           const [cards, categorys] = values;
