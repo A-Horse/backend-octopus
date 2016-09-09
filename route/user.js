@@ -48,7 +48,7 @@ UserRouter.post('/login', (req, res, next) => {
       return res.status(401).send();
     }
     return res.send({
-      id_token: signJwt({user: user}),
+      jwt: signJwt({user: user}),
       user: user
     });
   }).catch(error => {
