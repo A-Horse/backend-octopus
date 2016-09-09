@@ -1,9 +1,11 @@
-import {
-  bookshelf
-} from '../db/bookshelf.js';
+import {bookshelf} from '../db/bookshelf.js';
+import {UserModel} from './user';
 
 export const TaskCardModel = bookshelf.Model.extend({
-  tableName: 'task-card'
+  tableName: 'task-card',
+  creater: function() {
+    return this.belongsTo(UserModel, 'ownerId');
+  }
 });
 
 export class TaskCard {
