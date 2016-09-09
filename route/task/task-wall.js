@@ -24,7 +24,8 @@ TaskWallRouter.delete('/task-wall/:id', (req, res) => {
     .catch(error => {throw error});
 });
 
-TaskWallRouter.get('/task-wall/:id/all', (req, res) => {
+// TODO 重构 userId id
+TaskWallRouter.get('/user/:userId/task-wall/:id/all', (req, res) => {
   const {id} = req.params;
   const {jw} = req;
 
@@ -38,7 +39,7 @@ TaskWallRouter.get('/task-wall/:id/all', (req, res) => {
       }).fetch().then(access => {
         if( !access ) throw new AccessLimitError('can access this task wall');        
         return Promise.all([
-          TaskCard.getModel().where({taskWallId: taskWall.id}).fetchAll(),
+          TaskCard.getModel().where({taskWallId: taskWall.id}).fetchAll({withRelated: ['creater']}),
           TaskList.getModel().where({taskWallId: taskWall.id}).fetchAll()
         ]).then(values => {
           const [cards, categorys] = values;
@@ -46,7 +47,7 @@ TaskWallRouter.get('/task-wall/:id/all', (req, res) => {
             info: taskWall,
             cards: cards,
             lists: categorys,
-            category: categorys
+            // category: categorys
           });
         })
       })
