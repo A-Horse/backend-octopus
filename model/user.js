@@ -2,7 +2,9 @@ import bcrypt from 'bcryptjs';
 import R from 'fw-ramda';
 import {bookshelf} from '../db/bookshelf.js';
 
-export const UserModel = bookshelf.Model.extend({tableName: 'user'});
+export const UserModel = bookshelf.Model.extend({
+  tableName: 'user'
+});
 
 export class User {
   constructor() {
