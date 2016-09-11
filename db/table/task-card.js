@@ -15,4 +15,3 @@ export const createPromise = knex.schema.createTableIfNotExists('task-card', fun
 });
 
 export const dropPromise = knex.schema.dropTableIfExists('task-card');
-
