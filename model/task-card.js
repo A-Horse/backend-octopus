@@ -4,7 +4,7 @@ import {UserModel} from './user';
 export const TaskCardModel = bookshelf.Model.extend({
   tableName: 'task-card',
   creater: function() {
-    return this.belongsTo(UserModel, 'ownerId');
+    return this.belongsTo(UserModel, 'createrId');
   }
 });
 
