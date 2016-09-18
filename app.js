@@ -18,6 +18,7 @@ import {TaskWallRouter} from './route/task/task-wall';
 import {TaskListRouter} from './route/task/task-list';
 import {TaskCardRouter} from './route/task/task-card';
 import {GoalListRouter} from './route/goal/list';
+import {IdeaListRouter} from './route/idea/list';
 import {StatusErrorHandleMiddle} from './route/middle/error-handle';
 
 app.use(apiPrefix, UserRouter);
@@ -25,6 +26,7 @@ app.use(apiPrefix, TaskWallRouter);
 app.use(apiPrefix, TaskListRouter);
 app.use(apiPrefix, TaskCardRouter);
 app.use(apiPrefix, GoalListRouter);
+app.use(apiPrefix, IdeaListRouter);
 app.use(StatusErrorHandleMiddle);
 
 function startServer() {
