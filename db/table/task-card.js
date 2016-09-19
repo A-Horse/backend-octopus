@@ -10,6 +10,7 @@ export const createPromise = knex.schema.createTableIfNotExists('task-card', fun
   table.integer('executorId');
   table.integer('taskWallId');
   table.string('content');
+  table.boolean('isDone')
   table.string('status');
   table.timestamps();
 });
