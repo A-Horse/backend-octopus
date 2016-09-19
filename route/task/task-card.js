@@ -1,10 +1,10 @@
 import express from 'express';
 import {authJwt} from '../middle/jwt';
-import {TaskCard} from '../../model/task-card';
+import {TaskCard, TaskCardModel} from '../../model/task-card';
 import {TaskList} from '../../model/task-list';
 import {Group} from '../../model/group';
-import {AccessLimitError} from '../../service/error';
 import {validateRequest} from '../../service/validate';
+import {AccessLimitError, NotFoundError} from '../../service/error';
 import R from 'fw-ramda';
 
 const TaskCardRouter = express.Router();
@@ -28,8 +28,7 @@ TaskCardRouter.delete('/task-card/:id', (req, res) => {
     .destroy()
     .then(() => {
       res.status(200).send()
-    })
-    .catch(error => {
+    }).catch(error => {
       throw error;
     })
 });
@@ -52,20 +51,12 @@ TaskCardRouter.post('/task-card', (req, res, next) => {
   }).catch(error => next(error));
 });
 
-TaskCardRouter.patch('/task-card', (req, res, next) => {
-  let {status, id} = req.body;
-
-  //TODO check status name
-  new TaskCard({
-    id
-  }).model.fetch().then((card) => {
-    if( !card ){
-      return res.status(400).send({message: 'can not found task-card'});
-    }
-    return new Promise(resovle => resovle(card));
-  }).then(card => {
-
-  });  
+TaskCardRouter.patch('/task-card/:cardId', (req, res, next) => {
+  const {cardId} = req.params;
+  TaskCardModel.clone({id: cardId}).fetch().then(card => {
+    if (!card) throw new NotFoundError('can not found this task list');
+    
+  }).catch(next);
 });
 
 export {TaskCardRouter};
