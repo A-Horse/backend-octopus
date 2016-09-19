@@ -16,16 +16,16 @@ TaskWallRouter.get('/task-wall', (req, res, next) => {
   }).fetchAll().then(data => res.send(data));
 });
 
-TaskWallRouter.delete('/task-wall/:id', (req, res) => {
+TaskWallRouter.delete('/task-wall/:id', (req, res, next) => {
   const {id} = req.params;
   TaskWall.getTaskWall({id})
     .destroy()
     .then(() => res.send())
-    .catch(error => {throw error});
+    .catch(next);
 });
 
 // TODO 重构 userId id
-TaskWallRouter.get('/user/:userId/task-wall/:id/all', (req, res) => {
+TaskWallRouter.get('/user/:userId/task-wall/:id/all', (req, res, next) => {
   const {id} = req.params;
   const {jw} = req;
 
@@ -55,7 +55,7 @@ TaskWallRouter.get('/user/:userId/task-wall/:id/all', (req, res) => {
           });
         })
       })
-    }).catch(error => {console.log('sdsd'); throw error})
+    }).catch(next)
 });
 
 
@@ -70,7 +70,7 @@ TaskWallRouter.post('/task-wall', (req, res, next) => {
     type: TASKWALL_TYPE.NORMAL
   }).bundleCreate().then(taskWall => {
     res.status(201).send(taskWall);
-  }).catch(error => {throw error});
+  }).catch(next);
 });
 
 export {TaskWallRouter};
