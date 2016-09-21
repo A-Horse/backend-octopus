@@ -24,39 +24,33 @@ TaskWallRouter.delete('/task-wall/:id', (req, res, next) => {
     .catch(next);
 });
 
-TaskWallRouter.get('/user/:userId/task-wall/:wallId/all', (req, res, next) => {
+TaskWallRouter.get('/user/:userId/task-wall/:wallId/all', async (req, res, next) => {
   const {wallId} = req.params;
   const {jw} = req;
-
-  TaskWall.getModel().where({id: wallId}).fetch()
-    .then(taskWall => {
-      if (!taskWall) throw new NotFoundError();
-      return Group.getModel().where({
-        taskWallId: taskWall.id,
-        userId: jw.user.id
-      }).fetch().then(access => {
-        if (!access) throw new AccessLimitError();
-        return Promise.all([
-          TaskCard.getModel().where({taskWallId: taskWall.id}).fetchAll({withRelated: [{
-            creater: function(qb) {
-              qb.select('email', 'id')
-            }}]}),
-          TaskList.getModel().where({taskWallId: taskWall.id}).fetchAll({withRelated: [{
-            'cards.creater': function(qb){
-              qb.select('email', 'id')
-            }
-          }]})
-        ]).then(values => {
-          const [cards, lists] = values;
-          return res.send({
-            wall: taskWall,
-            lists: lists
-          });
-        });
+  
+  const taskWall = await TaskWall.getModel().where({id: wallId}).fetch();
+  if (!taskWall) return next(new NotFoundError());
+  
+  return Group.getModel().where({
+    taskWallId: taskWall.id,
+    userId: jw.user.id
+  }).fetch().then(access => {
+    if (!access) throw new AccessLimitError();
+    return Promise.all([
+      TaskList.getModel().where({taskWallId: taskWall.id}).fetchAll({withRelated: [{
+        'cards.creater': function(qb){
+          qb.select('email', 'id')
+        }
+      }]})
+    ]).then(values => {
+      const [lists] = values;
+      return res.send({
+        wall: taskWall,
+        lists: lists
       });
-    }).catch(next);
+    });
+  }).catch(next);
 });
-
 
 TaskWallRouter.post('/task-wall', (req, res, next) => {
   const {name, isPublic} = req.body;
