@@ -24,45 +24,44 @@ TaskWallRouter.delete('/task-wall/:id', (req, res, next) => {
     .catch(next);
 });
 
-// TODO 重构 userId id
-TaskWallRouter.get('/user/:userId/task-wall/:id/all', (req, res, next) => {
-  const {id} = req.params;
+TaskWallRouter.get('/user/:userId/task-wall/:wallId/all', (req, res, next) => {
+  const {wallId} = req.params;
   const {jw} = req;
 
-  TaskWall.getModel().where({id}).fetch()
+  TaskWall.getModel().where({id: wallId}).fetch()
     .then(taskWall => {
-      if( !taskWall ) throw new NotFoundError('task wall not found')
-      // TODO check is public
+      if (!taskWall) throw new NotFoundError();
       return Group.getModel().where({
         taskWallId: taskWall.id,
         userId: jw.user.id
       }).fetch().then(access => {
-        if( !access ) throw new AccessLimitError('can access this task wall');        
+        if (!access) throw new AccessLimitError();
         return Promise.all([
           TaskCard.getModel().where({taskWallId: taskWall.id}).fetchAll({withRelated: [{
-            creater: function(qb){
+            creater: function(qb) {
+              qb.select('email', 'id')
+            }}]}),
+          TaskList.getModel().where({taskWallId: taskWall.id}).fetchAll({withRelated: [{
+            'cards.creater': function(qb){
               qb.select('email', 'id')
             }
-          }]}),
-          TaskList.getModel().where({taskWallId: taskWall.id}).fetchAll()
+          }]})
         ]).then(values => {
-          const [cards, categorys] = values;
+          const [cards, lists] = values;
           return res.send({
-            info: taskWall,
-            cards: cards,
-            lists: categorys,
-            // category: categorys
+            wall: taskWall,
+            lists: lists
           });
-        })
-      })
-    }).catch(next)
+        });
+      });
+    }).catch(next);
 });
 
 
 TaskWallRouter.post('/task-wall', (req, res, next) => {
-  let {name, isPublic} = req.body;
-  let {jw} = req;
-  
+  const {name, isPublic} = req.body;
+  const {jw} = req;
+
   new TaskWall({
     name,
     ownerId: jw.user.id,

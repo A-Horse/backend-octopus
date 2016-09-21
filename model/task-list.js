@@ -15,6 +15,9 @@ export const TaskListModel = bookshelf.Model.extend({
         ]).then(resolve).catch(error => reject(error))
       });
     });
+  },
+  cards: function() {
+    return this.hasMany(TaskCardModel, 'taskListId');
   }
 });
 
