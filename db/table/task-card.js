@@ -4,7 +4,7 @@ export const createPromise = knex.schema.createTableIfNotExists('task-card', fun
   table.increments();
   table.string('title');
   table.integer('taskListId');
-  table.string('dimensions'); // 维度
+  table.string('sprint');
   table.integer('createrId');
   table.integer('ownerId');
   table.integer('executorId');
@@ -12,6 +12,7 @@ export const createPromise = knex.schema.createTableIfNotExists('task-card', fun
   table.string('content');
   table.boolean('isDone')
   table.string('status');
+  table.integer('index');
   table.timestamps();
 });
 
