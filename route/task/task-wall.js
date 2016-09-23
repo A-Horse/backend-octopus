@@ -28,8 +28,8 @@ TaskWallRouter.get('/user/:userId/task-wall/:wallId/all', async (req, res, next)
   const {wallId} = req.params;
   const {jw} = req;
   
-  const taskWall = await TaskWall.getModel().where({id: wallId}).fetch();
-  if (!taskWall) return next(new NotFoundError());
+  const board = await TaskWall.getModel().where({id: wallId}).fetch();
+  if (!board) return next(new NotFoundError());
   
   return Group.getModel().where({
     taskWallId: taskWall.id,
@@ -37,7 +37,7 @@ TaskWallRouter.get('/user/:userId/task-wall/:wallId/all', async (req, res, next)
   }).fetch().then(access => {
     if (!access) throw new AccessLimitError();
     return Promise.all([
-      TaskList.getModel().where({taskWallId: taskWall.id}).fetchAll({withRelated: [{
+      TaskList.getModel().where({taskWallId: board.id}).fetchAll({withRelated: [{
         'cards.creater': function(qb){
           qb.select('email', 'id')
         }
@@ -45,7 +45,8 @@ TaskWallRouter.get('/user/:userId/task-wall/:wallId/all', async (req, res, next)
     ]).then(values => {
       const [lists] = values;
       return res.send({
-        wall: taskWall,
+        wall: board,
+        board: board,
         lists: lists
       });
     });
