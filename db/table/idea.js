@@ -11,4 +11,3 @@ export const createPromise = knex.schema.createTableIfNotExists(TableName, funct
 });
 
 export const dropPromise = knex.schema.dropTableIfExists(TableName);
-
