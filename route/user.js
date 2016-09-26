@@ -27,6 +27,10 @@ UserRouter.get('/user/:id/avator', (req, res, next) => {
   }).catch(next);
 });
 
+UserRouter.patch('/user/:userId', authJwt, async (req, res) => {
+  const {jw} = req;
+});
+
 UserRouter.get('/login', authJwt, (req, res, next) => {
   res.status(200).send(req.jw.user);
 });
