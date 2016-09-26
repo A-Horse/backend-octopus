@@ -2,7 +2,8 @@ import {knex} from '../table';
 
 export const createPromise = knex.schema.createTableIfNotExists('todo', function (table) {
   table.increments();
-  table.string('title');
+  table.integer('userId');
+  table.string('content');
   table.boolean('isDone');
   table.timestamps();
 });
