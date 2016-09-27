@@ -19,6 +19,7 @@
     "blueimp-md5": "^2.3.0",
     "body-parser": "^1.15.2",
     "bookshelf": "^0.10.0",
+    "bunyan": "^1.8.1",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
     "express-jwt": "^3.4.0",
