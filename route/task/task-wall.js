@@ -32,7 +32,7 @@ TaskWallRouter.get('/user/:userId/task-wall/:wallId/all', async (req, res, next)
   if (!board) return next(new NotFoundError());
   
   return Group.getModel().where({
-    taskWallId: taskWall.id,
+    taskWallId: board.id,
     userId: jw.user.id
   }).fetch().then(access => {
     if (!access) throw new AccessLimitError();
