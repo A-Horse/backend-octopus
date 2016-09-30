@@ -29,6 +29,7 @@ UserRouter.get('/user/:id/avator', (req, res, next) => {
 
 UserRouter.patch('/user/:userId', authJwt, async (req, res) => {
   const {jw} = req;
+  // const 
 });
 
 UserRouter.get('/login', authJwt, (req, res, next) => {
@@ -39,25 +40,18 @@ UserRouter.post('/logout', authJwt, (req, res) => {
   res.status(204).send();
 });
 
-UserRouter.post('/signin', (req, res, next) => {
-  const email = req.body.email,
-        password = req.body.password;
-
-  if (!email && !password) {
-    return res.status(400).send();
-  }
-
-  const creds = {email: email, password: password};
+UserRouter.post('/signin', async (req, res, next) => {
+  validateRequest(req.body, 'email', ['required']);
+  validateRequest(req.body, 'password', ['required']);
   
-  User.authUser(creds).then(user => {
-    if( !user ){
-      return res.status(401).send();
-    }
-    return res.send({
-      jwt: signJwt({user: user}),
-      user: user
-    });
-  }).catch(next);
+  const {email, password} = req.body;
+  const creds = {email: email, password: password};
+  const user = await User.authUser(creds);
+  if (!user) return res.status(401).send();
+  return res.send({
+    jwt: signJwt({user: user}),
+    user: user
+  });
 });
 
 UserRouter.post('/signup', (req, res, next) => {
