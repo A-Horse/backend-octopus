@@ -1,13 +1,15 @@
 import {knex} from '../table';
 
-export const createPromise = knex.schema.createTableIfNotExists('task-board', function (table) {
+const TableName = 'task-board';
+
+export const createPromise = knex.schema.createTableIfNotExists(TableName, function (table) {
   table.increments();
   table.string('name');
   table.integer('ownerId');
-  table.boolean('isPublic');
+  table.integer('createrId');
   table.boolean('type');
-  table.string('defaultDimensions'); // 维度
+  table.string('sprint');
   table.timestamps();
 });
 
-export const dropPromise = knex.schema.dropTableIfExists('task-board');
+export const dropPromise = knex.schema.dropTableIfExists(TableName);
