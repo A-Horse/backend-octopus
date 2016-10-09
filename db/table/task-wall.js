@@ -6,7 +6,8 @@ export const createPromise = knex.schema.createTableIfNotExists('task-wall', fun
   table.integer('ownerId');
   table.boolean('isPublic');
   table.boolean('type');
-  table.string('defaultDimensions'); // 维度
+  table.string('sprint');
+  table.string('cover')
   table.timestamps();
 });
 
