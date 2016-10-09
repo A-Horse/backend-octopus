@@ -9,6 +9,7 @@ export const createPromise = knex.schema.createTableIfNotExists(TableName, funct
   table.integer('createrId');
   table.boolean('type');
   table.string('sprint');
+  table.string('cover');
   table.timestamps();
 });
 
