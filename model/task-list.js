@@ -19,7 +19,7 @@ export const TaskListModel = bookshelf.Model.extend({
   cards: function() {
     return this.hasMany(TaskCardModel, 'taskListId');
   }
-});
+}); 
 
 export const DEFAULT_LIST_NAME = 'default';
 
