@@ -32,7 +32,7 @@ UserRouter.patch('/user/:userId', authJwt, async (req, res) => {
   // const 
 });
 
-UserRouter.get('/login', authJwt, (req, res, next) => {
+UserRouter.get('/signin', authJwt, (req, res, next) => {
   res.status(200).send(req.jw.user);
 });
 
@@ -43,7 +43,6 @@ UserRouter.post('/logout', authJwt, (req, res) => {
 UserRouter.post('/signin', async (req, res, next) => {
   validateRequest(req.body, 'email', ['required']);
   validateRequest(req.body, 'password', ['required']);
-  
   const {email, password} = req.body;
   const creds = {email: email, password: password};
   const user = await User.authUser(creds);
