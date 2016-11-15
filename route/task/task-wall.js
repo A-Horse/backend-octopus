@@ -40,6 +40,9 @@ TaskWallRouter.get('/user/:userId/task-wall/:wallId/all', async (req, res, next)
       TaskList.getModel().where({taskWallId: board.id}).fetchAll({withRelated: [{
         'cards.creater': function(qb){
           qb.select('email', 'id')
+        },
+        'cards.owner': function(qb){
+          qb.select('email', 'id')
         }
       }]})
     ]).then(values => {
