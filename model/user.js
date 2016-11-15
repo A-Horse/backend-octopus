@@ -13,7 +13,6 @@ export class User {
 
   static authUser(queryInfo) {
     return new Promise((resolve, reject) => {
-      console.log(R.omit('password', queryInfo));
       UserModel.where(R.omit('password', queryInfo))
         .fetch()
         .then((user) => {

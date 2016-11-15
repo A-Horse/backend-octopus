@@ -11,6 +11,8 @@ export function StatusErrorHandleMiddle(error, req, res, next) {
   } if (error instanceof NotFoundError) {
     return res.status(404).send({message: error.message});
   } else {
-    return res.status(500).send({message: error.message});
+    // TODO log
+    console.error(error.message);
+    return res.status(500).send({message: '服务器错误!'});
   }
 }
