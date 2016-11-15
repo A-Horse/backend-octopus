@@ -5,6 +5,9 @@ export const TaskCardModel = bookshelf.Model.extend({
   tableName: 'task-card',
   creater: function() {
     return this.belongsTo(UserModel, 'createrId');
+  },
+  owner: function() {
+    return this.belongsTo(UserModel, 'ownerId');
   }
 });
 
