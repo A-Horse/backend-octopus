@@ -70,8 +70,12 @@ TaskCardRouter.get('/task-card/:cardId', async (req, res, next) => {
     'owner': function(qb) {
       qb.select('email', 'id')
     },
-    'comments': function(qb) {
-
+    // TODO
+    'comments': function() {
+      
+    },
+    'comments.creater': function(qb) {
+      qb.select('email', 'id')
     }
   }]});
   res.json(card);
@@ -83,7 +87,7 @@ TaskCardRouter.post('/task-card/:taskCardId/comment', async (req, res, next) => 
   const {content} = req.body;
   const {jw} = req;
   try {
-    const taskCardComment = await new TaskCardCommentModel({createrId: jw.user.id, content, taskCardId}).save();
+    const taskCardComment = await new TaskCardCommentModel({createrId: jw.user.id, content, taskCardId, created_at: new Date()}).save();
     res.json(taskCardComment);
   } catch (error) {
     next(error);
