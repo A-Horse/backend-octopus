@@ -1,5 +1,6 @@
 import {bookshelf} from '../db/bookshelf.js';
 import {UserModel} from './user';
+import {TaskCardCommentModel} from './task-card-comment';
 
 export const TaskCardModel = bookshelf.Model.extend({
   tableName: 'task-card',
@@ -8,6 +9,9 @@ export const TaskCardModel = bookshelf.Model.extend({
   },
   owner: function() {
     return this.belongsTo(UserModel, 'ownerId');
+  },
+  comments: function() {
+    return this.hasMany(TaskCardCommentModel, 'taskCardId');
   }
 });
 
@@ -19,11 +23,11 @@ export class TaskCard {
   static createTaskCard(info) {
     return new TaskCard(info);
   }
-  
+
   static getTaskWall() {
     
   }
-  
+
   static getModel() {
     return TaskCardModel;
   }
