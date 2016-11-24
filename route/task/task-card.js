@@ -1,6 +1,7 @@
 import express from 'express';
 import {authJwt} from '../middle/jwt';
 import {TaskCard, TaskCardModel} from '../../model/task-card';
+import {TaskCardCommentModel} from '../../model/task-card-comment';
 import {TaskList} from '../../model/task-list';
 import {Group} from '../../model/group';
 import {validateRequest} from '../../service/validate';
@@ -54,10 +55,39 @@ TaskCardRouter.post('/task-card', (req, res, next) => {
 TaskCardRouter.patch('/task-card/:cardId', async (req, res, next) => {
   const {cardId} = req.params;
   const card = await new TaskCardModel({id: cardId}).fetch();
-  if (!card) throw new NotFoundError('can not found this task list');
+  if (!card) throw new NotFoundError('can not found this task card');
   card.save(req.body).then(function(card) {
     res.json(card);
   })
+});
+
+TaskCardRouter.get('/task-card/:cardId', async (req, res, next) => {
+  const {cardId} = req.params;
+  const card = await new TaskCardModel({id: cardId}).fetch({withRelated: [{
+    'creater': function(qb) {
+      qb.select('email', 'id')
+    },
+    'owner': function(qb) {
+      qb.select('email', 'id')
+    },
+    'comments': function(qb) {
+
+    }
+  }]});
+  res.json(card);
+});
+
+TaskCardRouter.post('/task-card/:taskCardId/comment', async (req, res, next) => {
+  const {taskCardId} = req.params;
+  // TODO 权限
+  const {content} = req.body;
+  const {jw} = req;
+  try {
+    const taskCardComment = await new TaskCardCommentModel({createrId: jw.user.id, content, taskCardId}).save();
+    res.json(taskCardComment);
+  } catch (error) {
+    next(error);
+  }
 });
 
 export {TaskCardRouter};
