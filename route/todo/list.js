@@ -22,7 +22,7 @@ TodoListRouter.get('/user/:userId/todo', (req, res, next) => {
 
 TodoListRouter.post('/user/:userId/todo', (req, res, next) => {
   validateRequest(req.body, 'content', ['required']);
-  // FIXME
+  // FIXME ??
   const {jw} = req;
   new TodoModel({
     userId: jw.user.id,
@@ -44,6 +44,17 @@ TodoListRouter.delete('/todo/:todoId', (req, res) => {
       
     }
   });
+});
+
+TodoListRouter.patch('/todo/:todoId', (req, res, next) => {
+  const {jw} = req;
+  new TodoModel({
+    id: req.params.todoId
+  }).fetch(function(todo) {
+    todo.save(req.body).then(todo => {
+      res.send(todo);
+    });
+  }).catch(next);
 });
 
 export {TodoListRouter};
