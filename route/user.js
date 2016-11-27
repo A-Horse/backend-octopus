@@ -57,8 +57,9 @@ UserRouter.post('/signup', (req, res, next) => {
   validateRequest(req.body, 'username', ['required']);
   validateRequest(req.body, 'password', ['required']);
   validateRequest(req.body, 'email', ['required']);
+
   const {username, password, email} = req.body;
-  
+
   User.createUser({
     username,
     password,

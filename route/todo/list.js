@@ -22,11 +22,12 @@ TodoListRouter.get('/user/:userId/todo', (req, res, next) => {
 
 TodoListRouter.post('/user/:userId/todo', (req, res, next) => {
   validateRequest(req.body, 'content', ['required']);
-  // FIXME ??
+  // TODO auth
   const {jw} = req;
   new TodoModel({
     userId: jw.user.id,
-    content: req.body.content
+    content: req.body.content,
+    deadline: req.body.deadline
   }).save().then(todo => {
     res.send(todo);
   }).catch(next);
@@ -47,10 +48,10 @@ TodoListRouter.delete('/todo/:todoId', (req, res) => {
 });
 
 TodoListRouter.patch('/todo/:todoId', (req, res, next) => {
-  const {jw} = req;
+  // TODO auth
   new TodoModel({
     id: req.params.todoId
-  }).fetch(function(todo) {
+  }).fetch().then(function(todo) {
     todo.save(req.body).then(todo => {
       res.send(todo);
     });
