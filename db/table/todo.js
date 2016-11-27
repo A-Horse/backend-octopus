@@ -8,6 +8,7 @@ export const createPromise = knex.schema.createTableIfNotExists(TableName, funct
   table.string('content');
   table.boolean('isDone');
   table.string('repeat');
+  table.dateTime('deadline');
   table.string('tags');
   table.timestamps();
 });
