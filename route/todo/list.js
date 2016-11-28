@@ -34,16 +34,14 @@ TodoListRouter.post('/user/:userId/todo', (req, res, next) => {
 });
 
 TodoListRouter.delete('/todo/:todoId', (req, res) => {
-  const {goalId} = this.params;
+  const {todoId} = req.params;
   const {jw} = req;
-  new GoalModel({
-    id: goalId
+  new TodoModel({
+    id: todoId
   }).fetch().then(goal => {
-    if (goal.userId === jw.user.id) {
-      goal.destroy()
-    } else {
-      
-    }
+    goal.destroy().then(function(){
+      res.status(202).send();
+    });
   });
 });
 
