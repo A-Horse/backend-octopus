@@ -9,5 +9,4 @@ var knex = require('knex')({
 
 var bookshelf = require('bookshelf')(knex);
 
-
 export {bookshelf};
