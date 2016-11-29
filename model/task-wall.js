@@ -28,9 +28,6 @@ export class TaskWall {
         self.model.save(null, {transacting: t})
           .tap(function(taskWall){
             Promise.all([
-              new TaskList({
-                taskWallId: taskWall.get('id')
-              }).model.save(null, {transacting: t}),
               new Group({
                 taskWallId: taskWall.get('id'),
                 userId: taskWall.get('ownerId'),

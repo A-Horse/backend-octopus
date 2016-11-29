@@ -65,6 +65,7 @@ TaskWallRouter.post('/task-wall', (req, res, next) => {
     ownerId: jw.user.id,
     isPublic: isPublic || false,
     type: TASKWALL_TYPE.NORMAL,
+    // TODO fix it
     cover: '/static/image/board-cover/world-circle.png'
   }).bundleCreate().then(taskWall => {
     res.status(201).send(taskWall);
