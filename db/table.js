@@ -1,11 +1,13 @@
 import fs from 'fs';
+import config from '../service/config.js';
+
+const dbFilePath = `./db-${config.getEnvirType()}.sqlite`;
 
 // TODO log which table created
-
 export const knex = require('knex')({
   client: 'sqlite3',
   connection: {
-    filename: "./db.sqlite"
+    filename: dbFilePath
   }
 });
 
@@ -29,7 +31,6 @@ function dropTables(cb) {
     !cb && process.exit(0);
   }).catch(error => console.error(error));
 }
-
 
 switch(process.argv[2]) {
 case 'create':

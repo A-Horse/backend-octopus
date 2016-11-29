@@ -1,9 +1,9 @@
-'use strict';
+import config from '../service/config.js';
 
 var knex = require('knex')({
   client: 'sqlite3',
   connection: {
-    filename: "./db/db.sqlite"
+    filename: `./db/db-${config.getEnvirType()}.sqlite`
   }
 });
 
