@@ -1,6 +1,6 @@
-export const ENVIR_PRODUCT = 'ENVIR_PRODUCT';
-export const ENVIR_TEST = 'ENVIR_TEST';
-export const ENVIR_DEV = 'ENVIR_DEV';
+export const ENVIR_PRODUCT = 'PRODUCT';
+export const ENVIR_TEST = 'TEST';
+export const ENVIR_DEV = 'DEV';
 
 class Configure {
   constructor() {
