@@ -33,12 +33,14 @@ TaskListRouter.post('/task-wall/:wallId/list', (req, res) => {
   })
 });
 
-TaskListRouter.patch('/task-wall/:wallId/list/:listId', (req, res) => {
+TaskListRouter.patch('/task-wall/:wallId/list/:listId', async (req, res) => {
   const {listId} = req.params;
   const info = req.body;
-  TaskList.getModel().where({id: listId}).save(info).then(taskList => {
-    return res.send(taskList);
-  })
+  // TODO 检查是否存在
+  const track = await new TaskListModel({id: listId}).fetch();
+  if (!track) throw new NotFoundError('can not found this task track');
+  const newTrack = track.save(info);
+  return res.send(newTrack);
 });
 
 TaskListRouter.delete('/task-wall/:wallId/list/:listId', (req, res) => {

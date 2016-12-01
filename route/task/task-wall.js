@@ -3,7 +3,7 @@ import express from 'express';
 import {authJwt} from '../middle/jwt';
 import {AccessLimitError, NotFoundError} from '../../service/error';
 import {TaskWall, TaskBoardModel, TASKWALL_TYPE} from '../../model/task-wall';
-import {TaskCard} from '../../model/task-card';
+import {TaskCard, TaskCardModel} from '../../model/task-card';
 import {TaskList, TaskListModel} from '../../model/task-list';
 import {Group} from '../../model/group';
 
@@ -17,40 +17,15 @@ TaskWallRouter.get('/task-wall', (req, res, next) => {
   }).fetchAll().then(data => res.send(data));
 });
 
-// TaskWallRouter.delete('/task-wall/:id', (req, res, next) => {
-//   const {id} = req.params;
-//   TaskWall.getTaskWall({id})
-//     .destroy()
-//     .then(() => res.send())
-//     .catch(next);
-// });
-
-TaskWallRouter.delete('/task-wall/:id', (req, res, next) => {
+TaskWallRouter.delete('/task-wall/:id', async (req, res, next) => {
   const {id} = req.params;
-
-  bookshelf.transaction(function(t){
-    new TaskBoardModel().where({id: id}).fetch().then(function(b){
-      console.log(b);
-      b.destroy({transacting: t});
-      t.commit();
-    })
+  await TaskBoardModel.where({id: id}).destroy();
+  const tracks = await TaskListModel.where({taskWallId: id}).fetchAll()
+  tracks.forEach(async (track) => {
+    await TaskCardModel.where({taskListId: track.id}).destroy();
+    await track.destroy();
   });
-  
-  
-  // bookshelf.transaction(function(t){
-    
-  //   Promise.all([
-  //     new TaskBoardModel().where({id: id}).fetch(),
-  //     new TaskListModel().where({taskWallId: id}).fetch()
-  //   ]).then((ss) => {
-  //     console.log('thennnn', ss);
-  //     t.commit();
-  //     res.status(204).send();
-  //   }).catch((error) => {
-  //     console.log(error);
-  //     t.rollback();
-  //   });
-  // });
+  res.status(204).send();
 });
 
 TaskWallRouter.get('/user/:userId/task-wall/:wallId/all', async (req, res, next) => {
