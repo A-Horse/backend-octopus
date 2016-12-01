@@ -4,8 +4,8 @@ import {
 
 import {TaskListModel} from './task-list';
 
-export const TaskWallModel = bookshelf.Model.extend({
-  tableName: 'task-wall'
+export const TaskBoardModel = bookshelf.Model.extend({
+  tableName: 'task-board'
 });
 
 import {Group} from './group';
@@ -17,7 +17,7 @@ export const TASKWALL_TYPE = {
 
 export class TaskWall {
   constructor(info) {
-    this.model = new TaskWallModel(info);
+    this.model = new TaskBoardModel(info);
     return this;
   }
 
@@ -50,10 +50,10 @@ export class TaskWall {
   }
 
   static getTaskWall(info) {
-    return new TaskWallModel(info);
+    return new TaskBoardModel(info);
   }
 
   static getModel() {
-    return TaskWallModel;
+    return TaskBoardModel;
   }
 }

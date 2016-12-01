@@ -7,6 +7,7 @@ export const createPromise = knex.schema.createTableIfNotExists(TableName, funct
   table.string('name');
   table.integer('ownerId');
   table.integer('createrId');
+  table.boolean('isPublic');
   table.boolean('type');
   table.string('sprint');
   table.string('cover');
