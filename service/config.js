@@ -16,6 +16,21 @@ class Configure {
     }
     return ENVIR_DEV;
   }
+
+  getSpecDBPath() {
+    return process.env.OCTOPUS_DB_PATH;
+  }
+
+  hasSpecDB() {
+    return !!process.env.OCTOPUS_DB_PATH;
+  }
+
+  getDBPath() {
+    if (this.hasSpecDB()) {
+      return this.getSpecDBPath();
+    }
+    return `./db/db-${this.getEnvirType()}.sqlite`;
+  }
 }
 
 export default new Configure();
