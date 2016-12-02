@@ -20,7 +20,8 @@ TaskWallRouter.get('/task-wall', (req, res, next) => {
 TaskWallRouter.delete('/task-wall/:id', async (req, res, next) => {
   const {id} = req.params;
   await TaskBoardModel.where({id: id}).destroy();
-  const tracks = await TaskListModel.where({taskWallId: id}).fetchAll()
+  const tracks = await TaskListModel.where({taskWallId: id}).fetchAll();
+  // TODO SQL delete
   tracks.forEach(async (track) => {
     await TaskCardModel.where({taskListId: track.id}).destroy();
     await track.destroy();
