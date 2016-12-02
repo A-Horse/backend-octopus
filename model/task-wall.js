@@ -5,7 +5,10 @@ import {
 import {TaskListModel} from './task-list';
 
 export const TaskBoardModel = bookshelf.Model.extend({
-  tableName: 'task-board'
+  tableName: 'task-board',
+  cards: function() {
+    
+  }
 });
 
 import {Group} from './group';
