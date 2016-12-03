@@ -25,6 +25,7 @@
     "bookshelf": "^0.10.0",
     "bunyan": "^1.8.1",
     "cookie-parser": "^1.4.3",
+    "cors": "^2.8.1",
     "express": "^4.14.0",
     "express-jwt": "^3.4.0",
     "fw-ramda": "^0.1.1",
