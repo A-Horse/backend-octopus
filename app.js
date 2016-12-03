@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import http from 'http';
 import {apiPrefix} from './constant';
+import config from './service/config';
 
 const app = express();
 
@@ -35,7 +36,7 @@ app.use(StatusErrorHandleMiddle);
 
 function startServer() {
   const server = http.createServer(app);
-  server.listen(5500);
+  server.listen(config.getServerPort());
 }
 
 startServer();

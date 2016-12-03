@@ -1,8 +1,6 @@
 import fs from 'fs';
 import config from '../service/config.js';
 
-console.log(config.getDBPath());
-
 // TODO log which table created
 export const knex = require('knex')({
   client: 'sqlite3',
@@ -12,7 +10,7 @@ export const knex = require('knex')({
 });
 
 function readAllLib() {
-  return fs.readdirSync('./table').filter(fileName => /\.js$/.test(fileName))
+  return fs.readdirSync('./db/table').filter(fileName => /\.js$/.test(fileName))
     .map(fileName => require(`./table/${fileName}`));
 }
 
