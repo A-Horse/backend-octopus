@@ -1,13 +1,13 @@
 import fs from 'fs';
 import config from '../service/config.js';
 
-const dbFilePath = `./db-${config.getEnvirType()}.sqlite`;
+console.log(config.getDBPath());
 
 // TODO log which table created
 export const knex = require('knex')({
   client: 'sqlite3',
   connection: {
-    filename: dbFilePath
+    filename: config.getDBPath()
   }
 });
 

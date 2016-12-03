@@ -1,12 +1,7 @@
 import config from '../service/config.js';
 
-var knex = require('knex')({
-  client: 'sqlite3',
-  connection: {
-    filename: `./db/db-${config.getEnvirType()}.sqlite`
-  }
-});
+const knex = require('knex')({client: 'sqlite3', connection: {filename: config.getDBPath()}});
 
-var bookshelf = require('bookshelf')(knex);
+const bookshelf = require('bookshelf')(knex);
 
 export {bookshelf};
