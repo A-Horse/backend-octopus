@@ -22,18 +22,31 @@ TaskListRouter.post('/task-wall/:wallId/list', (req, res) => {
   validateRequest(req.body, 'name', ['required']);
   const {jw} = req;
   const {wallId} = req.params;
+
   Group.getModel().where({
     taskWallId: wallId,
     userId: jw.user.id
-  }).fetch().then(access => {
+  }).fetch().then(async (access) => {
     if( !access ) throw new AccessLimitError('can access this task wall');
-    new TaskList({taskWallId: wallId, name: req.body.name}).model.save().then(taskList => {
+
+    const existNumber = await TaskListModel.where({taskWallId: wallId}).count();
+    new TaskList({taskWallId: wallId, name: req.body.name}).model.save({index: existNumber}).then(taskList => {
       res.status(201).send()
     });
   })
 });
 
-TaskListRouter.patch('/task-wall/:wallId/list/:listId', async (req, res) => {
+TaskListRouter.patch('/task-wall/:boardId/track', async (req, res) => {
+  const {boardId} = req.params;
+  const {trackIndexs} = req.body;
+
+  trackIndexs.forEach(trackIndex => {
+    TaskListModel.where({id: trackIndex.id}).save({index: trackIndex.index});
+  });
+  
+});
+
+TaskListRouter.patch('/task-board/:wallId/list/:listId', async (req, res) => {
   const {listId} = req.params;
   const info = req.body;
   // TODO 检查是否存在
