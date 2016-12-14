@@ -5,7 +5,6 @@ import colors from 'colors';
 const dbpath = config.getDBPath();
 console.log(colors.green(`USED DB: ${dbpath}`));
 
-// TODO log which table created
 export const knex = require('knex')({
   client: 'sqlite3',
   connection: {filename: dbpath},
