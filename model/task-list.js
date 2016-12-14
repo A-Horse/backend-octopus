@@ -5,7 +5,7 @@ import {
 import {TaskCardModel} from './task-card';
 
 export const TaskListModel = bookshelf.Model.extend({
-  tableName: 'task-list',
+  tableName: 'task-track',
   bundleDelete() {
     return new Promise((resolve, reject) => {
       bookshelf.transaction(t => {

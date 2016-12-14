@@ -1,6 +1,8 @@
 import {knex} from '../table';
 
-export const createPromise = knex.schema.createTableIfNotExists('goal', function (table) {
+export const TableName = 'goal';
+
+export const createPromise = knex.schema.createTableIfNotExists(TableName, function (table) {
   table.increments();
   table.integer('userId');
   table.string('title');
@@ -8,4 +10,4 @@ export const createPromise = knex.schema.createTableIfNotExists('goal', function
   table.timestamps();
 });
 
-export const dropPromise = knex.schema.dropTableIfExists('goal');
+export const dropPromise = knex.schema.dropTableIfExists(TableName);

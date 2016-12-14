@@ -1,6 +1,6 @@
 import {knex} from '../table';
 
-const TableName = 'todo';
+export const TableName = 'todo';
 
 export const createPromise = knex.schema.createTableIfNotExists(TableName, function (table) {
   table.increments();
