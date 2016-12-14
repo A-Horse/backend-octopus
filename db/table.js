@@ -1,23 +1,32 @@
 import fs from 'fs';
 import config from '../service/config.js';
+import colors from 'colors';
 
-console.log(config.getDBPath());
+const dbpath = config.getDBPath();
+console.log(colors.green(`USED DB: ${dbpath}`));
 
 // TODO log which table created
 export const knex = require('knex')({
   client: 'sqlite3',
-  connection: {
-    filename: config.getDBPath()
-  }
+  connection: {filename: dbpath},
+  useNullAsDefault: true // http://knexjs.org/#Builder-insert 
 });
 
 function readAllLib() {
-  return fs.readdirSync('./table').filter(fileName => /\.js$/.test(fileName))
+  return fs.readdirSync('./db/table').filter(fileName => /\.js$/.test(fileName))
     .map(fileName => require(`./table/${fileName}`));
 }
 
 function createTables(cb) {
-  const createPromises = readAllLib().map(module => module.createPromise);
+  const tableModules = readAllLib();
+  const createPromises = tableModules.map(tableModule => {
+    return knex.schema.hasTable(tableModule.TableName).then(function(exists) {
+      if (!exists) {
+        console.log(colors.green(`       Creating table: >-  ${colors.blue(tableModule.TableName)} -<`));
+        return tableModule.createPromise;
+      } 
+    });
+  });
   Promise.all(createPromises).then(() => {
     cb && cb(() => {process.exit(0)});
     !cb && process.exit(0);
@@ -34,7 +43,7 @@ function dropTables(cb) {
 
 switch(process.argv[2]) {
 case 'create':
-  console.log('create table');
+  console.log(colors.yellow('COMMAND: create table'));
   createTables();
   break;
 case 'drop':

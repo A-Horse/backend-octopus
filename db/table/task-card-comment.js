@@ -1,6 +1,6 @@
 import {knex} from '../table';
 
-const TableName = 'task-card-comment';
+export const TableName = 'task-card-comment';
 
 export const createPromise = knex.schema.createTableIfNotExists(TableName, function (table) {
   table.increments();
