@@ -36,14 +36,14 @@ TaskListRouter.post('/task-wall/:wallId/list', (req, res) => {
   })
 });
 
-TaskListRouter.patch('/task-wall/:boardId/track', async (req, res) => {
+TaskListRouter.patch('/task-board/:boardId/track', async (req, res) => {
   const {boardId} = req.params;
   const {trackIndexs} = req.body;
-
-  trackIndexs.forEach(trackIndex => {
-    TaskListModel.where({id: trackIndex.id}).save({index: trackIndex.index});
-  });
-  
+  const result = await Promise.all(trackIndexs.map(async (trackIndex) => {
+    const track = await TaskListModel.forge({id: trackIndex.id}).save({index: trackIndex.index});
+    return track;
+  }));
+  res.status(200).json(result);
 });
 
 TaskListRouter.patch('/task-board/:wallId/list/:listId', async (req, res) => {
