@@ -29,13 +29,24 @@ TaskWallRouter.delete('/task-wall/:id', async (req, res, next) => {
   res.status(204).send();
 });
 
+// TODO :wallId/verbose
 TaskWallRouter.get('/user/:userId/task-wall/:wallId/all', async (req, res, next) => {
   const {wallId} = req.params;
   const {jw} = req;
   
-  const board = await TaskWall.getModel().where({id: wallId}).fetch();
+  const board = await TaskWall.getModel().where({id: wallId}).fetch({withRelated: [{
+    'tracks': function() {},
+    'tracks.cards': function() {},
+    'tracks.cards.creater': function(qb){
+      qb.select('email', 'id')
+    },
+    'tracks.cards.owner': function(qb){
+      qb.select('email', 'id')
+    }
+  }]});
   if (!board) return next(new NotFoundError());
-  
+
+  //TODO refactor!!!!!!!!!!!!!
   return Group.getModel().where({
     taskWallId: board.id,
     userId: jw.user.id
@@ -52,11 +63,7 @@ TaskWallRouter.get('/user/:userId/task-wall/:wallId/all', async (req, res, next)
       }]})
     ]).then(values => {
       const [lists] = values;
-      return res.send({
-        wall: board,
-        board: board,
-        lists: lists
-      });
+      return res.send(board);
     });
   }).catch(next);
 });
