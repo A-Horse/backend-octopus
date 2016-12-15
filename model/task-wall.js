@@ -8,6 +8,9 @@ export const TaskBoardModel = bookshelf.Model.extend({
   tableName: 'task-board',
   cards: function() {
     
+  },
+  tracks: function(){
+    return this.hasMany(TaskListModel, 'taskWallId');
   }
 });
 
