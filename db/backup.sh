@@ -2,6 +2,6 @@
 
 $ENV='DEV'
 
-mkdir -p data-backend
-sqlite3 
+mkdir -p data-backup
+sqlite3 db-DEV.sqlite ".backup ./data-backup/bk_database.sq3.bak"
 # date +"%m-%d-%y_%T"
