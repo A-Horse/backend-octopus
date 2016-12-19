@@ -1,5 +1,3 @@
-'use strict';
-
 let jwt = require('jsonwebtoken');
 
 import {JWTs_SECRET} from '../../setting';

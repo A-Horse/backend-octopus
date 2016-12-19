@@ -44,9 +44,14 @@ TaskCardRouter.post('/task-card', (req, res, next) => {
   Group.getModel().where({
     taskWallId: data.taskWallId,
     userId: jw.user.id
-  }).fetch().then((access) => {
+  }).fetch().then(async (access) => {
     if( !access ) throw new AccessLimitError('can access this task wall');
-    new TaskCard(Object.assign({}, data, {createrId: jw.user.id})).model.save().then(taskCard => {
+
+    const existNumber = await TaskCardModel.where({taskListId: data.taskListId}).count();
+    new TaskCard(Object.assign({}, data, {
+      createrId: jw.user.id,
+      index: ++existNumber
+    })).model.save().then(taskCard => {
       res.status(201).send(taskCard);
     });
   }).catch(error => next(error));
@@ -61,8 +66,19 @@ TaskCardRouter.patch('/task-card/:cardId', async (req, res, next) => {
   })
 });
 
+TaskCardRouter.patch('/task-card/index', async (req, res, next) => {
+  // TODO auth batch sql and then check
+  const {cardIndexs} = req.body;
+  const result = await Promise.all(cardIndexs.map(async (trackIndex) => {
+    const card = await TaskCardModel.forge({id: trackIndex.id}).save({index: trackIndex.index});
+    return card;
+  }));
+  res.status(200).json(result);
+});
+
 TaskCardRouter.get('/task-card/:cardId', async (req, res, next) => {
   const {cardId} = req.params;
+  // TODO 空的不用放在 Object 里面
   const card = await new TaskCardModel({id: cardId}).fetch({withRelated: [{
     'creater': function(qb) {
       qb.select('email', 'id')
