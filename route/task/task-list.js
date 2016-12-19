@@ -36,7 +36,7 @@ TaskListRouter.post('/task-wall/:wallId/list', (req, res) => {
   })
 });
 
-TaskListRouter.patch('/task-board/:boardId/track', async (req, res) => {
+TaskListRouter.patch('/task-board/:boardId/track/index', async (req, res) => {
   const {boardId} = req.params;
   const {trackIndexs} = req.body;
   const result = await Promise.all(trackIndexs.map(async (trackIndex) => {
