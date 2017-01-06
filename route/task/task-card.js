@@ -50,7 +50,7 @@ TaskCardRouter.post('/task-card', (req, res, next) => {
     const existNumber = await TaskCardModel.where({taskListId: data.taskListId}).count();
     new TaskCard(Object.assign({}, data, {
       createrId: jw.user.id,
-      index: ++existNumber
+      index: existNumber + 1
     })).model.save().then(taskCard => {
       res.status(201).send(taskCard);
     });
