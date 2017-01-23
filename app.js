@@ -24,9 +24,11 @@ import {TaskCardRouter} from './route/task/task-card';
 import {GoalListRouter} from './route/goal/list';
 import {IdeaListRouter} from './route/idea/list';
 import {TodoListRouter} from './route/todo/list';
+import {FileRouter} from './route/file';
 import {StatusErrorHandleMiddle} from './route/middle/error-handle';
 
 app.use(apiPrefix, UserRouter);
+app.use(apiPrefix, FileRouter);
 app.use(apiPrefix, RootRouter);
 app.use(apiPrefix, TaskWallRouter);
 app.use(apiPrefix, TaskListRouter);
