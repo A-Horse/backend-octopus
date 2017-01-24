@@ -3,9 +3,12 @@ import {AccessLimitError, NotFoundError} from '../service/error';
 import {authJwt} from './middle/jwt';
 import {checkIsEmailIdentity} from '../util';
 import R from 'ramda';
+import bluebird from "bluebird";
+
 
 import fs from 'fs';
 import md5 from 'blueimp-md5';
+const pfs = bluebird.promisifyAll(fs);
 
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
