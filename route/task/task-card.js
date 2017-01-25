@@ -1,4 +1,4 @@
-import express from 'express';
+simport express from 'express';
 import {authJwt} from '../middle/jwt';
 import {TaskCard, TaskCardModel} from '../../model/task-card';
 import {TaskCardCommentModel} from '../../model/task-card-comment';
