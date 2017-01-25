@@ -8,8 +8,7 @@ import config from './service/config';
 const app = express();
 
 app.set('view engine', 'ejs');
-app.set('views', '../views');
-app.use('/static', express.static('../static'));
+app.use('/storage', express.static('storage'));
 app.use(cors());
 app.use(morgan('combined'));
 app.use(require('body-parser').json());
