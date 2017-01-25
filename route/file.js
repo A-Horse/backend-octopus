@@ -3,25 +3,24 @@ import {AccessLimitError, NotFoundError} from '../service/error';
 import {authJwt} from './middle/jwt';
 import {checkIsEmailIdentity} from '../util';
 import R from 'ramda';
-import bluebird from "bluebird";
+import {hashFileName} from '../service/file';
 
-
-import fs from 'fs';
-import md5 from 'blueimp-md5';
-const pfs = bluebird.promisifyAll(fs);
 
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
-
+import {saveImage} from '../service/storage';
 const FileRouter = express.Router();
 
-FileRouter.post('/file', multipartMiddleware, (req, res, next) => {
+FileRouter.post('/file', multipartMiddleware, async (req, res, next) => {
   const imageURLData = req.body.playload.replace(/^data:image\/\w+;base64,/, '');
-  const hash = md5(imageURLData + Date.now()).substring(0, 20);
-  const filename = R.compose(R.join('-'), R.splitEvery(5))(hash);
-  fs.writeFile(filename, imageURLData, 'base64', function(err) {
+  const filename = hashFileName(imageURLData);
+  try {
+    await saveImage(filename, 'board-cover', imageURLData);
     res.json({hi: 'hi'});
-  });
+  } catch (error) {
+    console.log(error.stack);
+    next(error);
+  }
 });
 
 export {FileRouter};
