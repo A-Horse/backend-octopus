@@ -3,6 +3,7 @@ export function saveFile() {
 
 }
 
-export function saveImage() {
+// TODO check create all dir when startup
+export function saveImage(filname, path, data) {
 
 }
