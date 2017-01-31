@@ -6,6 +6,13 @@ import {TaskWall, TaskBoardModel, TASKWALL_TYPE} from '../../model/task-wall';
 import {TaskCard, TaskCardModel} from '../../model/task-card';
 import {TaskList, TaskListModel} from '../../model/task-list';
 import {Group} from '../../model/group';
+import R from 'ramda';
+import {hashFileName} from '../../service/file';
+import path from 'path';
+import {saveImage} from '../../service/storage';
+
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
 
 const TaskWallRouter = express.Router();
 TaskWallRouter.use(authJwt);
@@ -76,12 +83,32 @@ TaskWallRouter.post('/task-wall', (req, res, next) => {
     name,
     ownerId: jw.user.id,
     isPublic: isPublic || false,
-    type: TASKWALL_TYPE.NORMAL,
-    // TODO fix it
-    cover: '/static/image/board-cover/world-circle.png'
+    type: TASKWALL_TYPE.NORMAL
   }).bundleCreate().then(taskWall => {
     res.status(201).send(taskWall);
   }).catch(next);
+});
+
+TaskWallRouter.put('/task-board/:id/cover', multipartMiddleware, async (req, res, next) => {
+  try {
+    const imageURLData = req.body.playload.replace(/^data:image\/\w+;base64,/, '');
+    const filename = hashFileName(imageURLData);
+    
+    console.log(req.body);
+    console.log(2);
+    // TODO extract 'board-cover' variable
+    await saveImage(filename, 'board-cover', imageURLData);
+    console.log(1);
+    const savedPath = path.join('board-cover', filename)
+    const board = await TaskBoardModel.where({id: req.params.id}).fetch();
+    console.log(board);
+    await board.save({cover: savedPath});
+    res.json({image: savedPath});
+  } catch (error) {
+    console.log(error);
+    console.log(error.stack);
+    next(error);
+  }
 });
 
 export {TaskWallRouter};
