@@ -8,7 +8,7 @@ import R from 'fw-ramda';
 
 const TaskListRouter = express.Router();
 
-TaskListRouter.use(authJwt);
+// TaskListRouter.use(authJwt);
 
 TaskListRouter.get('/task-wall/:wallId/list/:listId', (req, res) => {
   const {listId} = this.params;
