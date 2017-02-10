@@ -93,20 +93,23 @@ TaskWallRouter.put('/task-board/:id/cover', multipartMiddleware, async (req, res
   try {
     const imageURLData = req.body.playload.replace(/^data:image\/\w+;base64,/, '');
     const filename = hashFileName(imageURLData);
-    
-    console.log(req.body);
-    console.log(2);
     // TODO extract 'board-cover' variable
     await saveImage(filename, 'board-cover', imageURLData);
-    console.log(1);
+
     const savedPath = path.join('board-cover', filename)
     const board = await TaskBoardModel.where({id: req.params.id}).fetch();
-    console.log(board);
     await board.save({cover: savedPath});
     res.json({image: savedPath});
   } catch (error) {
-    console.log(error);
-    console.log(error.stack);
+    next(error);
+  }
+});
+
+TaskWallRouter.patch('/task-board/:boardId', async (req, res, next) => {
+  try {
+    const board = await TaskBoardModel.forge({id: req.params.boardId}).save(req.body);
+    res.status(200).json(board);
+  } catch(error) {
     next(error);
   }
 });
