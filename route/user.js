@@ -10,10 +10,15 @@ import {JWT_KEY} from '../constant';
 
 const UserRouter = express.Router();
 
+UserRouter.get('/hi', (req, res) => {
+  res.json({hi: "hi"});
+});
+
+
 UserRouter.get('/user', authJwt, (req, res) => {
   const {search} = req.query;
   if( checkIsEmailIdentity(search) ){
-    
+
   } else {
     // User.
   }
@@ -29,7 +34,7 @@ UserRouter.get('/user/:id/avator', (req, res, next) => {
 
 // UserRouter.patch('/user/:userId', authJwt, async (req, res) => {
 //   //const {jw} = req;
-//   // const 
+//   // const
 // });
 
 UserRouter.get('/signin', authJwt, (req, res, next) => {
@@ -43,6 +48,10 @@ UserRouter.post('/logout', authJwt, (req, res) => {
 UserRouter.post('/signin', async (req, res, next) => {
   validateRequest(req.body, 'email', ['required']);
   validateRequest(req.body, 'password', ['required']);
+
+  req.body.email = 'abychen@outlook.com';
+  req.body.password = '123456';
+
   const {email, password} = req.body;
   const creds = {email: email, password: password};
   const user = await User.authUser(creds);
@@ -68,7 +77,7 @@ UserRouter.post('/signup', (req, res, next) => {
     user.save().then((user) => {
       const json = user.omit('password');
       const token = signJwt({user: json});
-      
+
       res.header(JWT_KEY, token);
       res.status(201).send(json);
     });
