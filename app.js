@@ -37,7 +37,7 @@ app.use(StatusErrorHandleMiddle);
 
 function startServer() {
   const server = http.createServer(app);
-  server.listen(config.getServerPort());
+  server.listen(config.getServerPort(), '0.0.0.0');
 }
 
 startServer();
