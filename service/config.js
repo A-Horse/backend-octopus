@@ -33,6 +33,7 @@ class Configure {
     if (this.hasSpecDB()) {
       return this.getSpecDBPath();
     }
+    // TODO 用绝对路径
     return `./db/db-${this.getEnvirType()}.sqlite`;
   }
 }
