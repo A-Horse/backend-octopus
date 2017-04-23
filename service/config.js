@@ -34,6 +34,7 @@ class Configure {
       return this.getSpecDBPath();
     }
     // TODO 用绝对路径
+    // linux root not work
     return `./db/db-${this.getEnvirType()}.sqlite`;
   }
 }
