@@ -47,8 +47,9 @@ TodoListRouter.post('/todos', async (req, res, next) => {
 
 TodoListRouter.get('/user/:userId/todos', async (req, res, next) => {
   const {jw} = req;
-  const access = await new TodoBoxAccessModel({userId: req.params.userId}).fetchAll();
-
+  // const access = await new TodoBoxAccessModel({userId: req.params.userId}).fetchAll();
+  const userBox = {name: 'My Todo', id: null};
+  res.json([userBox]);
 });
 
 TodoListRouter.delete('/todo/:todoId', (req, res) => {
