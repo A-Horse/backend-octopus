@@ -1,6 +1,7 @@
 import express from 'express';
 import {authJwt} from '../middle/jwt';
 import {TodoModel} from '../../model/todo';
+import {TodoBoxModel} from '../../model/todo-box';
 import {AccessLimitError, NotFoundError} from '../../service/error';
 import {validateRequest} from '../../service/validate';
 import R from 'fw-ramda';
@@ -34,7 +35,17 @@ TodoListRouter.post('/user/:userId/todo', (req, res, next) => {
 });
 
 
-TodoListRouter.post('/todos', (req, res, next) => {
+TodoListRouter.post('/todos', async (req, res, next) => {
+  const {jw} = req;
+  try {
+    const todoBox = await new TodoBoxModel({creator: jw.user.id, name: req.body.name}).save();
+    res.status(201).json(todoBox);
+  } catch(error) {
+    next(error);
+  }
+});
+
+TodoListRouter.get('/user/:userId/todos', (req, res, next) => {
   const {jw} = req;
 
 });
