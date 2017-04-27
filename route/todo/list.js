@@ -2,6 +2,7 @@ import express from 'express';
 import {authJwt} from '../middle/jwt';
 import {TodoModel} from '../../model/todo';
 import {TodoBoxModel} from '../../model/todo-box';
+import {TodoBoxAccessModel} from '../../model/todo-box-access';
 import {AccessLimitError, NotFoundError} from '../../service/error';
 import {validateRequest} from '../../service/validate';
 import R from 'fw-ramda';
@@ -34,7 +35,6 @@ TodoListRouter.post('/user/:userId/todo', (req, res, next) => {
   }).catch(next);
 });
 
-
 TodoListRouter.post('/todos', async (req, res, next) => {
   const {jw} = req;
   try {
@@ -45,8 +45,9 @@ TodoListRouter.post('/todos', async (req, res, next) => {
   }
 });
 
-TodoListRouter.get('/user/:userId/todos', (req, res, next) => {
+TodoListRouter.get('/user/:userId/todos', async (req, res, next) => {
   const {jw} = req;
+  const access = await new TodoBoxAccessModel({userId: req.params.userId}).fetchAll();
 
 });
 
