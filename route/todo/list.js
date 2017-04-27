@@ -33,6 +33,12 @@ TodoListRouter.post('/user/:userId/todo', (req, res, next) => {
   }).catch(next);
 });
 
+
+TodoListRouter.post('/todos', (req, res, next) => {
+  const {jw} = req;
+
+});
+
 TodoListRouter.delete('/todo/:todoId', (req, res) => {
   const {todoId} = req.params;
   const {jw} = req;
