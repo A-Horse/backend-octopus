@@ -1,11 +1,11 @@
 import {knex} from '../table';
 
-export const TableName = 'todo-box';
+export const TableName = 'todo-box-access';
 
 export const createPromise = knex.schema.createTableIfNotExists(TableName, function (table) {
   table.increments();
-  table.integer('creatorId');
-  table.string('name');
+  table.integer('todoBoxId');
+  table.string('userId');
   table.timestamps();
 });
 
