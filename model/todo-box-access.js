@@ -1,3 +1,13 @@
 import {bookshelf} from '../db/bookshelf.js';
+import {UserModal} from './user';
+import {TodoBoxModel} from './todo-box';
 
-export const TodoBoxAccessModel = bookshelf.Model.extend({tableName: 'todo-box-access'});
+export const TodoBoxAccessModel = bookshelf.Model.extend({
+  tableName: 'todo-box-access',
+  user: () => {
+    return this.belongsTo(UserModal);
+  },
+  todoBoxs: () => {
+    return this.belongsTo(TodoBoxModel);
+  }
+});
