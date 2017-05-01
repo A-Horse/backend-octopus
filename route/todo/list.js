@@ -45,10 +45,10 @@ TodoListRouter.post('/todos', async (req, res, next) => {
   }
 });
 
-TodoListRouter.get('/user/:userId/todos', async (req, res, next) => {
+TodoListRouter.get('/user/:userId/todo-box', async (req, res, next) => {
   const {jw} = req;
   // const access = await new TodoBoxAccessModel({userId: req.params.userId}).fetchAll();
-  const userBox = {name: 'My Todo', id: null};
+  const userBox = {name: 'My Todo', id: null, type: 'private'};
   res.json([userBox]);
 });
 
