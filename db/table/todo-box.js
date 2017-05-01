@@ -6,6 +6,7 @@ export const createPromise = knex.schema.createTableIfNotExists(TableName, funct
   table.increments();
   table.integer('creatorId');
   table.string('name');
+  table.type('type');
   table.timestamps();
 });
 
