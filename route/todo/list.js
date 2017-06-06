@@ -75,4 +75,15 @@ TodoListRouter.patch('/todo/:todoId', (req, res, next) => {
   }).catch(next);
 });
 
+TodoListRouter.patch('/user/:userId/todo/:todoId', (req, res, next) => {
+  // TODO auth
+  new TodoModel({
+    id: req.params.todoId
+  }).fetch().then(function(todo) {
+    todo.save(req.body).then(todo => {
+      res.send(todo);
+    });
+  }).catch(next);
+});
+
 export {TodoListRouter};
