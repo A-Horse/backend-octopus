@@ -14,7 +14,6 @@ UserRouter.get('/hi', (req, res) => {
   res.json({hi: "hi"});
 });
 
-
 UserRouter.get('/user', authJwt, (req, res) => {
   const {search} = req.query;
   if( checkIsEmailIdentity(search) ){
@@ -48,9 +47,6 @@ UserRouter.post('/logout', authJwt, (req, res) => {
 UserRouter.post('/signin', async (req, res, next) => {
   validateRequest(req.body, 'email', ['required']);
   validateRequest(req.body, 'password', ['required']);
-
-  req.body.email = 'abychen@outlook.com';
-  req.body.password = '123456';
 
   const {email, password} = req.body;
   const creds = {email: email, password: password};
