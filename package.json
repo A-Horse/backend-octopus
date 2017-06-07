@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "product": "babel-node app.js --product",
-    "prod-start": "pm2 start app.js --interpreter ./node_modules/.bin/babel-node --name=\"api\""
+    "prod-start": "pm2 start app.js --interpreter ./node_modules/.bin/babel-node --name=\"api\"",
+    "create-all-table": "babel-node db/table.js create"
   },
   "author": "",
   "license": "ISC",
