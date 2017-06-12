@@ -38,7 +38,7 @@ TaskCardRouter.post('/task-card', (req, res, next) => {
   validateRequest(req.body, 'title', ['required']);
   validateRequest(req.body, 'taskWallId', ['required']);
   validateRequest(req.body, 'taskListId', ['required']);
-  
+
   const data = R.pick(['title', 'taskWallId', 'taskListId'], req.body);
   const {jw} = req;
   Group.getModel().where({
@@ -58,12 +58,23 @@ TaskCardRouter.post('/task-card', (req, res, next) => {
 });
 
 TaskCardRouter.patch('/task-card/:cardId', async (req, res, next) => {
-  const {cardId} = req.params;
-  const card = await new TaskCardModel({id: cardId}).fetch();
-  if (!card) throw new NotFoundError('can not found this task card');
-  card.save(req.body).then(function(card) {
-    res.json(card);
-  })
+  try {
+    const {cardId} = req.params;
+    const card = await new TaskCardModel({id: cardId}).fetch();
+    if (!card) throw new NotFoundError('can not found this task card');
+
+    await card.save(req.body);
+    const updatedCard = await new TaskCardModel().where({id: cardId}).fetch({
+      withRelated: [{
+        'creater': function(qb) {
+          qb.select('email', 'id')
+        },
+        'owner': function(qb) {
+          qb.select('email', 'id')
+        }
+      }]})
+    return res.json(updatedCard);
+  } catch(error) {next(error)}
 });
 
 TaskCardRouter.patch('/task-card/index', async (req, res, next) => {
@@ -88,7 +99,7 @@ TaskCardRouter.get('/task-card/:cardId', async (req, res, next) => {
     },
     // TODO
     'comments': function() {
-      
+
     },
     'comments.creater': function(qb) {
       qb.select('email', 'id')
