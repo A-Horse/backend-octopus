@@ -40,14 +40,14 @@ TaskWallRouter.delete('/task-wall/:id', async (req, res, next) => {
 TaskWallRouter.get('/user/:userId/task-wall/:wallId/all', async (req, res, next) => {
   const {wallId} = req.params;
   const {jw} = req;
-  
+
   const board = await TaskWall.getModel().where({id: wallId}).fetch({withRelated: [{
     'tracks': function() {},
     'tracks.cards': function() {},
-    'tracks.cards.creater': function(qb){
+    'tracks.cards.creater': function(qb) {
       qb.select('email', 'id')
     },
-    'tracks.cards.owner': function(qb){
+    'tracks.cards.owner': function(qb) {
       qb.select('email', 'id')
     }
   }]});
