@@ -4,7 +4,7 @@ import {
   bookshelf
 } from '../db/bookshelf.js';
 
-const GroupModel = bookshelf.Model.extend({
+export const GroupModel = bookshelf.Model.extend({
   tableName: 'group'
 });
 
@@ -18,7 +18,7 @@ export class Group {
   }
 
   save() {
-    
+
   }
 
   static getModel() {
