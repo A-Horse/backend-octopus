@@ -1,11 +1,10 @@
 import express from 'express';
-import {authJwt} from '../middle/jwt';
-import {TaskCard, TaskCardModel} from '../../model/task-card';
-import {TaskCardCommentModel} from '../../model/task-card-comment';
-import {TaskList} from '../../model/task-list';
-import {Group} from '../../model/group';
-import {validateRequest} from '../../service/validate';
-import {AccessLimitError, NotFoundError} from '../../service/error';
+import { authJwt } from '../middle/jwt';
+import { TaskCard, TaskCardModel } from '../../model/task-card';
+import { TaskCardCommentModel } from '../../model/task-card-comment';
+import { Group } from '../../model/group';
+import { validateRequest } from '../../service/validate';
+import { AccessLimitError, NotFoundError } from '../../service/error';
 import R from 'fw-ramda';
 
 const TaskCardRouter = express.Router();
@@ -121,4 +120,4 @@ TaskCardRouter.post('/task-card/:taskCardId/comment', async (req, res, next) => 
   }
 });
 
-export {TaskCardRouter};
+export { TaskCardRouter };
