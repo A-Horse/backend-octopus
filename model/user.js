@@ -1,16 +1,19 @@
 import bcrypt from 'bcryptjs';
-import R from 'fw-ramda';
-import {bookshelf} from '../db/bookshelf.js';
+import R from 'ramda';
+import { bookshelf } from '../db/bookshelf.js';
 
 export class UserModal extends bookshelf.Model {
-
   get tableName() {
     return 'user';
   }
 
   static async authUser(email, password) {
+    const user = this.where({email: email}).fetch();
+    if (!user) {
+      return false;
+    }
+    return await bcrypt.compare(password, user.get('password'));
   }
-
 }
 
 

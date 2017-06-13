@@ -52,21 +52,8 @@ UserRouter.post('/user/update-password', authJwt, validate({
 }), (req, res, next) => {
   try {
     const { jw } = req;
-    UserModel.where(R.omit('password', queryInfo))
-      .fetch()
-      .then((user) => {
-        if( !user ){
-          return resolve(null);
-        }
-        bcrypt.compare(queryInfo.password, user.get('password'), (error, res) => {
-          if (error) return reject(error);
-          if (res === true) {
-            return resolve(user.omit('password'));
-          };
-          resolve(null);
-        });
-      });
-
+    const res = UserModel.authUser(jw.user.email, req.body.oldPassword);
+    console.log(res);
   } catch (error) {
     next(error);
   }

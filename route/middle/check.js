@@ -1,8 +1,7 @@
-
 import validator from 'validator';
 import validatorPatch from '../../service/validate-patch';
 import R from 'ramda';
-import { ErrorParamsError } from './error';
+import { ErrorParamsError } from '../../service/error';
 import _ from 'lodash';
 
 validatorPatch(validator);
