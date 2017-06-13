@@ -48,12 +48,16 @@ UserRouter.post('/signin', async (req, res, next) => {
 
 UserRouter.post('/user/update-password', authJwt, validate({
   oldPassword: ['required'],
-  confirmPassword: ['required']
-}), (req, res, next) => {
+  newPassword: ['required']
+}), async (req, res, next) => {
   try {
     const { jw } = req;
-    const res = UserModel.authUser(jw.user.email, req.body.oldPassword);
-    console.log(res);
+    const authed = await UserModel.authUser(jw.user.id, req.body.oldPassword);
+    if (authed) {
+      await UserModel.forge({id: jw.user.id}).updatePassword(req.body.newPassword);
+      return res.status(204).send();
+    }
+    throw new AccessLimitError();
   } catch (error) {
     next(error);
   }
