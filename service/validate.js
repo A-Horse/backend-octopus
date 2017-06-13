@@ -1,7 +1,7 @@
 import validator from 'validator';
 import validatorPatch from './validate-patch';
 import R from 'fw-ramda';
-import {ErrorParamsError} from './error';
+import { ErrorParamsError } from './error';
 validatorPatch(validator)
 
 export function validateRequest(carrier, filed, rules) {

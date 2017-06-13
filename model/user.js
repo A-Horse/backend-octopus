@@ -2,13 +2,21 @@ import bcrypt from 'bcryptjs';
 import R from 'fw-ramda';
 import {bookshelf} from '../db/bookshelf.js';
 
-export const UserModel = bookshelf.Model.extend({
-  tableName: 'user'
-});
+export class UserModal extends bookshelf.Model {
+
+  get tableName() {
+    return 'user';
+  }
+
+  static async authUser(email, password) {
+  }
+
+}
+
 
 export class User {
   constructor() {
-    
+
   }
 
   static authUser(queryInfo) {
@@ -42,11 +50,11 @@ export class User {
           })));
         });
       });
-      
+
     });
   }
 
   static getUserById() {
-    
+
   }
 }
