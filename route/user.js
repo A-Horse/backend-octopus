@@ -3,24 +3,16 @@ import {User, UserModel} from '../model/user';
 import {AccessLimitError, NotFoundError} from '../service/error';
 import {authJwt} from './middle/jwt';
 import {signJwt} from '../service/auth';
-import {checkIsEmailIdentity} from '../util';
 import {makeGravatarUrl} from '../service/gravator.js';
 import {validateRequest} from '../service/validate';
+import { validate } from './middle/check';
 import {JWT_KEY} from '../constant';
+import bcrypt from 'bcryptjs';
 
 const UserRouter = express.Router();
 
-UserRouter.get('/hi', (req, res) => {
-  res.json({hi: "hi"});
-});
-
-UserRouter.get('/user', authJwt, (req, res) => {
-  const {search} = req.query;
-  if( checkIsEmailIdentity(search) ){
-
-  } else {
-    // User.
-  }
+UserRouter.get('/alive', (req, res) => {
+  res.json({status: 'alive'});
 });
 
 UserRouter.get('/user/:id/avator', (req, res, next) => {
@@ -31,11 +23,6 @@ UserRouter.get('/user/:id/avator', (req, res, next) => {
   }).catch(next);
 });
 
-// UserRouter.patch('/user/:userId', authJwt, async (req, res) => {
-//   //const {jw} = req;
-//   // const
-// });
-
 UserRouter.get('/signin', authJwt, (req, res, next) => {
   res.status(200).send(req.jw.user);
 });
@@ -45,17 +32,44 @@ UserRouter.post('/logout', authJwt, (req, res) => {
 });
 
 UserRouter.post('/signin', async (req, res, next) => {
-  validateRequest(req.body, 'email', ['required']);
-  validateRequest(req.body, 'password', ['required']);
+  try {
+    const { email, password } = req.body;
+    const creds = {email: email, password: password};
+    const user = await User.authUser(creds);
+    if (!user) return res.status(401).send();
+    return res.send({
+      jwt: signJwt({user: user}),
+      user: user
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
-  const {email, password} = req.body;
-  const creds = {email: email, password: password};
-  const user = await User.authUser(creds);
-  if (!user) return res.status(401).send();
-  return res.send({
-    jwt: signJwt({user: user}),
-    user: user
-  });
+UserRouter.post('/user/update-password', authJwt, validate({
+  oldPassword: ['required'],
+  confirmPassword: ['required']
+}), (req, res, next) => {
+  try {
+    const { jw } = req;
+    UserModel.where(R.omit('password', queryInfo))
+      .fetch()
+      .then((user) => {
+        if( !user ){
+          return resolve(null);
+        }
+        bcrypt.compare(queryInfo.password, user.get('password'), (error, res) => {
+          if (error) return reject(error);
+          if (res === true) {
+            return resolve(user.omit('password'));
+          };
+          resolve(null);
+        });
+      });
+
+  } catch (error) {
+    next(error);
+  }
 });
 
 UserRouter.post('/signup', (req, res, next) => {
