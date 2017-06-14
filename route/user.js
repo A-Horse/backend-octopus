@@ -27,15 +27,14 @@ UserRouter.get('/user/identify', authJwt, (req, res, next) => {
   res.status(200).send(req.jw.user);
 });
 
-UserRouter.get('/user/auth', authJwt, async (req, res, next) => {
+UserRouter.get('/user/:userId', authJwt, async (req, res, next) => {
   try {
     const { jw } = req;
     const user = await UserModel.where({ id: jw.user.id }).fetch();
     if (!user) return res.status(401).send();
     return res.send({
-      jwt: signJwt({user: user}),
-      user: user
-    });
+      jwt: signJwt({ user: user.omit('password') })
+    })
   } catch (error) {
     next(error);
   }
