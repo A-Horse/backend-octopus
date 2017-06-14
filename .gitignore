@@ -14,3 +14,4 @@ tags
 *~
 *.sqlite
 storage
+package-lock.json
