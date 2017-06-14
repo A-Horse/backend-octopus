@@ -3,14 +3,18 @@ import {
 } from '../db/bookshelf.js';
 
 import {TaskListModel} from './task-list';
+import { GroupModel } from './group';
 
 export const TaskBoardModel = bookshelf.Model.extend({
   tableName: 'task-board',
   cards: function() {
-    
+
   },
   tracks: function(){
     return this.hasMany(TaskListModel, 'taskWallId');
+  },
+  group: function() {
+    return this.hasMany(GroupModel, 'taskWallId');
   }
 });
 
