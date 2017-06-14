@@ -2,14 +2,15 @@ import express from 'express';
 import morgan from 'morgan';
 import http from 'http';
 import cors from 'cors';
-import {apiPrefix} from './constant';
+
 import config from './service/config';
+import { apiPrefix } from './constant';
 
 const app = express();
 
 app.set('view engine', 'ejs');
 app.use('/storage', express.static('storage'));
-app.use(cors());
+// app.use(cors());
 app.use(morgan('combined'));
 app.use(require('body-parser').json());
 app.use(require('body-parser').urlencoded({extended: true}));

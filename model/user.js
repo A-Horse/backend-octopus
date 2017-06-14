@@ -1,14 +1,31 @@
 import bcrypt from 'bcryptjs';
-import R from 'fw-ramda';
-import {bookshelf} from '../db/bookshelf.js';
+import R from 'ramda';
+import { bookshelf } from '../db/bookshelf.js';
 
-export const UserModel = bookshelf.Model.extend({
-  tableName: 'user'
-});
+export class UserModel extends bookshelf.Model {
+  get tableName() {
+    return 'user';
+  }
+
+  static async authUser(userId, password) {
+    const user = await this.where({id: userId}).fetch();
+    if (!user) {
+      return false;
+    }
+    return await bcrypt.compare(password, user.get('password'));
+  }
+
+  async updatePassword(newPassword) {
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    return await this.save({password: hashedPassword});
+  }
+}
+
 
 export class User {
   constructor() {
-    
+
   }
 
   static authUser(queryInfo) {
@@ -42,11 +59,11 @@ export class User {
           })));
         });
       });
-      
+
     });
   }
 
   static getUserById() {
-    
+
   }
 }
