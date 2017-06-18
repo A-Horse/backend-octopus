@@ -10,7 +10,7 @@
     "prod-start": "pm2 start app.js --interpreter ./node_modules/.bin/babel-node --name=\"api\"",
     "prod-restart": "pm2 restart all",
     "create-all-table": "babel-node db/table.js create",
-    "proxy": "mitmproxy -R http://127.0.0.1:5500 -p 8888"
+    "proxy": "mitmproxy -R http://127.0.0.1:5500 -p 8888 --anticache"
   },
   "author": "",
   "license": "ISC",
@@ -44,6 +44,7 @@
     "node-schedule": "^1.2.3",
     "optimist": "^0.6.1",
     "ramda": "^0.23.0",
+    "sequelize": "^4.1.0",
     "sqlite3": "^3.1.8",
     "validator": "^5.5.0",
     "xss-filters": "^1.2.6"
