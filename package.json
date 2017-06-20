@@ -5,8 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "product": "babel-node app.js --product",
     "prod-start": "pm2 start app.js --interpreter ./node_modules/.bin/babel-node --name=\"api\"",
     "prod-restart": "pm2 restart all",
     "create-all-table": "babel-node db/table.js create",
@@ -27,7 +25,6 @@
     "blueimp-md5": "^2.3.0",
     "body-parser": "^1.15.2",
     "bookshelf": "^0.10.3",
-    "bunyan": "^1.8.1",
     "colors": "^1.1.2",
     "connect-multiparty": "^2.0.0",
     "cookie-parser": "^1.4.3",
