@@ -40,13 +40,16 @@
     "jsonwebtoken": "^7.0.1",
     "knex": "^0.11.7",
     "lodash": "^4.17.4",
+    "moment": "^2.18.1",
     "morgan": "^1.7.0",
     "node-schedule": "^1.2.3",
     "optimist": "^0.6.1",
     "ramda": "^0.23.0",
     "sequelize": "^4.1.0",
     "sqlite3": "^3.1.8",
+    "uuid": "^3.1.0",
     "validator": "^5.5.0",
+    "winston": "^2.3.1",
     "xss-filters": "^1.2.6"
   },
   "devDependencies": {
