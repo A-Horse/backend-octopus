@@ -1,2 +1,8 @@
-import bunyan from 'bunyan';
-export default bunyan.createLogger({name: 'octopus-backend'});
+import winston from 'winston';
+
+export const scheduleLogger = new winston.Logger({
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: './log/schedule.log' })
+  ]
+});

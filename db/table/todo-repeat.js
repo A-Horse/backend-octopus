@@ -1,19 +1,12 @@
 import {knex} from '../table';
 
-export const TableName = 'todo';
+export const TableName = 'todo-repeat';
 
 export const createPromise = knex.schema.createTableIfNotExists(TableName, function (table) {
   table.increments();
-  table.integer('userId');
-  table.integer('todoBoxId');
-  table.string('content');
-  table.string('remark');
+  table.integer('todoId');
   table.boolean('isDone');
-  table.boolean('isStar');
-  table.string('repeat');
-  table.dateTime('deadline');
-  table.dateTime('noticeTime');
-  table.string('tags');
+  table.dateTime('doneTime');
   table.timestamps();
 });
 

@@ -29,7 +29,8 @@ TodoListRouter.post('/user/:userId/todo', (req, res, next) => {
   new TodoModel({
     userId: jw.user.id,
     content: req.body.content,
-    deadline: req.body.deadline
+    deadline: req.body.deadline,
+    created_at: new Date().getTime()
   }).save().then(todo => {
     res.send(todo);
   }).catch(next);
@@ -38,7 +39,10 @@ TodoListRouter.post('/user/:userId/todo', (req, res, next) => {
 TodoListRouter.post('/todos', async (req, res, next) => {
   const {jw} = req;
   try {
-    const todoBox = await new TodoBoxModel({creator: jw.user.id, name: req.body.name}).save();
+    const todoBox = await new TodoBoxModel({
+      creator: jw.user.id,
+      name: req.body.name
+    }).save();
     res.status(201).json(todoBox);
   } catch(error) {
     next(error);
