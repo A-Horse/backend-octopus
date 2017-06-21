@@ -5,8 +5,9 @@ import { GroupModel } from '../../model/group';
 import { AccessLimitError, NotFoundError } from '../../service/error';
 
 export function authJwt(req, res, next) {
-  let jwtdata = req.header(JWT_STORAGE_KEY);
+  const jwtdata = req.header(JWT_STORAGE_KEY);
 
+  // TODO throw error
   if( !jwtdata ){
     return res.status(401).send({message: 'Unauthorized'});
   }

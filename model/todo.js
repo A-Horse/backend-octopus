@@ -1,3 +1,7 @@
-import {bookshelf} from '../db/bookshelf.js';
+import { bookshelf } from '../db/bookshelf.js';
 
-export const TodoModel = bookshelf.Model.extend({tableName: 'todo'});
+export class TodoModel extends bookshelf.Model {
+  get tableName() {
+    return 'todo';
+  }
+}
