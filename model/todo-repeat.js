@@ -1,3 +1,7 @@
 import { bookshelf } from '../db/bookshelf';
 
-export const TodoRepeatModel = bookshelf.Model.extend({tableName: 'todo-repeat'});
+export class TodoRepeatModel extends bookshelf.Model {
+  get tableName() {
+    return 'todo-repeat';
+  }
+}

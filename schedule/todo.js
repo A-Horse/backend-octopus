@@ -2,7 +2,7 @@ import { TodoModel } from '../model/todo';
 import { TodoRepeatModel } from '../model/todo-repeat';
 import moment from 'moment';
 import R from 'ramda';
-import { scheduleLogger } from '../log';
+import { TdScheduleLogger } from '../log';
 
 function filterTodo(todo) {
   return Math.ceil((-todo.get('created_at') + new Date('2017-6-21').getTime()) / (60 * 60 * 24 * 1000)) % todo.get('repeat') === 0;
@@ -10,7 +10,7 @@ function filterTodo(todo) {
 
 export async function processTodoRepeat() {
   try {
-    scheduleLogger.info('todo schedule', 'start');
+    TdScheduleLogger.info('todo schedule', 'start');
     const todos = await TodoModel.query(
       'where', 'repeat', '!=', 'null'
     ).fetchAll();
@@ -24,20 +24,20 @@ export async function processTodoRepeat() {
         created_at: new Date().getTime()
       }).save();
 
-      scheduleLogger.info('todo-repeat', 'todo repeat id', todoRepeat.id, 'backlog to repeat table.', todoRepeat.toJSON());
+      TdScheduleLogger.info('todo-repeat', 'todo repeat id', todoRepeat.id, 'backlog to repeat table.', todoRepeat.toJSON());
       await todo.save({
         isDone: null,
         doneTime: null
       });
-      scheduleLogger.info('todo', 'todo id', todo.id, 'backlog to repeat table.', todo.toJSON());
+      TdScheduleLogger.info('todo', 'todo id', todo.id, 'backlog to repeat table.', todo.toJSON());
       return Promise.resolve();
     }));
-    scheduleLogger.info('todo schedule', 'stop');
+    TdScheduleLogger.info('todo schedule', 'stop');
   } catch (error) {
-    scheduleLogger.error('todo schedule', error);
+    TdScheduleLogger.error('todo schedule', error);
   }
 };
 
-export function todoEveryDayBegin() {
+export function handleTodoWhenEveryDayBegin() {
   processTodoRepeat();
 }

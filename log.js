@@ -1,8 +1,15 @@
 import winston from 'winston';
 
-export const scheduleLogger = new winston.Logger({
+export const TdScheduleLogger = new winston.Logger({
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: './log/schedule.log' })
+    new winston.transports.File({ filename: './log/td-schedule.log' })
+  ]
+});
+
+export const TdLogger = new winston.Logger({
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: './log/td.log' })
   ]
 });

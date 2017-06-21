@@ -36,6 +36,7 @@ TodoListRouter.post('/user/:userId/todo', (req, res, next) => {
   }).catch(next);
 });
 
+// TODO url refactor
 TodoListRouter.post('/todos', async (req, res, next) => {
   const {jw} = req;
   try {
