@@ -3,6 +3,7 @@ import { TodoRepeatModel } from '../model/todo-repeat';
 import moment from 'moment';
 import R from 'ramda';
 import { TdScheduleLogger } from '../log';
+import uuidV1 from 'uuid/v1';
 
 function filterTodo(todo) {
   return Math.ceil((-todo.get('created_at') + new Date('2017-6-21').getTime()) / (60 * 60 * 24 * 1000)) % todo.get('repeat') === 0;
@@ -26,6 +27,7 @@ export async function processTodoRepeat() {
 
       TdScheduleLogger.info('todo-repeat', 'todo repeat id', todoRepeat.id, 'backlog to repeat table.', todoRepeat.toJSON());
       await todo.save({
+        id: uuidV1(),
         isDone: null,
         doneTime: null
       });
