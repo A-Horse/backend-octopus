@@ -4,6 +4,7 @@ import {JWT_STORAGE_KEY} from '../../setting';
 import { GroupModel } from '../../model/group';
 import { AccessLimitError, NotFoundError } from '../../service/error';
 
+// TODO move to auth
 export function authJwt(req, res, next) {
   const jwtdata = req.header(JWT_STORAGE_KEY);
 

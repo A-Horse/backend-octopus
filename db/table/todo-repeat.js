@@ -3,7 +3,7 @@ import {knex} from '../table';
 export const TableName = 'todo-repeat';
 
 export const createPromise = knex.schema.createTableIfNotExists(TableName, function (table) {
-  table.increments();
+  table.string('id');
   table.integer('todoId');
   table.boolean('isDone');
   table.dateTime('doneTime');
