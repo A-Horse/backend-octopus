@@ -5,15 +5,13 @@ import {TodoBoxModel} from '../../model/todo-box';
 import {TodoBoxAccessModel} from '../../model/todo-box-access';
 import {AccessLimitError, NotFoundError} from '../../service/error';
 import {validateRequest} from '../../service/validate';
-import R from 'fw-ramda';
+import R from 'ramda';
 
 const TodoListRouter = express.Router();
 
-TodoListRouter.use(authJwt);
-
-TodoListRouter.get('/user/:userId/todo', (req, res, next) => {
-  const {jw} = req;
-  const {userId} = req.params;
+TodoListRouter.get('/user/:userId/todo', authJwt, (req, res, next) => {
+  const { jw } = req;
+  const { userId } = req.params;
   if (jw.user.id !== +userId) {
     throw new AccessLimitError();
   }
@@ -22,22 +20,25 @@ TodoListRouter.get('/user/:userId/todo', (req, res, next) => {
     .catch(next);
 });
 
-TodoListRouter.post('/user/:userId/todo', (req, res, next) => {
-  validateRequest(req.body, 'content', ['required']);
-  // TODO auth
-  const {jw} = req;
-  new TodoModel({
-    userId: jw.user.id,
-    content: req.body.content,
-    deadline: req.body.deadline,
-    created_at: new Date().getTime()
-  }).save().then(todo => {
+TodoListRouter.post('/user/:userId/todo', authJwt, async (req, res, next) => {
+  try {
+    validateRequest(req.body, 'content', ['required']);
+    // TODO auth
+    const {jw} = req;
+    const todo = await new TodoModel({
+      userId: jw.user.id,
+      content: req.body.content,
+      deadline: req.body.deadline,
+      created_at: new Date().getTime()
+    }).save();
     res.send(todo);
-  }).catch(next);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // TODO url refactor
-TodoListRouter.post('/todos', async (req, res, next) => {
+TodoListRouter.post('/todo-box', authJwt, async (req, res, next) => {
   const {jw} = req;
   try {
     const todoBox = await new TodoBoxModel({
@@ -50,14 +51,15 @@ TodoListRouter.post('/todos', async (req, res, next) => {
   }
 });
 
-TodoListRouter.get('/user/:userId/todo-box', async (req, res, next) => {
-  const {jw} = req;
-  // const access = await new TodoBoxAccessModel({userId: req.params.userId}).fetchAll();
-  const userBox = {name: 'My Todo', id: null, type: 'private'};
-  res.json([userBox]);
+TodoListRouter.get('/user/:userId/todo-box', authJwt, async (req, res, next) => {
+  const { jw } = req;
+  // TODO
+  // const userBox = {name: 'My Todo', id: null, type: 'private'};
+  const todoBoxs = TodoBoxModel.where({userId: jw.user.id}).fetchAll();
+  res.json(todoBoxs);
 });
 
-TodoListRouter.delete('/todo/:todoId', (req, res) => {
+TodoListRouter.delete('/todo/:todoId', authJwt, (req, res) => {
   const {todoId} = req.params;
   const {jw} = req;
   new TodoModel({
@@ -69,7 +71,7 @@ TodoListRouter.delete('/todo/:todoId', (req, res) => {
   });
 });
 
-TodoListRouter.patch('/todo/:todoId', (req, res, next) => {
+TodoListRouter.patch('/todo/:todoId', authJwt, (req, res, next) => {
   // TODO auth
   new TodoModel({
     id: req.params.todoId
@@ -80,7 +82,7 @@ TodoListRouter.patch('/todo/:todoId', (req, res, next) => {
   }).catch(next);
 });
 
-TodoListRouter.patch('/user/:userId/todo/:todoId', (req, res, next) => {
+TodoListRouter.patch('/user/:userId/todo/:todoId', authJwt, (req, res, next) => {
   // TODO auth
   new TodoModel({
     id: req.params.todoId
@@ -91,4 +93,4 @@ TodoListRouter.patch('/user/:userId/todo/:todoId', (req, res, next) => {
   }).catch(next);
 });
 
-export {TodoListRouter};
+export { TodoListRouter };
