@@ -2,7 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import http from 'http';
 import config from '../service/config';
-import { apiPrefix } from '../constant';
+import { tsApiPrefix } from '../constant';
 import schedule from 'node-schedule';
 import { TdScheduleLogger } from '../log';
 import { handleTodoWhenEveryDayBegin } from '../schedule/todo';
@@ -24,7 +24,7 @@ app.get('/api/alive', (req, res) => {
   res.json({status: 'alive'});
 });
 
-app.use(apiPrefix, TodoStatisticsRouter);
+app.use(tsApiPrefix, TodoStatisticsRouter);
 app.use(StatusErrorHandleMiddle);
 
 schedule.scheduleJob('0 0 0 * * *', () => {
