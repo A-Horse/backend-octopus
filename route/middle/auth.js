@@ -12,12 +12,16 @@ export async function taskBoardGroup(req, res, next) {
 };
 
 export async function tdPermissions(req, res, next) {
-  // TODO: todo creater => todo box => if todo box => check todo box group
-  const { todoId } = req.params;
-  const { jw } = req;
-  const todo = await TodoModel.where({todoId}).fetch();
-  if ( todo.get('userId') === jw.user.id ) {
-    return next();
+  try {
+    // TODO: todo creater => todo box => if todo box => check todo box group
+    const { todoId } = req.params;
+    const { jw } = req;
+    const todo = await TodoModel.where({id: todoId}).fetch();
+    if ( todo.get('userId') === jw.user.id ) {
+      return next();
+    }
+    return next(new AccessLimitError());
+  } catch (error) {
+    return next(error);
   }
-  return next(new AccessLimitError());
 }
