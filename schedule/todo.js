@@ -16,25 +16,24 @@ export async function processTodoRepeat() {
       'where', 'repeat', '!=', 'null'
     ).fetchAll();
     const filteredTodos = todos.filter(filterTodo);
-    await Promise.all(filteredTodos.map(async (todo) => {
 
+    await Promise.all(filteredTodos.map(async (todo) => {
       const todoRepeat = await new TodoRepeatModel({
+        id: uuidV1(),
         todoId: todo.id,
         isDone: todo.get('isDone'),
         doneTime: todo.get('doneTime'),
         created_at: new Date().getTime()
-      }).save();
+      }).save(null, {method: 'insert'});
 
       TdScheduleLogger.info('todo-repeat', 'todo repeat id', todoRepeat.id, 'backlog to repeat table.', todoRepeat.toJSON());
       await todo.save({
-        id: uuidV1(),
-        isDone: null,
-        doneTime: null
+        isDone: null
       });
       TdScheduleLogger.info('todo', 'todo id', todo.id, 'backlog to repeat table.', todo.toJSON());
       return Promise.resolve();
     }));
-    TdScheduleLogger.info('todo schedule', 'stop');
+    TdScheduleLogger.info('todo schedule', 'success');
   } catch (error) {
     TdScheduleLogger.error('todo schedule', error);
   }

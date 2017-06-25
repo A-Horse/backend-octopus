@@ -11,6 +11,17 @@ const TodoStatisticsRouter = express.Router();
 
 TodoStatisticsRouter.get('/todo/:todoId/history', authJwt, tdPermissions, async (req, res, next) => {
   try {
+    const repeats = await TodoRepeatModel.where({
+      todoId: req.params.todoId
+    }).fetchAll();
+    res.json(repeats);
+  } catch (error) {
+    next(error);
+  }
+});
+
+TodoStatisticsRouter.get('/todo/:todoId/statistics', authJwt, tdPermissions, async (req, res, next) => {
+  try {
     const repeats = await new TodoRepeatModel({
       todoId: req.params.todoId
     }).fetchAll();
