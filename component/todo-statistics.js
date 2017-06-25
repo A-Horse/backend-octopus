@@ -31,7 +31,6 @@ schedule.scheduleJob('0 0 0 * * *', () => {
   TdScheduleLogger.info('start todo statistics schedule.');
   handleTodoWhenEveryDayBegin();
 });
-handleTodoWhenEveryDayBegin();
 
 const server = http.createServer(app);
 server.listen(5501, '0.0.0.0');
