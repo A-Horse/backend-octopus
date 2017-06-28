@@ -37,28 +37,6 @@ TodoListRouter.post('/user/:userId/todo', authJwt, async (req, res, next) => {
   }
 });
 
-// TODO url refactor
-TodoListRouter.post('/todo-box', authJwt, async (req, res, next) => {
-  const {jw} = req;
-  try {
-    const todoBox = await new TodoBoxModel({
-      creator: jw.user.id,
-      name: req.body.name
-    }).save();
-    res.status(201).json(todoBox);
-  } catch(error) {
-    next(error);
-  }
-});
-
-TodoListRouter.get('/user/:userId/todo-box', authJwt, async (req, res, next) => {
-  const { jw } = req;
-  // TODO
-  // const userBox = {name: 'My Todo', id: null, type: 'private'};
-  const todoBoxs = TodoBoxModel.where({userId: jw.user.id}).fetchAll();
-  res.json(todoBoxs);
-});
-
 TodoListRouter.delete('/todo/:todoId', authJwt, (req, res) => {
   const {todoId} = req.params;
   const {jw} = req;

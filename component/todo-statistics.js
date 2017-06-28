@@ -6,7 +6,6 @@ import { tsApiPrefix } from '../constant';
 import schedule from 'node-schedule';
 import { TdScheduleLogger } from '../log';
 import { handleTodoWhenEveryDayBegin } from '../schedule/todo';
-import moment from 'moment';
 
 const app = express();
 
@@ -18,12 +17,9 @@ app.use(require('cookie-parser')());
 
 import { TodoStatisticsRouter } from '../route/todo/todo-statistics';
 import { StatusErrorHandleMiddle } from '../route/middle/error-handle';
+import { AliveRouter } from '../route/share/alive';
 
-// TODO extract
-app.get('/api/alive', (req, res) => {
-  res.json({status: 'alive'});
-});
-
+app.use(AliveRouter);
 app.use(tsApiPrefix, TodoStatisticsRouter);
 app.use(StatusErrorHandleMiddle);
 
