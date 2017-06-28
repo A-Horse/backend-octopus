@@ -131,16 +131,6 @@ TaskCardRouter.post('/task-card/:taskCardId/comment', authJwt, async (req, res, 
       taskCardId,
       created_at: new Date()
     }).save();
-
-
-    // const access = await GroupModel.where({
-    //   taskWallId: x.taskWallId,
-    //   userId: jw.user.id
-    // });
-    // if (access) {
-    //   return res.json(card);
-    // }
-
     res.json(taskCardComment);
   } catch (error) {
     next(error);

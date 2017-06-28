@@ -7,10 +7,6 @@ class Configure {
     this.argv = require('optimist').argv;
   }
 
-  getServerPort() {
-    return this.argv.port || 5500;
-  }
-
   getEnvirType() {
     if (this.argv.product) {
       return ENVIR_PRODUCT;

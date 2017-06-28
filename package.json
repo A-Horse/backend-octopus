@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node app.js",
-    "prod-start": "pm2 start app.js --interpreter ./node_modules/.bin/babel-node --name=\"api\"",
+    "start": "babel-node component/app.js",
+    "prod-start": "pm2 start component/app.js --interpreter ./node_modules/.bin/babel-node --name=\"api\"",
     "prod-todo-statistics": "pm2 start component/todo-statistics.js --interpreter ./node_modules/.bin/babel-node --name=\"todo-statistics\"",
+    "prod-todo": "pm2 start component/todo.js --interpreter ./node_modules/.bin/babel-node --name=\"todo\"",
     "prod-restart": "pm2 restart all",
     "create-all-table": "babel-node db/table.js create",
     "proxy": "mitmproxy -R http://127.0.0.1:5500 -p 8888 --anticache"
