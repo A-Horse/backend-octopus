@@ -1,1 +1,1 @@
-ALTER TABLE 'todo' ADD COLUMN 'delete' boolean;
+ALTER TABLE 'todo' ADD COLUMN 'isDelete' boolean;

@@ -15,7 +15,7 @@ TodoListRouter.get('/user/:userId/todo', authJwt, (req, res, next) => {
     throw new AccessLimitError();
   }
   new TodoModel({userId: jw.user.id})
-    .query('delete', '!=', 1)
+    .query({where: {isDelete: null}})
     .fetchAll().then(todos => res.send(todos))
     .catch(next);
 });
@@ -38,7 +38,7 @@ TodoListRouter.post('/user/:userId/todo', authJwt, async (req, res, next) => {
 
 TodoListRouter.delete('/todo/:todoId', authJwt, async (req, res) => {
   const {todoId} = req.params;
-  await TodoModel.forge({ id: todoId }).save({ delete: true });
+  await TodoModel.forge({ id: todoId }).save({ isDelete: true });
   res.status(202).send();
 });
 
