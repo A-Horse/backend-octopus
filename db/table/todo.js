@@ -12,9 +12,10 @@ export const createPromise = knex.schema.createTableIfNotExists(TableName, funct
   table.boolean('isStar');
   table.string('repeat');
   table.dateTime('deadline');
-  table.dateTime('noticeTime'); // *
-  table.dateTime('doneTime'); // *
+  table.dateTime('noticeTime');
+  table.dateTime('doneTime');
   table.string('tags');
+  table.boolean('delete'); // *
   table.timestamps();
 });
 

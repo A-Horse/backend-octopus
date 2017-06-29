@@ -1,7 +1,6 @@
 import express from 'express';
 import {authJwt} from '../middle/jwt';
 import {TodoModel} from '../../model/todo';
-import {TodoBoxModel} from '../../model/todo-box';
 import {TodoBoxAccessModel} from '../../model/todo-box-access';
 import {AccessLimitError, NotFoundError} from '../../service/error';
 import {validateRequest} from '../../service/validate';
@@ -16,6 +15,7 @@ TodoListRouter.get('/user/:userId/todo', authJwt, (req, res, next) => {
     throw new AccessLimitError();
   }
   new TodoModel({userId: jw.user.id})
+    .query('delete', '!=', 1)
     .fetchAll().then(todos => res.send(todos))
     .catch(next);
 });
@@ -23,7 +23,6 @@ TodoListRouter.get('/user/:userId/todo', authJwt, (req, res, next) => {
 TodoListRouter.post('/user/:userId/todo', authJwt, async (req, res, next) => {
   try {
     validateRequest(req.body, 'content', ['required']);
-    // TODO auth
     const {jw} = req;
     const todo = await new TodoModel({
       userId: jw.user.id,
@@ -37,20 +36,13 @@ TodoListRouter.post('/user/:userId/todo', authJwt, async (req, res, next) => {
   }
 });
 
-TodoListRouter.delete('/todo/:todoId', authJwt, (req, res) => {
+TodoListRouter.delete('/todo/:todoId', authJwt, async (req, res) => {
   const {todoId} = req.params;
-  const {jw} = req;
-  new TodoModel({
-    id: todoId
-  }).fetch().then(goal => {
-    goal.destroy().then(function(){
-      res.status(202).send();
-    });
-  });
+  await TodoModel.forge({ id: todoId }).save({ delete: true });
+  res.status(202).send();
 });
 
 TodoListRouter.patch('/todo/:todoId', authJwt, (req, res, next) => {
-  // TODO auth
   new TodoModel({
     id: req.params.todoId
   }).fetch().then(function(todo) {
@@ -61,7 +53,6 @@ TodoListRouter.patch('/todo/:todoId', authJwt, (req, res, next) => {
 });
 
 TodoListRouter.patch('/user/:userId/todo/:todoId', authJwt, (req, res, next) => {
-  // TODO auth
   new TodoModel({
     id: req.params.todoId
   }).fetch().then(function(todo) {
