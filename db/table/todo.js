@@ -15,7 +15,7 @@ export const createPromise = knex.schema.createTableIfNotExists(TableName, funct
   table.dateTime('noticeTime');
   table.dateTime('doneTime');
   table.string('tags');
-  table.boolean('delete'); // *
+  table.boolean('isDelete'); // *
   table.timestamps();
 });
 
