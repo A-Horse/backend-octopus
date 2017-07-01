@@ -17,6 +17,17 @@ TodoStatisticsRouter.get('/todo/:todoId/history', authJwt, tdPermissions, async 
   }
 });
 
+TodoStatisticsRouter.post('/todo/:todoId/history/yestory', authJwt, tdPermissions, async (req, res, next) => {
+  try {
+    await TodoRepeatModel.forge({
+      todoId: req.params.todoId
+    }).save( req.body );
+    res.status(204).json();
+  } catch (error) {
+    next(error);
+  }
+});
+
 TodoStatisticsRouter.get('/todo/:todoId/statistics', authJwt, tdPermissions, async (req, res, next) => {
   try {
     const repeats = await new TodoRepeatModel({
