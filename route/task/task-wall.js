@@ -18,11 +18,19 @@ const TaskWallRouter = express.Router();
 TaskWallRouter.use(authJwt);
 
 TaskWallRouter.get('/task-wall', (req, res, next) => {
-  const {jw} = req;
+  const { jw } = req;
   TaskWall.getModel().where({
     ownerId: jw.user.id
   }).fetchAll().then(data => res.send(data));
 });
+
+TaskWallRouter.get('/user/:userId/task-wall', (req, res, next) => {
+  const { jw } = req;
+  TaskWall.getModel().where({
+    ownerId: jw.user.id
+  }).fetchAll().then(data => res.send(data));
+});
+
 
 TaskWallRouter.delete('/task-wall/:id', async (req, res, next) => {
   const {id} = req.params;
