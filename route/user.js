@@ -51,7 +51,7 @@ UserRouter.post('/signin', async (req, res, next) => {
   // TODO expries time
   try {
     const { email, password } = req.body;
-    const creds = { email: email.toLowerCase().trim(), password: password.toLowerCase().trim() };
+    const creds = { email: email.toLowerCase().trim(), password: password.trim() };
     const user = await User.authUser(creds);
     if (!user) return res.status(401).send();
     return res.send({
