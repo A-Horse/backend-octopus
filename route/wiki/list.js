@@ -1,10 +1,9 @@
 import express from 'express';
 import { authJwt } from '../middle/jwt';
 import { WikiModel } from '../../model/wiki';
-import { TodoBoxAccessModel } from '../../model/todo-box-access';
 import { AccessLimitError, NotFoundError } from '../../service/error';
 import { validateRequest } from '../../service/validate';
-import { validate } from './middle/check';
+import { validate } from '../middle/check';
 import R from 'ramda';
 
 const WikiListRouter = express.Router();

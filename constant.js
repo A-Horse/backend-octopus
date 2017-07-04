@@ -3,7 +3,8 @@ export const tsApiPrefix = '/api/ts';
 export const tApiPrefix = '/api/t';
 export const wikiApiPrefix = '/api/wk';
 
-export const wikiServePort = 5055;
+export const wikiServePort = 5505;
+export const todoServePort = 5502;
 
 export const JWT_KEY = 'jwts-token';
 
