@@ -1,6 +1,6 @@
-import {unsignJwt} from '../../service/auth';
+import { unsignJwt } from '../../service/auth';
 
-import {JWT_STORAGE_KEY} from '../../setting';
+import { JWT_STORAGE_KEY } from '../../setting';
 import { GroupModel } from '../../model/group';
 import { AccessLimitError, NotFoundError } from '../../service/error';
 
@@ -8,10 +8,12 @@ import { AccessLimitError, NotFoundError } from '../../service/error';
 export function authJwt(req, res, next) {
   const jwtdata = req.header(JWT_STORAGE_KEY);
 
-  // TODO throw error
-  if( !jwtdata ){
-    return res.status(401).send({message: 'Unauthorized'});
+  if (!jwtdata) {
+    throw new AccessLimitError();
   }
   req.jw = unsignJwt(jwtdata);
+  if (!!req.params.userId && req.jw.user.id !== +req.params.userId) {
+    throw new AccessLimitError();
+  }
   return next();
 }
