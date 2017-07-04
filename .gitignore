@@ -16,3 +16,4 @@ tags
 storage
 package-lock.json
 /log/*
+.emallpassword
