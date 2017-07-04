@@ -17,3 +17,4 @@ storage
 package-lock.json
 /log/*
 .emallpassword
+/yarn-error.log
