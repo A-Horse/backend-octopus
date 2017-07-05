@@ -2,9 +2,9 @@ import express from 'express';
 import { authJwt } from '../middle/jwt';
 import { WikiModel } from '../../model/wiki';
 import { AccessLimitError, NotFoundError } from '../../service/error';
-import { validateRequest } from '../../service/validate';
 import { validate } from '../middle/check';
 import R from 'ramda';
+import uuidV1 from 'uuid/v1';
 
 const WikiListRouter = express.Router();
 
@@ -27,9 +27,9 @@ WikiListRouter.post(
     try {
       const { jw } = req;
       const wiki = await new WikiModel({
+        aid: uuidV1(),
         userId: jw.user.id,
-        content: req.body.content,
-        deadline: req.body.deadline,
+        title: req.body.title,
         created_at: new Date().getTime()
       }).save();
       res.send(wiki);
