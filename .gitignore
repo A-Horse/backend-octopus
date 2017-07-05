@@ -16,5 +16,5 @@ tags
 storage
 package-lock.json
 /log/*
-.emailpassword
 /yarn-error.log
+.emailpassword
