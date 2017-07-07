@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "app-root-path": "^2.0.1",
     "ascii-art": "^1.4.2",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.4",
