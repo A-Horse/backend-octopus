@@ -3,6 +3,7 @@ import fs from 'fs';
 import nodemailer from 'nodemailer';
 import moment from 'moment';
 import appRoot from 'app-root-path';
+import { BackupLogger } from '../log';
 
 function backupDatabaseByEmail() {
   const emailpassword = fs.readFileSync(appRoot + '/.emailpassword');
@@ -34,12 +35,10 @@ function backupDatabaseByEmail() {
     if (error) {
       return console.log(error);
     }
-    console.log('Message %s sent: %s', info.messageId, info.response);
+    BackupLogger.info('Message %s sent: %s', info.messageId, info.response);
   });
 }
 
-backupDatabaseByEmail();
-
 export function handleTodoWhenEveryDayBegin() {
-  processTodoRepeat();
+  backupDatabaseByEmail();
 }
