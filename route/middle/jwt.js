@@ -11,7 +11,12 @@ export function authJwt(req, res, next) {
   if (!jwtdata) {
     throw new AccessLimitError();
   }
-  req.jw = unsignJwt(jwtdata);
+  try {
+    req.jw = unsignJwt(jwtdata);
+  } catch (error) {
+    throw new AccessLimitError();
+  }
+
   if (!!req.params.userId && req.jw.user.id !== +req.params.userId) {
     throw new AccessLimitError();
   }
