@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node component/app.js",
+    "start": "babel-node component/main.js",
     "start-wiki": "babel-node component/wiki.js",
     "prod-main": "pm2 start component/main.js --interpreter ./node_modules/.bin/babel-node --name=\"api\"",
     "prod-todo-statistics": "pm2 start component/todo-statistics.js --interpreter ./node_modules/.bin/babel-node --name=\"todo-statistics\"",
