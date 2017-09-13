@@ -37,12 +37,12 @@ TaskCardRouter.delete('/task-card/:id', authJwt, async (req, res, next) => {
 TaskCardRouter.post('/task-card', authJwt, taskBoardGroupForBody, async (req, res, next) => {
   validateRequest(req.body, 'title', ['required']);
   validateRequest(req.body, 'boardId', ['required']);
-  validateRequest(req.body, 'taskListId', ['required']);
+  validateRequest(req.body, 'trackId', ['required']);
 
   try {
-    const data = R.pick(['title', 'boardId', 'taskListId'], req.body);
+    const data = R.pick(['title', 'boardId', 'trackId'], req.body);
     const { jw } = req;
-    const existCount = await TaskCardModel.where({taskListId: data.taskListId}).count();
+    const existCount = await TaskCardModel.where({taskListId: data.boardId}).count();
     const createdCard = await new TaskCardModel(Object.assign({}, data, {
       createrId: jw.user.id,
       index: existCount + 1
