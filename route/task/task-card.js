@@ -19,7 +19,7 @@ TaskCardRouter.get('/task-card', authJwt, async (req, res, next) => {
       taskWallId: taskWallId
     }).fetchAll();
     res.json(card);
-  } catch(error) {
+  } catch (error) {
     next(error);
   }
 });
@@ -27,7 +27,7 @@ TaskCardRouter.get('/task-card', authJwt, async (req, res, next) => {
 TaskCardRouter.delete('/task-card/:id', authJwt, async (req, res, next) => {
   const { id } = req.params;
   try {
-    await TaskCardModel.where({id}).destroy();
+    await TaskCardModel.where({ id }).destroy();
     res.status(204).send();
   } catch (error) {
     next(error);
@@ -41,15 +41,29 @@ TaskCardRouter.post('/task-card', authJwt, taskBoardGroupForBody, async (req, re
   try {
     const data = R.pick(['title', 'boardId', 'trackId'], req.body);
     const { jw } = req;
-    const existCount = await TaskCardModel.where({taskListId: data.trackId}).count();
-    const createdCard = await new TaskCardModel(Object.assign({
-      taskWallId: data.boardId,
-      taskListId: data.trackId,
-      title: data.title,
-      createrId: jw.user.id,
-      index: existCount + 1
-    })).save();
-    res.status(201).send(createdCard);
+    const existCount = await TaskCardModel.where({ taskListId: data.trackId }).count();
+    const createdCard = await new TaskCardModel(
+      Object.assign({
+        taskWallId: data.boardId,
+        taskListId: data.trackId,
+        title: data.title,
+        createrId: jw.user.id,
+        index: existCount + 1
+      })
+    ).save();
+    const card = await new TaskCardModel({ id: createdCard.id }).fetch({
+      withRelated: [
+        {
+          creater: function(qb) {
+            qb.select('email', 'id');
+          },
+          owner: function(qb) {
+            qb.select('email', 'id');
+          }
+        }
+      ]
+    });
+    res.status(201).send(card);
   } catch (error) {
     next(error);
   }
@@ -58,31 +72,40 @@ TaskCardRouter.post('/task-card', authJwt, taskBoardGroupForBody, async (req, re
 TaskCardRouter.patch('/task-card/:cardId', authJwt, async (req, res, next) => {
   try {
     const { cardId } = req.params;
-    const card = await new TaskCardModel({id: cardId}).fetch();
+    const card = await new TaskCardModel({ id: cardId }).fetch();
     if (!card) throw new NotFoundError('can not found this task card');
 
     await card.save(req.body);
-    const updatedCard = await new TaskCardModel().where({id: cardId}).fetch({
-      withRelated: [{
-        'creater': function(qb) {
-          qb.select('email', 'id')
-        },
-        'owner': function(qb) {
-          qb.select('email', 'id')
+    const updatedCard = await new TaskCardModel().where({ id: cardId }).fetch({
+      withRelated: [
+        {
+          creater: function(qb) {
+            qb.select('email', 'id');
+          },
+          owner: function(qb) {
+            qb.select('email', 'id');
+          }
         }
-      }]})
+      ]
+    });
     return res.json(updatedCard);
-  } catch(error) {next(error)}
+  } catch (error) {
+    next(error);
+  }
 });
 
 TaskCardRouter.patch('/task-board/:boardId/task-card/index', authJwt, async (req, res, next) => {
   // TODO auth board
   try {
-    const {cardIndexs} = req.body;
-    const result = await Promise.all(cardIndexs.map(async (trackIndex) => {
-      const card = await TaskCardModel.forge({id: trackIndex.id}).save({index: trackIndex.index});
-      return card;
-    }));
+    const { cardIndexs } = req.body;
+    const result = await Promise.all(
+      cardIndexs.map(async trackIndex => {
+        const card = await TaskCardModel.forge({ id: trackIndex.id }).save({
+          index: trackIndex.index
+        });
+        return card;
+      })
+    );
     res.status(200).json(result);
   } catch (error) {
     next(error);
@@ -94,21 +117,23 @@ TaskCardRouter.get('/task-card/:cardId', authJwt, async (req, res, next) => {
   try {
     const { cardId } = req.params;
     const { jw } = req;
-    const card = await new TaskCardModel({id: cardId}).fetch({withRelated: [{
-      'creater': function(qb) {
-        qb.select('email', 'id')
-      },
-      'owner': function(qb) {
-        qb.select('email', 'id')
-      },
-      // TODO
-      'comments': function() {
-
-      },
-      'comments.creater': function(qb) {
-        qb.select('email', 'id')
-      }
-    }]});
+    const card = await new TaskCardModel({ id: cardId }).fetch({
+      withRelated: [
+        {
+          creater: function(qb) {
+            qb.select('email', 'id');
+          },
+          owner: function(qb) {
+            qb.select('email', 'id');
+          },
+          // TODO
+          comments: function() {},
+          'comments.creater': function(qb) {
+            qb.select('email', 'id');
+          }
+        }
+      ]
+    });
     const access = await GroupModel.where({
       taskWallId: card.taskWallId,
       userId: jw.user.id
@@ -116,7 +141,7 @@ TaskCardRouter.get('/task-card/:cardId', authJwt, async (req, res, next) => {
     if (access) {
       return res.json(card);
     }
-    throw new new AccessLimitError('can access this card.');
+    throw new new AccessLimitError('can access this card.')();
   } catch (error) {
     next(error);
   }
