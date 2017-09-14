@@ -47,7 +47,7 @@ TaskWallRouter.get('/task-board/:id/verbose', async (req, res, next) => {
   const board = await TaskWall.getModel().where({ id }).fetch({
     withRelated: [
       {
-        tracks: function() {},
+        'tracks': function() {},
         'tracks.cards': function() {},
         'tracks.cards.creater': function(qb) {
           qb.select('email', 'id');
