@@ -63,7 +63,7 @@ TaskListRouter.patch('/task-board/:boardId/track/index', async (req, res) => {
   res.status(200).json(result);
 });
 
-TaskListRouter.patch('/task-board/:wallId/list/:listId', async (req, res) => {
+TaskListRouter.patch('/task-board/:wallId/track/:listId', async (req, res) => {
   const { listId } = req.params;
   const info = req.body;
   // TODO 检查是否存在
