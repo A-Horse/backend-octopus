@@ -82,7 +82,7 @@ TaskListRouter.delete('/task-board/:wallId/track/:listId', (req, res) => {
     new TaskListModel({ id: listId })
       .bundleDelete()
       .then(() => {
-        res.status(201).send();
+        res.status(204).send();
       })
       .catch(error => {
         throw error;
