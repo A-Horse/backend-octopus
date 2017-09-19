@@ -69,7 +69,7 @@ TaskListRouter.patch('/task-board/:wallId/track/:listId', async (req, res) => {
   // TODO 检查是否存在
   const track = await new TaskListModel({ id: listId }).fetch();
   if (!track) throw new NotFoundError('can not found this task track');
-  const newTrack = track.save(info);
+  const newTrack = await track.save(info);
   return res.send(newTrack);
 });
 
