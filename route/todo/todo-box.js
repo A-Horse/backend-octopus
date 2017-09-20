@@ -5,7 +5,7 @@ import { TodoBoxModel } from '../../model/todo-box';
 const TodoBoxRouter = express.Router();
 
 TodoBoxRouter.post('/todo-box', authJwt, async (req, res, next) => {
-  const {jw} = req;
+  const { jw } = req;
   try {
     const todoBox = await new TodoBoxModel({
       creatorId: jw.user.id,
@@ -14,7 +14,7 @@ TodoBoxRouter.post('/todo-box', authJwt, async (req, res, next) => {
       type: req.body.type
     }).save();
     res.status(201).json(todoBox);
-  } catch(error) {
+  } catch (error) {
     next(error);
   }
 });
@@ -27,14 +27,14 @@ TodoBoxRouter.delete('/todo-box', authJwt, async (req, res, next) => {
       name: req.body.name
     }).save();
     res.status(201).json(todoBox);
-  } catch(error) {
+  } catch (error) {
     next(error);
   }
 });
 
 TodoBoxRouter.get('/user/:userId/todo-box', authJwt, async (req, res, next) => {
   const { jw } = req;
-  const todoBoxs = await TodoBoxModel.where({userId: jw.user.id}).fetchAll();
+  const todoBoxs = await TodoBoxModel.where({ userId: jw.user.id }).fetchAll();
   res.json(todoBoxs);
 });
 
