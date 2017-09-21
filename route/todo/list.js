@@ -1,10 +1,8 @@
 import express from 'express';
 import { authJwt } from '../middle/jwt';
 import { TodoModel } from '../../model/todo';
-import { TodoBoxAccessModel } from '../../model/todo-box-access';
-import { AccessLimitError, NotFoundError } from '../../service/error';
+import { AccessLimitError } from '../../service/error';
 import { validateRequest } from '../../service/validate';
-import R from 'ramda';
 
 const TodoListRouter = express.Router();
 
@@ -29,6 +27,7 @@ TodoListRouter.post('/todo', authJwt, async (req, res, next) => {
       userId: jw.user.id,
       content: req.body.content,
       deadline: req.body.deadline,
+      todoBoxId: req.body.todoBoxId,
       created_at: new Date().getTime()
     }).save();
     res.send(todo);
