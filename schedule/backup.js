@@ -19,7 +19,7 @@ function backupDatabaseByEmail() {
   });
 
   const mailOptions = {
-    from: '"Octopus 👻" <fwrobot@163.com>', // sender address
+    from: '"Octopus 👻" <octopueserobot@163.com>', // sender address
     to: 'chenfangwei@outlook.com', // list of receivers
     subject: 'Backup Datebase', // Subject line
     text: `Master, there is ${moment().format('YYYY-MM-DD')} database backup.`,
