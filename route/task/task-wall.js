@@ -27,7 +27,7 @@ TaskWallRouter.get('/tk/user/:userId/task-board', (req, res, next) => {
     .then(data => res.send(data));
 });
 
-TaskWallRouter.delete('/task-wall/:id', async (req, res, next) => {
+TaskWallRouter.delete('/task-board/:id', async (req, res, next) => {
   const { id } = req.params;
   await TaskBoardModel.where({ id: id }).destroy();
   const tracks = await TaskListModel.where({ taskWallId: id }).fetchAll();
@@ -107,9 +107,9 @@ TaskWallRouter.post('/task-wall', (req, res, next) => {
     .catch(next);
 });
 
-TaskWallRouter.put('/task-board/:id/cover', multipartMiddleware, async (req, res, next) => {
+TaskWallRouter.post('/task-board/:id/cover', multipartMiddleware, async (req, res, next) => {
   try {
-    const imageURLData = req.body.playload.replace(/^data:image\/\w+;base64,/, '');
+    const imageURLData = req.body.cover.replace(/^data:image\/\w+;base64,/, '');
     const filename = hashFileName(imageURLData);
     // TODO extract 'board-cover' variable
     await saveImage(filename, 'board-cover', imageURLData);
@@ -117,7 +117,7 @@ TaskWallRouter.put('/task-board/:id/cover', multipartMiddleware, async (req, res
     const savedPath = path.join('board-cover', filename);
     const board = await TaskBoardModel.where({ id: req.params.id }).fetch();
     await board.save({ cover: savedPath });
-    res.json({ image: savedPath });
+    res.json({ cover: savedPath });
   } catch (error) {
     next(error);
   }
