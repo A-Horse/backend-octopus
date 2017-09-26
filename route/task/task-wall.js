@@ -90,7 +90,7 @@ TaskWallRouter.get('/task-board/:id/verbose', async (req, res, next) => {
     .catch(next);
 });
 
-TaskWallRouter.post('/task-wall', (req, res, next) => {
+TaskWallRouter.post('/task-board', (req, res, next) => {
   const { name, isPublic } = req.body;
   const { jw } = req;
 
