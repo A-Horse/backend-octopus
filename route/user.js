@@ -78,9 +78,7 @@ UserRouter.post(
       const { jw } = req;
       const authed = await UserModel.authUser(jw.user.id, req.body.oldPassword);
       if (authed) {
-        await UserModel.forge({ id: jw.user.id }).updatePassword(
-          req.body.newPassword
-        );
+        await UserModel.forge({ id: jw.user.id }).updatePassword(req.body.newPassword);
         return res.status(204).send();
       }
       throw new AccessLimitError();
@@ -94,8 +92,13 @@ UserRouter.patch('/user/:userId', authJwt, async (req, res, next) => {
   try {
     const { jw } = req;
     const data = R.pick(['username'], req.body);
-    const user = await UserModel.forge({ id: jw.user.id }).save(data);
-    res.json(user);
+    const updatedUser = await UserModel.forge({ id: jw.user.id }).save(data);
+
+    const user = await UserModel.where({ id: jw.user.id }).fetch();
+    const jwtToken = signJwt({ user: user.omit('password') });
+
+    res.header(JWT_KEY, jwtToken);
+    res.json(updatedUser);
   } catch (error) {
     next(error);
   }
