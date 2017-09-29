@@ -18,7 +18,6 @@ app.use(require('cookie-parser')());
 
 import { UserRouter } from '../route/user.js';
 import { RootRouter } from '../route/root.js';
-import { TaskWallRouter } from '../route/task/task-wall';
 import { TaskListRouter } from '../route/task/task-list';
 import { TaskCardRouter } from '../route/task/task-card';
 import { IdeaListRouter } from '../route/idea/list';
@@ -29,7 +28,6 @@ import { StatusErrorHandleMiddle } from '../route/middle/error-handle';
 app.use(apiPrefix, UserRouter);
 app.use(apiPrefix, FileRouter);
 app.use(apiPrefix, RootRouter);
-app.use(apiPrefix, TaskWallRouter);
 app.use(apiPrefix, TaskListRouter);
 app.use(apiPrefix, TaskCardRouter);
 app.use(apiPrefix, IdeaListRouter);

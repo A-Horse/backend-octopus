@@ -10,7 +10,7 @@ const TaskListRouter = express.Router();
 
 // TaskListRouter.use(authJwt);
 
-TaskListRouter.get('/task-wall/:wallId/list/:listId', (req, res) => {
+TaskListRouter.get('/task-board/:wallId/list/:listId', (req, res) => {
   const { listId } = this.params;
   TaskList.getModel()
     .where({ id: listId })
@@ -24,30 +24,20 @@ TaskListRouter.get('/task-wall/:wallId/list/:listId', (req, res) => {
     });
 });
 
-TaskListRouter.post('/task-board/:boardId/track', (req, res) => {
+TaskListRouter.post('/task-board/:boardId/track', async (req, res) => {
   validateRequest(req.body, 'name', ['required']);
   const { jw } = req;
   const { boardId } = req.params;
 
-  Group.getModel()
-    .where({
-      taskWallId: boardId,
-      userId: jw.user.id
-    })
-    .fetch()
-    .then(async access => {
-      // TODO 错误抛不出去
-      if (!access) throw new AccessLimitError('can access this task wall');
-
-      const existNumber = await TaskListModel.where({ taskWallId: boardId }).count();
-      const savedTrack = await new TaskListModel().save({
-        index: existNumber,
-        taskWallId: boardId,
-        name: req.body.name
-      });
-      res.status(201).send({ ...savedTrack.serialize(), cards: [] });
-    });
+  const existNumber = await TaskListModel.where({ taskWallId: boardId }).count();
+  const savedTrack = await new TaskListModel().save({
+    index: existNumber,
+    taskWallId: boardId,
+    name: req.body.name
+  });
+  res.status(201).send({ ...savedTrack.serialize(), cards: [] });
 });
+
 
 TaskListRouter.patch('/task-board/:boardId/track/index', async (req, res) => {
   const { boardId } = req.params;
