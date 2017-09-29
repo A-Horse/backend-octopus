@@ -1,6 +1,6 @@
-import {bookshelf} from '../db/bookshelf.js';
-import {UserModel} from './user';
-import {TaskCardCommentModel} from './task-card-comment';
+import { bookshelf } from '../db/bookshelf.js';
+import { UserModel } from './user';
+import { TaskCardCommentModel } from './task-card-comment';
 import { TaskBoardModel } from './task-wall';
 
 export const TaskCardModel = bookshelf.Model.extend({
@@ -28,15 +28,13 @@ export class TaskCard {
     return new TaskCard(info);
   }
 
-  static getTaskWall() {
-
-  }
+  static getTaskWall() {}
 
   static getModel() {
     return TaskCardModel;
   }
 
   static getTaskCard(info) {
-    return new TaskCard(info)
+    return new TaskCard(info);
   }
 }

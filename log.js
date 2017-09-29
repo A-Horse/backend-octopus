@@ -27,3 +27,10 @@ export const AdminLogger = new winston.Logger({
     new winston.transports.File({ filename: './log/admin.log' })
   ]
 });
+
+export const TaskLogger = new winston.Logger({
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: './log/task.log' })
+  ]
+});
