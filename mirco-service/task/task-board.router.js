@@ -108,7 +108,7 @@ TaskBoardRouter.get('/task-board/:boardId/participant', authJwt, async (req, res
       withRelated: [
         {
           user: qb => {
-            qb.select('email', 'id');
+            qb.select('email', 'id', 'username');
           }
         }
       ]
