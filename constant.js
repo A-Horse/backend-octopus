@@ -6,6 +6,7 @@ export const wikiApiPrefix = '/api/wk';
 export const wikiServePort = 5505;
 export const todoServePort = 5502;
 export const taskServePort = 5503;
+export const userServePort = 5508;
 
 export const JWT_KEY = 'jwts-token';
 
