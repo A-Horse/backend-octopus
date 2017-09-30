@@ -113,7 +113,7 @@ TaskBoardRouter.get('/task-board/:boardId/participant', authJwt, async (req, res
         }
       ]
     });
-    TaskLogger.info('geet board participants', participants);
+    TaskLogger.info('geet board participants', participants.toJSON());
     res.json(participants);
   } catch (error) {
     TaskLogger.error('task-board/participant', error);
