@@ -16,10 +16,9 @@ UserRouter.get('/alive', (req, res) => {
 });
 
 
-UserRouter.get('/search', (req, res) => {
-  if (req.query.email) {
-    UserModel.where(req.query)
-  }
+UserRouter.get('/search', async (req, res) => {
+  const result = await UserModel.where(req.query).fetch();
+  res.json(result.pick(['username', 'email', 'id']));
 });
 
 UserRouter.get('/:id/avator', (req, res, next) => {
