@@ -121,6 +121,21 @@ TaskBoardRouter.get('/task-board/:boardId/participant', authJwt, async (req, res
   }
 });
 
+TaskBoardRouter.post('/task-board:/:boardId/invite', authJwt, async (req, res, next) => {
+  try {
+    const taskAccess = await new TaskAccessModel({
+      userId: req.body.userId,
+      boardId: req.body.boardId,
+      created_at: new Date()
+    }).save();
+    TaskLogger.info('task-board invite', taskAccess.toJSON());
+    res.json(taskAccess);
+  } catch (error) {
+    TaskLogger.error('task-board invite', error);
+    next(error);
+  }
+});
+
 TaskBoardRouter.post('/task-board/:id/cover', multipartMiddleware, async (req, res, next) => {
   try {
     const imageURLData = req.body.cover.replace(/^data:image\/\w+;base64,/, '');
