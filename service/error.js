@@ -32,3 +32,11 @@ export class NotFoundError extends ExtendableBuiltin(Error) {
     this.message = message;
   }
 }
+
+export class DuplicateError extends ExtendableBuiltin(Error) {
+  constructor(message = 'duplicate') {
+    super(message);
+    this.name = this.constructor.name;
+    this.message = message;
+  }
+}

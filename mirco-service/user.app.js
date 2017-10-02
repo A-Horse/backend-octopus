@@ -5,7 +5,7 @@ import { userServePort } from '../constant';
 import { UserRouter } from './user/user.router';
 
 setupComponent(
-  'Task',
+  'User',
   app => {
     app.use('/api/user', UserRouter);
   },
