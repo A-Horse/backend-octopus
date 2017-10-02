@@ -10,6 +10,8 @@
     "prod-main": "pm2 start component/main.js --interpreter ./node_modules/.bin/babel-node --name=\"api\"",
     "prod-todo-statistics": "pm2 start component/todo-statistics.js --interpreter ./node_modules/.bin/babel-node --name=\"todo-statistics\"",
     "prod-todo": "pm2 start component/todo.js --interpreter ./node_modules/.bin/babel-node --name=\"todo\"",
+    "prod-user": "pm2 start  mirco-service/user.app.js --interpreter ./node_modules/.bin/babel-node --name=\"todo\"",
+    "prod-task": "pm2 start  mirco-service/task.app.js --interpreter ./node_modules/.bin/babel-node --name=\"todo\"",
     "prod-wiki": "pm2 start component/wiki.js --interpreter ./node_modules/.bin/babel-node --name=\"wiki\"",
     "prod-restart": "pm2 restart all",
     "create-all-table": "babel-node db/table.js create",
