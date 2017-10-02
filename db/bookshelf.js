@@ -1,6 +1,6 @@
 import config from '../service/config.js';
 
-const knex = require('knex')({
+export const knex = require('knex')({
   client: 'sqlite3',
   connection: { filename: config.getDBPath() },
   useNullAsDefault: true
@@ -8,4 +8,4 @@ const knex = require('knex')({
 
 const bookshelf = require('bookshelf')(knex);
 
-export {bookshelf};
+export { bookshelf };

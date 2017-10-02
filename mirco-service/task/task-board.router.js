@@ -1,7 +1,7 @@
 import { bookshelf } from '../../db/bookshelf.js';
 import express from 'express';
 import { authJwt } from '../../route/middle/jwt';
-import { AccessLimitError, NotFoundError } from '../../service/error';
+import { AccessLimitError, NotFoundError, DuplicateError } from '../../service/error';
 import { TaskWall, TaskBoardModel, TASKWALL_TYPE } from '../../model/task-wall';
 import { TaskCard, TaskCardModel } from '../../model/task-card';
 import { TaskList, TaskListModel } from '../../model/task-list';
@@ -12,6 +12,7 @@ import { hashFileName } from '../../service/file';
 import path from 'path';
 import { saveImage } from '../../service/storage';
 import { TaskLogger } from '../../log';
+import { knex } from '../../db/bookshelf';
 
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
@@ -28,9 +29,11 @@ const COVER_STORAGE_PATH = 'board-cover';
 TaskBoardRouter.get('/user/:userId/task-board', authJwt, async (req, res, next) => {
   try {
     const { jw } = req;
-    const boards = await TaskBoardModel.where({
-      ownerId: jw.user.id
-    }).fetchAll();
+    const boards = await knex
+      .from('task-board as board')
+      .join('task-access as access', 'access.boardId', '=', 'board.id')
+      .select('board.*')
+      .where('access.userId', '=', jw.user.id);
     res.json(boards);
   } catch (error) {
     next(error);
@@ -121,8 +124,18 @@ TaskBoardRouter.get('/task-board/:boardId/participant', authJwt, async (req, res
   }
 });
 
-TaskBoardRouter.post('/task-board:/:boardId/invite', authJwt, async (req, res, next) => {
+TaskBoardRouter.post('/task-board/:boardId/invite', authJwt, async (req, res, next) => {
   try {
+    if (
+      await TaskAccessModel.where({
+        userId: req.body.userId,
+        boardId: req.body.boardId
+      }).fetch()
+    ) {
+      TaskLogger.error('task-board invite', 'DuplicateError');
+      return next(new DuplicateError());
+    }
+
     const taskAccess = await new TaskAccessModel({
       userId: req.body.userId,
       boardId: req.body.boardId,
