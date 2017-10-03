@@ -1,11 +1,12 @@
-import setupComponent from './component-setuper';
-import { TodoBoxRouter } from '../route/todo/todo-box';
-import { tApiPrefix, todoServePort } from '../constant';
+// import setupComponent from './component-setuper';
+// import { TodoBoxRouter } from '../route/todo/todo-box';
+// import { tApiPrefix, todoServePort } from '../constant';
 
-setupComponent(
-  'Todo',
-  app => {
-    app.use(tApiPrefix, TodoBoxRouter);
-  },
-  todoServePort
-);
+// setupComponent(
+//   'Todo',
+//   app => {
+//     app.use(tApiPrefix, TodoBoxRouter);
+//     app.use(tApiPrefix, TodoBoxRouter);
+//   },
+//   todoServePort
+// );
