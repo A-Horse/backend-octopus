@@ -40,20 +40,19 @@ TaskBoardRouter.get('/user/:userId/task-board', authJwt, async (req, res, next) 
   }
 });
 
-// TaskBoardModel.fetchAll().then(collection => {
-//   collection.forEach(taskBoard => {
-//     console.log(taskBoard);
-//     console.log(taskBoard.ownerId);
-//     new TaskAccessModel({
-//       userId: taskBoard.get('ownerId'),
-//       boardId: taskBoard.get('id'),
-//       level: 5,
-//       created_at: new Date()
-//     })
-//       .save()
-//       .then();
-//   });
-// });
+TaskBoardModel.fetchAll().then(collection => {
+  collection.forEach(taskBoard => {
+    console.log(taskBoard.toJSON());
+    new TaskAccessModel({
+      userId: taskBoard.get('ownerId'),
+      boardId: taskBoard.get('id'),
+      level: 5,
+      created_at: new Date()
+    })
+      .save()
+      .then();
+  });
+});
 
 TaskBoardRouter.get('/task-board/:id/verbose', authJwt, async (req, res, next) => {
   const { id } = req.params;
