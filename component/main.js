@@ -18,20 +18,20 @@ app.use(require('cookie-parser')());
 
 // import { UserRouter } from '../route/user.js';
 import { RootRouter } from '../route/root.js';
-// import { TaskListRouter } from '../route/task/task-list';
+import { TaskListRouter } from '../route/task/task-list';
 import { TaskCardRouter } from '../route/task/task-card';
 import { IdeaListRouter } from '../route/idea/list';
-import { TodoListRouter } from '../route/todo/list';
+//import { TodoListRouter } from '../route/todo/list';
 import { FileRouter } from '../route/file';
 import { StatusErrorHandleMiddle } from '../route/middle/error-handle';
 
 // app.use(apiPrefix, UserRouter);
 app.use(apiPrefix, FileRouter);
 app.use(apiPrefix, RootRouter);
-// app.use(apiPrefix, TaskListRouter);
+app.use(apiPrefix, TaskListRouter);
 app.use(apiPrefix, TaskCardRouter);
 app.use(apiPrefix, IdeaListRouter);
-app.use(apiPrefix, TodoListRouter);
+// app.use(apiPrefix, TodoListRouter);
 app.use(StatusErrorHandleMiddle);
 
 function startServer() {
