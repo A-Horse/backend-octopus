@@ -13,7 +13,7 @@ app.use('/storage', express.static('storage'));
 // app.use(cors());
 app.use(morgan('combined'));
 app.use(require('body-parser').json());
-app.use(require('body-parser').urlencoded({extended: true}));
+app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('cookie-parser')());
 
 // import { UserRouter } from '../route/user.js';

@@ -1,3 +1,5 @@
+// TODO rename todo-statictis
+
 import { TodoModel } from '../model/todo';
 import { TodoRepeatModel } from '../model/todo-repeat';
 import moment from 'moment';

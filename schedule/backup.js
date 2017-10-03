@@ -40,5 +40,5 @@ function backupDatabaseByEmail() {
 }
 
 export function handleTodoWhenEveryDayBegin() {
-  backupDatabaseByEmail();
+  // backupDatabaseByEmail();
 }
