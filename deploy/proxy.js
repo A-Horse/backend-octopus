@@ -14,5 +14,5 @@ Object.keys(proxyOptions).forEach(path => {
   app.use(path, proxy(proxyOptions[path]));
 });
 
-app.listen(proxyPort);
+app.listen(proxyPort, '0.0.0.0');
 console.log(`Built app serve at http://127.0.0.1:${proxyPort}`);
