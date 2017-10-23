@@ -1,4 +1,4 @@
-import setupComponent from '../component/component-setuper';
+import setupComponent from '../service/component-setuper';
 import { tApiPrefix, todoServePort } from '../constant';
 import { TodoBoxRouter } from '../route/todo/todo-box';
 import { TodoRouter } from './todo/todo.router';
