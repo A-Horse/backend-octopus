@@ -17,5 +17,8 @@ module.exports = {
   },
   '/storage': {
     target: 'http://localhost:5500'
+  },
+  '/static': {
+    target: 'http://localhost:9000'
   }
 };
