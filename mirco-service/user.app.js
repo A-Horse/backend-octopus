@@ -1,4 +1,4 @@
-import setupComponent from '../component/component-setuper';
+import setupComponent from '../service/component-setuper';
 
 import { userServePort } from '../constant';
 
