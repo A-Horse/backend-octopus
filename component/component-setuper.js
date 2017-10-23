@@ -1,3 +1,4 @@
+// TODO move this file
 import express from 'express';
 import morgan from 'morgan';
 import http from 'http';
@@ -21,11 +22,10 @@ function setupComponent(name, setRouteFn, servePort) {
   const server = http.createServer(app);
   server.listen(servePort, '0.0.0.0');
 
-  Ascii.font(`Octopus${name}`, 'Doom', 'bright_blue', (ascii) => {
+  Ascii.font(`Octopus${name}`, 'Doom', 'bright_blue', ascii => {
     console.log(ascii);
     console.log(colors.green(`Octopus ${name} serve on http://127.0.0.1:${servePort}`));
   });
-
 }
 
 export default setupComponent;
