@@ -29,8 +29,8 @@ function setupComponent(name, setRouteFn, servePort) {
   const server = argv.https
     ? https.createServer(
         {
-          key: fs.readFileSync(configure.SSL_KEY_FILE),
-          cert: fs.readFileSync(configure.SSL_CERT_FILE)
+          key: fs.readFileSync(configure.SSL_KEY_FILE, 'utf-8'),
+          cert: fs.readFileSync(configure.SSL_CERT_FILE, 'utf-8')
         },
         app
       )
