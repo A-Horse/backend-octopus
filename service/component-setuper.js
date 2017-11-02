@@ -26,6 +26,7 @@ function setupComponent(name, setRouteFn, servePort) {
 
   app.use(StatusErrorHandleMiddle);
 
+  console.log('hi');
   const server = argv.https
     ? https.createServer(
         {
