@@ -1,3 +1,4 @@
+// TODO deprecated
 export const apiPrefix = '/api';
 export const tsApiPrefix = '/api/ts';
 export const tApiPrefix = '/api/t';
