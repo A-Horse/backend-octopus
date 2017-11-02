@@ -7,7 +7,7 @@
     "start": "babel-node component/main.js",
     "start-wiki": "babel-node component/wiki.js",
     "prod-admin": "pm2 start component/admin.js --node-args=\"-https\" --interpreter ./node_modules/.bin/babel-node --name=\"admin\"",
-    "prod-main": "pm2 start component/main.js ---node-args=\"-https\" -interpreter ./node_modules/.bin/babel-node --name=\"main\"",
+    "prod-main": "pm2 start component/main.js --node-args=\"-https\" -interpreter ./node_modules/.bin/babel-node --name=\"main\"",
     "prod-todo-statistics": "pm2 start component/todo-statistics.js --node-args=\"-https\" --interpreter ./node_modules/.bin/babel-node --name=\"todo-statistics\"",
     "prod-todo": "pm2 start mirco-service/todo.app.js --interpreter --node-args=\"-https\" ./node_modules/.bin/babel-node --name=\"todo\"",
     "prod-user": "pm2 start  mirco-service/user.app.js --interpreter --node-args=\"-https\" ./node_modules/.bin/babel-node --name=\"user\"",
