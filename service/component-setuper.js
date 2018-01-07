@@ -25,9 +25,8 @@ function setupComponent(name, setRouteFn, servePort) {
   setRouteFn(app);
 
   app.use(StatusErrorHandleMiddle);
-
-  console.log('hi');
-  const server = argv.https
+  const isHttps = argv.https;
+  const server = isHttps
     ? https.createServer(
         {
           key: fs.readFileSync(configure.SSL_KEY_FILE, 'utf-8'),
@@ -40,7 +39,11 @@ function setupComponent(name, setRouteFn, servePort) {
 
   Ascii.font(`Octopus${name}`, 'Doom', 'bright_blue', ascii => {
     console.log(ascii);
-    console.log(colors.green(`Octopus ${name} serve on http://127.0.0.1:${servePort}`));
+    console.log(
+      colors.green(
+        `Octopus ${name} serve on ${isHttps ? 'https' : 'http'}://127.0.0.1:${servePort}`
+      )
+    );
   });
 }
 
