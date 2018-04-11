@@ -1,4 +1,4 @@
-import express from 'express';
+import * as express from 'express';
 import { authJwt } from '../middle/jwt';
 import { taskBoardGroupForBody } from '../middle/board';
 import { TaskCard, TaskCardModel } from '../../model/task-card';
@@ -6,7 +6,7 @@ import { TaskCardCommentModel } from '../../model/task-card-comment';
 import { GroupModel } from '../../model/group';
 import { validateRequest } from '../../service/validate';
 import { AccessLimitError, NotFoundError } from '../../service/error';
-import R from 'fw-ramda';
+import * as R from 'ramda';
 
 const TaskCardRouter = express.Router();
 
@@ -141,7 +141,7 @@ TaskCardRouter.get('/task-card/:cardId', authJwt, async (req, res, next) => {
     if (access) {
       return res.json(card);
     }
-    throw new new AccessLimitError('can access this card.')();
+    throw new AccessLimitError('can access this card.')();
   } catch (error) {
     next(error);
   }

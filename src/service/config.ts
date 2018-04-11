@@ -1,6 +1,6 @@
-import yaml from 'js-yaml';
-import path from 'path';
-import fs from 'fs';
+import * as yaml from 'js-yaml';
+import * as path from 'path';
+import * as fs from 'fs';
 
 export const ENVIR_PRODUCT = 'PRODUCT';
 export const ENVIR_TEST = 'TEST';

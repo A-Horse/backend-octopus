@@ -1,4 +1,4 @@
-import express from 'express';
+import * as express from 'express';
 import { User, UserModel } from '../model/user';
 import { AccessLimitError, NotFoundError } from '../service/error';
 import { authJwt } from '../route/middle/jwt';
@@ -7,7 +7,7 @@ import { makeGravatarUrl } from '../service/gravator.js';
 import { validateRequest } from '../service/validate';
 import { validate } from '../route/middle/check';
 import { JWT_KEY } from '../constant';
-import R from 'ramda';
+import * as R from 'ramda';
 
 const UserRouter = express.Router();
 

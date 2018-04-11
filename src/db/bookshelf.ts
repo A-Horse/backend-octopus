@@ -1,5 +1,5 @@
 import config from '../service/config.js';
-import path from 'path';
+import * as path from 'path';
 
 export const knex = require('knex')({
   client: 'sqlite3',
