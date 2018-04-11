@@ -1,8 +1,9 @@
 import config from '../service/config.js';
+import path from 'path';
 
 export const knex = require('knex')({
   client: 'sqlite3',
-  connection: { filename: config.getDBPath() },
+  connection: { filename: path.join(__dirname, config.getDBPath()) },
   useNullAsDefault: true
 });
 

@@ -1,12 +1,12 @@
 import express from 'express';
-import { User, UserModel } from '../../model/user';
-import { AccessLimitError, NotFoundError } from '../../service/error';
-import { authJwt } from '../../route//middle/jwt';
-import { signJwt } from '../../service/auth';
-import { makeGravatarUrl } from '../../service/gravator.js';
-import { validateRequest } from '../../service/validate';
-import { validate } from '../../route/middle/check';
-import { JWT_KEY } from '../../constant';
+import { User, UserModel } from '../model/user';
+import { AccessLimitError, NotFoundError } from '../service/error';
+import { authJwt } from '../route/middle/jwt';
+import { signJwt } from '../service/auth';
+import { makeGravatarUrl } from '../service/gravator.js';
+import { validateRequest } from '../service/validate';
+import { validate } from '../route/middle/check';
+import { JWT_KEY } from '../constant';
 import R from 'ramda';
 
 const UserRouter = express.Router();
@@ -14,7 +14,6 @@ const UserRouter = express.Router();
 UserRouter.get('/alive', (req, res) => {
   res.json({ status: 'alive' });
 });
-
 
 UserRouter.get('/search', async (req, res) => {
   const result = await UserModel.where(req.query).fetch();
@@ -71,7 +70,6 @@ UserRouter.post('/signin', async (req, res, next) => {
     next(error);
   }
 });
-
 
 UserRouter.post('/signup', (req, res, next) => {
   validateRequest(req.body, 'username', ['required']);
