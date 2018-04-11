@@ -1,13 +1,11 @@
-import bluebird from "bluebird";
-import fs from 'fs';
-import path from 'path';
-import {STORAGE_PATH} from '../constant.js';
+import * as bluebird from 'bluebird';
+import * as fs from 'fs';
+import * as path from 'path';
+import { STORAGE_PATH } from '../constant.js';
 
 const pfs = bluebird.promisifyAll(fs);
 
-export function saveFile() {
-
-}
+export function saveFile() {}
 
 // TODO check create all dir when startup
 export async function saveImage(filename, storagePath, data) {

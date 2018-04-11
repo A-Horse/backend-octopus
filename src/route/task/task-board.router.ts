@@ -1,5 +1,5 @@
 import { bookshelf } from '../../db/bookshelf.js';
-import express from 'express';
+import * as express from 'express';
 import { authJwt } from '../../route/middle/jwt';
 import { AccessLimitError, NotFoundError, DuplicateError } from '../../service/error';
 import { TaskWall, TaskBoardModel, TASKWALL_TYPE } from '../../model/task-wall';
@@ -7,9 +7,9 @@ import { TaskCard, TaskCardModel } from '../../model/task-card';
 import { TaskList, TaskListModel } from '../../model/task-list';
 import { TaskAccessModel } from '../../model/task-access';
 import { Group } from '../../model/group';
-import R from 'ramda';
+import * as  R from 'ramda';
 import { hashFileName } from '../../service/file';
-import path from 'path';
+import  * as path from 'path';
 import { saveImage } from '../../service/storage';
 import { TaskLogger } from '../../log';
 import { knex } from '../../db/bookshelf';

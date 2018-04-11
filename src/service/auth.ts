@@ -1,8 +1,6 @@
-'use strict';
-
 let jwt = require('jsonwebtoken');
 
-import {JWTs_SECRET} from '../setting';
+import { JWTs_SECRET } from '../setting';
 
 export function signJwt(json) {
   return jwt.sign(json, JWTs_SECRET);
