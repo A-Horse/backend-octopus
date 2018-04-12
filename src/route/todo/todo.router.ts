@@ -23,7 +23,7 @@ TodoRouter.post('/todo', authJwt, async (req, res, next) => {
   try {
     validateRequest(req.body, 'content', ['required']);
     const { jw } = req;
-    const todo = await new TodoModel({
+    const todo = await TodoModel.where({
       userId: jw.user.id,
       content: req.body.content,
       deadline: req.body.deadline,
@@ -43,7 +43,7 @@ TodoRouter.delete('/todo/:todoId', authJwt, async (req, res) => {
 });
 
 TodoRouter.patch('/todo/:todoId', authJwt, (req, res, next) => {
-  new TodoModel({
+  TodoModel.where({
     id: req.params.todoId
   })
     .fetch()
@@ -56,7 +56,7 @@ TodoRouter.patch('/todo/:todoId', authJwt, (req, res, next) => {
 });
 
 TodoRouter.patch('/user/:userId/todo/:todoId', authJwt, (req, res, next) => {
-  new TodoModel({
+  TodoModel.where({
     id: req.params.todoId
   })
     .fetch()

@@ -16,7 +16,7 @@ export function validate(validatedRule) {
             return validator[ruleFnName].apply(null, params).call(null, value);
           }),
         () => {
-          throw new ErrorParamsError();
+          throw new ErrorParamsError('params error');
         }
       )(rules);
     })(Object.keys(validatedRule));

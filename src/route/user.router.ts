@@ -20,17 +20,6 @@ UserRouter.get('/search', async (req, res) => {
   res.json(result.pick(['username', 'email', 'id']));
 });
 
-UserRouter.get('/:id/avator', (req, res, next) => {
-  const { id } = req.params;
-  UserModel({ id })
-    .fetch()
-    .then(user => {
-      if (!user) throw new NotFoundError();
-      res.send({ result: makeGravatarUrl(user.email) });
-    })
-    .catch(next);
-});
-
 UserRouter.get('/identify', authJwt, (req, res, next) => {
   res.status(200).send(req.jw.user);
 });

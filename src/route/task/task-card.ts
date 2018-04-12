@@ -141,7 +141,7 @@ TaskCardRouter.get('/task-card/:cardId', authJwt, async (req, res, next) => {
     if (access) {
       return res.json(card);
     }
-    throw new AccessLimitError('can access this card.')();
+    throw new AccessLimitError('can access this card.');
   } catch (error) {
     next(error);
   }

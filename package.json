@@ -1,10 +1,10 @@
 {
   "name": "octopus-backend",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "octopus backend",
   "scripts": {
     "start": "node built/main.js",
-    "build": "ts",
+    "build": "tsc",
     "create-all-table": "babel-node db/table.js create",
     "proxy": "mitmproxy -R http://127.0.0.1:6000 -p 8888 --anticache"
   },
@@ -22,7 +22,6 @@
     "colors": "^1.1.2",
     "connect-multiparty": "^2.0.0",
     "cookie-parser": "^1.4.3",
-    "cors": "^2.8.1",
     "es6-promise": "^4.1.0",
     "express": "^4.14.0",
     "express-http-proxy": "^1.0.3",
