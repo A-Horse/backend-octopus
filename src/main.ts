@@ -1,6 +1,8 @@
 import * as express from 'express';
+import * as Ascii from 'ascii-art';
 import * as morgan from 'morgan';
 import * as http from 'http';
+import * as colors from 'colors';
 
 import { apiPrefix } from './constant';
 
@@ -25,9 +27,6 @@ import { TodoRouter } from './route/todo/todo.router';
 import { TaskBoardRouter } from './route/task/task-board.router';
 import { UserRouter } from './route/user.router';
 
-import * as colors from 'colors';
-import * as Ascii from 'ascii-art';
-
 // app.use(apiPrefix, UserRouter);
 app.use(apiPrefix, FileRouter);
 app.use(apiPrefix, RootRouter);
@@ -44,7 +43,7 @@ app.use(StatusErrorHandleMiddle);
 
 function startServer() {
   const server = http.createServer(app);
-  server.listen(5500, '0.0.0.0');
+  server.listen(5500, '127.0.0.1');
 
   Ascii.font(`Octopus`, 'Doom', 'bright_blue', ascii => {
     console.log(ascii);
