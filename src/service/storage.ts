@@ -3,13 +3,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { STORAGE_PATH } from '../constant.js';
 
-const pfs = bluebird.promisifyAll(fs);
-
-export function saveFile() {}
+const writeFile: (...args: any[]) => bluebird<void> = bluebird.promisify(fs.writeFile);
 
 // TODO check create all dir when startup
 export async function saveImage(filename, storagePath, data) {
-  // TODO path 枚举
   const filePath = path.join(STORAGE_PATH, storagePath, filename);
-  return await pfs.writeFileAsync(filePath, data, 'base64');
+  return await writeFile(filePath, data, 'base64');
 }
