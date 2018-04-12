@@ -1,4 +1,4 @@
-import express from 'express';
+import * as express from 'express';
 import { authJwt } from '../../route/middle/jwt';
 import { TodoModel } from '../../model/todo';
 import { AccessLimitError } from '../../service/error';

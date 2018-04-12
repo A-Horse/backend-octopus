@@ -1,5 +1,3 @@
-import R from 'fw-ramda';
-
 function required() {
   return val => !!(val + '');
 }

@@ -1,5 +1,5 @@
-import bcrypt from 'bcryptjs';
-import R from 'ramda';
+import * as bcrypt from 'bcryptjs';
+import * as R from 'ramda';
 import { bookshelf } from '../db/bookshelf.js';
 
 export class UserModel extends bookshelf.Model {
@@ -8,7 +8,7 @@ export class UserModel extends bookshelf.Model {
   }
 
   static async authUser(userId, password) {
-    const user = await this.where({id: userId}).fetch();
+    const user = await this.where({ id: userId }).fetch();
     if (!user) {
       return false;
     }
@@ -18,29 +18,26 @@ export class UserModel extends bookshelf.Model {
   async updatePassword(newPassword) {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
-    return await this.save({password: hashedPassword});
+    return await this.save({ password: hashedPassword });
   }
 }
 
-
 export class User {
-  constructor() {
-
-  }
+  constructor() {}
 
   static authUser(queryInfo) {
     return new Promise((resolve, reject) => {
       UserModel.where(R.omit('password', queryInfo))
         .fetch()
-        .then((user) => {
-          if( !user ){
+        .then(user => {
+          if (!user) {
             return resolve(null);
           }
           bcrypt.compare(queryInfo.password, user.get('password'), (error, res) => {
             if (error) return reject(error);
             if (res === true) {
               return resolve(user.omit('password'));
-            };
+            }
             resolve(null);
           });
         });
@@ -54,16 +51,17 @@ export class User {
       let password = info.password;
       bcrypt.genSalt(10, (error, salt) => {
         bcrypt.hash(password, salt, (error, hash) => {
-          resolve(new UserModel(Object.assign(info, {
-            password: hash
-          })));
+          resolve(
+            new UserModel(
+              Object.assign(info, {
+                password: hash
+              })
+            )
+          );
         });
       });
-
     });
   }
 
-  static getUserById() {
-
-  }
+  static getUserById() {}
 }

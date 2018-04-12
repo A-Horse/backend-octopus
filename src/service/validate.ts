@@ -2,6 +2,7 @@ import * as validator from 'validator';
 import validatorPatch from './validate-patch';
 import * as R from 'ramda';
 import { ErrorParamsError } from './error';
+import { validate } from '../route/middle/check';
 
 validatorPatch(validator)
 

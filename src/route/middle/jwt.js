@@ -14,6 +14,7 @@ export function authJwt(req, res, next) {
   try {
     req.jw = unsignJwt(jwtdata);
   } catch (error) {
+    console.error(error);
     throw new AccessLimitError();
   }
 
