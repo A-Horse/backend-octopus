@@ -1,14 +1,14 @@
 {
-  "name": "backend",
+  "name": "octopus-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "octopus backend",
   "scripts": {
-    "start": "babel-node component/main.js",
+    "start": "node built/main.js",
+    "build": "ts",
     "create-all-table": "babel-node db/table.js create",
     "proxy": "mitmproxy -R http://127.0.0.1:6000 -p 8888 --anticache"
   },
-  "author": "",
+  "author": "fwchen",
   "license": "ISC",
   "dependencies": {
     "app-root-path": "^2.0.1",
@@ -50,7 +50,6 @@
     "xss-filters": "^1.2.6"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
     "typescript": "^2.8.1"
   }
 }
