@@ -1,8 +1,8 @@
-import {knex} from '../table';
+import { knex } from '../table';
 
 export const TableName = 'task-board';
 
-export const createPromise = knex.schema.createTableIfNotExists(TableName, function (table) {
+export const createPromise = knex.schema.createTableIfNotExists(TableName, function(table) {
   table.increments();
   table.string('name');
   table.string('description');

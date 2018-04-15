@@ -1,2 +1,6 @@
 SSL_CERT_FILE: /etc/letsencrypt/live/www.octopuese.xyz/cert.pem
 SSL_KEY_FILE: /etc/letsencrypt/live/www.octopuese.xyz/privkey.pem
+
+
+
+SERVE_PORT: 5500

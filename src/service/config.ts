@@ -14,7 +14,7 @@ class Configure {
     Object.assign(this, configDoc);
   }
 
-  getDBPath() {
+  public getDBPath() {
     return `../../db.sqlite`;
   }
 }

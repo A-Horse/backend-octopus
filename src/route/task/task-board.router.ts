@@ -7,17 +7,15 @@ import { TaskCard, TaskCardModel } from '../../model/task-card';
 import { TaskList, TaskListModel } from '../../model/task-list';
 import { TaskAccessModel } from '../../model/task-access';
 import { Group } from '../../model/group';
-import * as  R from 'ramda';
+import * as R from 'ramda';
 import { hashFileName } from '../../service/file';
-import  * as path from 'path';
+import * as path from 'path';
 import { saveImage } from '../../service/storage';
-import { TaskLogger } from '../../log';
 import { knex } from '../../db/bookshelf';
 
-var multipart = require('connect-multiparty');
-var multipartMiddleware = multipart();
-
 const TaskBoardRouter = express.Router();
+
+const multipartMiddleware = require('connect-multiparty')();
 
 export function boardAuth(req, res, next) {
   const { boardId } = req.params;
@@ -95,10 +93,8 @@ TaskBoardRouter.post('/task-board', authJwt, async (req, res, next) => {
       level: 5,
       created_at: new Date()
     }).save();
-    TaskLogger.info('add task-board', board.toJSON(), taskAccess.toJSON());
     res.json(board);
   } catch (error) {
-    TaskLogger.error(error);
     next(error);
   }
 });
@@ -116,10 +112,8 @@ TaskBoardRouter.get('/task-board/:boardId/participant', authJwt, async (req, res
         }
       ]
     });
-    TaskLogger.info('geet board participants', participants.toJSON());
     res.json(participants);
   } catch (error) {
-    TaskLogger.error('task-board/participant', error);
     next(error);
   }
 });
@@ -132,7 +126,6 @@ TaskBoardRouter.post('/task-board/:boardId/invite', authJwt, async (req, res, ne
         boardId: req.body.boardId
       }).fetch()
     ) {
-      TaskLogger.error('task-board invite', 'DuplicateError');
       return next(new DuplicateError());
     }
 
@@ -141,10 +134,8 @@ TaskBoardRouter.post('/task-board/:boardId/invite', authJwt, async (req, res, ne
       boardId: req.body.boardId,
       created_at: new Date()
     }).save();
-    TaskLogger.info('task-board invite', taskAccess.toJSON());
     res.json(taskAccess);
   } catch (error) {
-    TaskLogger.error('task-board invite', error);
     next(error);
   }
 });

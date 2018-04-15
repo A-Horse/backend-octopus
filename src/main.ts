@@ -6,6 +6,8 @@ import * as colors from 'colors';
 
 import { apiPrefix } from './constant';
 
+import config from './service/config';
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -16,7 +18,7 @@ app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('cookie-parser')());
 
 import { RootRouter } from './route/root';
-import { TaskListRouter } from './route/task/task-list';
+import { TaskTrackRouter } from './route/task/task-track.router';
 import { TaskCardRouter } from './route/task/task-card';
 import { FileRouter } from './route/file';
 import { StatusErrorHandleMiddle } from './route/middle/error-handle';
@@ -27,10 +29,9 @@ import { TodoRouter } from './route/todo/todo.router';
 import { TaskBoardRouter } from './route/task/task-board.router';
 import { UserRouter } from './route/user.router';
 
-// app.use(apiPrefix, UserRouter);
 app.use(apiPrefix, FileRouter);
 app.use(apiPrefix, RootRouter);
-app.use(apiPrefix, TaskListRouter);
+app.use(apiPrefix, TaskTrackRouter);
 app.use(apiPrefix, TaskCardRouter);
 
 app.use(tApiPrefix, TodoBoxRouter);
@@ -38,15 +39,16 @@ app.use(tApiPrefix, TodoRouter);
 app.use('/api/tk', TaskBoardRouter);
 app.use('/api/user', UserRouter);
 
-// app.use(apiPrefix, TodoListRouter);
 app.use(StatusErrorHandleMiddle);
 
 function startServer() {
   const server = http.createServer(app);
-  server.listen(5500, '127.0.0.1');
+  server.listen(config['SERVE_PORT'], '127.0.0.1');
 
   Ascii.font(`Octopus`, 'Doom', 'bright_blue', ascii => {
+    // tslint:disable-next-line
     console.log(ascii);
+    // tslint:disable-next-line
     console.log(colors.green(`Octopus serve on http://127.0.0.1:5500`));
   });
 }
