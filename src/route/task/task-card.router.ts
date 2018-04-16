@@ -15,8 +15,8 @@ TaskCardRouter.get('/task-card', authJwt, async (req, res, next) => {
     const { jw } = req;
     const { taskWallId } = req.body;
     const card = await TaskCardModel.where({
-      ownerId: jw.user.id,
-      taskWallId: taskWallId
+      taskWallId,
+      ownerId: jw.user.id
     }).fetchAll();
     res.json(card);
   } catch (error) {
@@ -69,13 +69,16 @@ TaskCardRouter.post('/task-card', authJwt, taskBoardGroupForBody, async (req, re
   }
 });
 
-TaskCardRouter.patch('/task-card/:cardId', authJwt, async (req, res, next) => {
+TaskCardRouter.patch('/task-card/:cardId', authJwt, async (req, res) => {
   try {
     const { cardId } = req.params;
     const card = await new TaskCardModel({ id: cardId }).fetch();
-    if (!card) throw new NotFoundError('can not found this task card');
+    if (!card) {
+      throw new NotFoundError('can not found this task card');
+    }
 
     await card.save(req.body);
+
     const updatedCard = await new TaskCardModel().where({ id: cardId }).fetch({
       withRelated: [
         {
@@ -90,7 +93,7 @@ TaskCardRouter.patch('/task-card/:cardId', authJwt, async (req, res, next) => {
     });
     return res.json(updatedCard);
   } catch (error) {
-    next(error);
+    throw error;
   }
 });
 

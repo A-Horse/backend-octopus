@@ -1,36 +1,70 @@
 import * as express from 'express';
 import { authJwt } from '../middle/jwt';
-import { TaskList, TaskListModel } from '../../model/task-list';
+import { TaskList, TaskTrackModel } from '../../model/task-track';
 import { Group } from '../../model/group';
 import { AccessLimitError, NotFoundError } from '../../service/error';
 import { validateRequest } from '../../service/validate';
-import { taskBoardGroupForBody } from '../middle/board';
+import { taskBoardGroupForBody, taskBoardGroupForParams } from '../middle/board';
 
 const TaskTrackRouter = express.Router();
 
-TaskTrackRouter.get('/task-board/:wallId/list/:listId', (req, res) => {
-  const { listId } = this.params;
-  TaskList.getModel()
-    .where({ id: listId })
-    .fetch()
-    .then(taskList => {
-      if (!taskList) {
+TaskTrackRouter.get(
+  '/task-board/:boardId/track/:trackId',
+  authJwt,
+  taskBoardGroupForBody,
+  async (req, res) => {
+    const { listId } = req.params;
+    const taskTrack = await TaskList.getModel()
+      .where({ id: listId })
+      .fetch();
+
+    if (!taskTrack) {
+      throw new NotFoundError('not found this task list');
+    }
+    res.send(taskTrack);
+  }
+);
+
+TaskTrackRouter.get(
+  '/task-board/:boardId/track/:trackId/card',
+  authJwt,
+  taskBoardGroupForParams,
+  async (req, res) => {
+    try {
+      const { trackId } = req.params;
+      const taskTrack = await TaskTrackModel.where({ id: trackId }).fetch({
+        withRelated: [
+          {
+            cards: () => {
+              /*ignore*/
+            },
+            'cards.creater': qb => {
+              qb.select('email', 'id');
+            },
+            'cards.owner': qb => {
+              qb.select('email', 'id');
+            }
+          }
+        ]
+      });
+
+      if (!taskTrack) {
         throw new NotFoundError('not found this task list');
       }
-      return res.send(taskList);
-    })
-    .catch(error => {
+      res.json(taskTrack);
+    } catch (error) {
       throw error;
-    });
-});
+    }
+  }
+);
 
 TaskTrackRouter.post('/task-board/:boardId/track', async (req, res) => {
   validateRequest(req.body, 'name', ['required']);
   const { jw } = req;
   const { boardId } = req.params;
 
-  const existNumber = await TaskListModel.where({ taskWallId: boardId }).count();
-  const savedTrack = await new TaskListModel().save({
+  const existNumber = await TaskTrackModel.where({ taskWallId: boardId }).count();
+  const savedTrack = await new TaskTrackModel().save({
     index: existNumber,
     taskWallId: boardId,
     name: req.body.name
@@ -43,7 +77,7 @@ TaskTrackRouter.patch('/task-board/:boardId/track/index', async (req, res) => {
   const { trackIndexs } = req.body;
   const result = await Promise.all(
     trackIndexs.map(async trackIndex => {
-      const track = await TaskListModel.forge({ id: trackIndex.id }).save({
+      const track = await TaskTrackModel.forge({ id: trackIndex.id }).save({
         index: trackIndex.index
       });
       return track;
@@ -56,7 +90,7 @@ TaskTrackRouter.patch('/task-board/:wallId/track/:listId', async (req, res) => {
   const { listId } = req.params;
   const info = req.body;
   // TODO 检查是否存在
-  const track = await new TaskListModel({ id: listId }).fetch();
+  const track = await new TaskTrackModel({ id: listId }).fetch();
   if (!track) {
     throw new NotFoundError('can not found this task track');
   }
@@ -72,7 +106,7 @@ TaskTrackRouter.delete(
     const { boardId, listId } = req.params;
     const { jw } = req;
 
-    await new TaskListModel({ id: listId }).bundleDelete();
+    await new TaskTrackModel({ id: listId }).bundleDelete();
     res.status(204).send();
   }
 );

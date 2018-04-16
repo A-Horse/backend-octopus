@@ -4,7 +4,7 @@ import { authJwt } from '../../route/middle/jwt';
 import { AccessLimitError, NotFoundError, DuplicateError } from '../../service/error';
 import { TaskWall, TaskBoardModel, TASKWALL_TYPE } from '../../model/task-wall';
 import { TaskCard, TaskCardModel } from '../../model/task-card';
-import { TaskList, TaskListModel } from '../../model/task-list';
+import { TaskList, TaskTrackModel } from '../../model/task-track';
 import { TaskAccessModel } from '../../model/task-access';
 import { Group } from '../../model/group';
 import * as R from 'ramda';
@@ -65,7 +65,7 @@ TaskBoardRouter.delete('/task-board/:boardId', authJwt, boardAuth, async (req, r
   try {
     const { boardId } = req.params;
     await TaskBoardModel.where({ id: boardId }).destroy();
-    const tracks = await TaskListModel.where({ taskWallId: boardId }).fetchAll();
+    const tracks = await TaskTrackModel.where({ taskWallId: boardId }).fetchAll();
     tracks.forEach(async track => {
       await TaskCardModel.where({ taskListId: track.id }).destroy();
       await track.destroy();

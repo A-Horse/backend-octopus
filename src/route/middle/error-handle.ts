@@ -1,7 +1,6 @@
 import { ErrorParamsError, AccessLimitError, NotFoundError } from '../../service/error';
 
 export function StatusErrorHandleMiddle(error, req, res, next) {
-  console.log('------------');
   if (error instanceof ErrorParamsError) {
     return res.status(400).send({ message: error.message });
   }
