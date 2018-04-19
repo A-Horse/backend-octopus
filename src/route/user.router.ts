@@ -28,7 +28,9 @@ UserRouter.get('/:userId', authJwt, async (req, res, next) => {
   try {
     const { jw } = req;
     const user = await UserModel.where({ id: jw.user.id }).fetch();
-    if (!user) return res.status(401).send();
+    if (!user) {
+      return res.status(401).send();
+    }
     return res.send({
       jwt: signJwt({ user: user.omit('password') })
     });
