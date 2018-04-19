@@ -43,7 +43,7 @@ app.use(StatusErrorHandleMiddle);
 
 function startServer() {
   const server = http.createServer(app);
-  server.listen(config['SERVE_PORT'], '127.0.0.1');
+  server.listen(config['SERVE_PORT'], '0.0.0.0');
 
   Ascii.font(`Octopus`, 'Doom', 'bright_blue', ascii => {
     // tslint:disable-next-line
