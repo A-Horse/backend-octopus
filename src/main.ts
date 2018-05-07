@@ -3,6 +3,9 @@ import * as Ascii from 'ascii-art';
 import * as morgan from 'morgan';
 import * as http from 'http';
 import * as colors from 'colors';
+import * as path from 'path';
+import * as fs from 'fs';
+import * as rfs from 'rotating-file-stream';
 
 import { apiPrefix } from './constant';
 
@@ -10,10 +13,20 @@ import config from './service/config';
 
 const app = express();
 
+const logDirectory = path.join(__dirname, '../log/access');
+if (!fs.existsSync(logDirectory)) {
+  fs.mkdirSync(logDirectory);
+}
+const accessLogStream = rfs('access.log', {
+  interval: '1d', // rotate daily
+  path: logDirectory
+});
+
 app.set('view engine', 'ejs');
 app.use('/storage', express.static('storage'));
 
 app.use(morgan('combined'));
+app.use(morgan('combined', { stream: accessLogStream }));
 
 app.use(require('body-parser').json());
 app.use(require('body-parser').urlencoded({ extended: true }));
