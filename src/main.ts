@@ -12,7 +12,9 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.use('/storage', express.static('storage'));
-app.use(morgan('dev'));
+
+app.use(morgan('combined'));
+
 app.use(require('body-parser').json());
 app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('cookie-parser')());
