@@ -1,5 +1,5 @@
-import { bookshelf } from '../../db/bookshelf.js';
 import * as express from 'express';
+import { bookshelf } from '../../db/bookshelf.js';
 import { authJwt } from '../../route/middle/jwt';
 import { AccessLimitError, NotFoundError, DuplicateError } from '../../service/error';
 import { TaskWall, TaskBoardModel, TASKWALL_TYPE } from '../../model/task-wall';
@@ -40,24 +40,30 @@ TaskBoardRouter.get('/user/:userId/task-board', authJwt, async (req, res, next) 
 
 TaskBoardRouter.get('/task-board/:id/verbose', authJwt, async (req, res, next) => {
   const { id } = req.params;
-  const board = await TaskWall.getModel()
-    .where({ id })
-    .fetch({
-      withRelated: [
-        {
-          tracks: () => {},
-          'tracks.cards': () => {},
-          'tracks.cards.creater': qb => {
-            qb.select('email', 'id');
-          },
-          'tracks.cards.owner': qb => {
-            qb.select('email', 'id');
+  try {
+    const board = await new TaskBoardModel()
+      .where({ id })
+      .fetch({
+        withRelated: [
+          {
+            tracks: R.identity,
+            'tracks.cards': R.identity,
+            'tracks.cards.creater': qb => {
+              qb.select('email', 'id');
+            },
+            'tracks.cards.owner': qb => {
+              qb.select('email', 'id');
+            }
           }
-        }
-      ]
-    });
-  if (!board) return next(new NotFoundError());
-  return res.send(board);
+        ]
+      });
+    if (!board) {
+      return next(new NotFoundError());
+    }
+    return res.send(board);
+  } catch (error) {
+    next(error);
+  }
 });
 
 TaskBoardRouter.delete('/task-board/:boardId', authJwt, boardAuth, async (req, res, next) => {
@@ -132,7 +138,7 @@ TaskBoardRouter.post('/task-board/:boardId/invite', authJwt, async (req, res, ne
     const taskAccess = await new TaskAccessModel({
       userId: req.body.userId,
       boardId: req.body.boardId,
-      created_at: new Date()
+      created_at: new Date().getTime()
     }).save();
     res.json(taskAccess);
   } catch (error) {

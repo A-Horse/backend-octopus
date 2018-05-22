@@ -16,7 +16,7 @@ export const TaskTrackModel = bookshelf.Model.extend({
       });
     });
   },
-  cards: function() {
+  cards() {
     return this.hasMany(TaskCardModel, 'taskListId');
   }
 });

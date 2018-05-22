@@ -1,13 +1,13 @@
 import { bookshelf } from '../db/bookshelf.js';
 
-import { TaskListModel } from './task-track';
+import { TaskTrackModel } from './task-track';
 import { GroupModel } from './group';
 
 export const TaskBoardModel = bookshelf.Model.extend({
   tableName: 'task-board',
   cards: function() {},
   tracks: function() {
-    return this.hasMany(TaskListModel, 'taskWallId');
+    return this.hasMany(TaskTrackModel, 'taskWallId');
   },
   group: function() {
     return this.hasMany(GroupModel, 'taskWallId');
@@ -15,6 +15,7 @@ export const TaskBoardModel = bookshelf.Model.extend({
 });
 
 import { Group } from './group';
+
 import { TaskList, DEFAULT_LIST_NAME } from './task-list';
 
 export const TASKWALL_TYPE = {
