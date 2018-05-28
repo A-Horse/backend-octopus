@@ -18,7 +18,7 @@ if (!fs.existsSync(logDirectory)) {
   fs.mkdirSync(logDirectory);
 }
 const accessLogStream = rfs('access.log', {
-  interval: '1d', // rotate daily
+  interval: '1d',
   path: logDirectory
 });
 
@@ -44,8 +44,8 @@ import { TodoRouter } from './route/todo/todo.router';
 import { TaskBoardRouter } from './route/task/task-board.router';
 import { UserRouter } from './route/user.router';
 
-app.use(apiPrefix, FileRouter);
 app.use(apiPrefix, RootRouter);
+app.use(apiPrefix, FileRouter);
 app.use(apiPrefix, TaskTrackRouter);
 app.use(apiPrefix, TaskCardRouter);
 
