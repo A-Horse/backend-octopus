@@ -1,7 +1,7 @@
 import * as  express from 'express';
 import { authJwt } from '../middle/jwt';
 import { TodoBoxModel } from '../../model/todo-box';
-import { TodoModel } from '../../model/todo';
+import { TodoModel } from '../../model/todo.model';
 
 const TodoBoxRouter = express.Router();
 

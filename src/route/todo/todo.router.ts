@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { authJwt } from '../../route/middle/jwt';
-import { TodoModel } from '../../model/todo';
+import { TodoModel } from '../../model/todo.model';
 import { AccessLimitError } from '../../service/error';
 import { validateRequest } from '../../service/validate';
 
@@ -23,13 +23,13 @@ TodoRouter.post('/todo', authJwt, async (req, res, next) => {
   try {
     validateRequest(req.body, 'content', ['required']);
     const { jw } = req;
-    const todo = await TodoModel.where({
+    const todo = await TodoModel.where().save({
       userId: jw.user.id,
       content: req.body.content,
       deadline: req.body.deadline,
       todoBoxId: req.body.todoBoxId,
       created_at: new Date().getTime()
-    }).save();
+    });
     res.send(todo);
   } catch (error) {
     next(error);
