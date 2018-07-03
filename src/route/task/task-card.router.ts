@@ -97,19 +97,22 @@ TaskCardRouter.patch('/task-card/:cardId', authJwt, async (req, res) => {
   }
 });
 
-TaskCardRouter.patch('/task-board/:boardId/task-card/index', authJwt, async (req, res, next) => {
-  // TODO auth board
+TaskCardRouter.patch('/task-cards/move-batch', authJwt, async (req, res, next) => {
+  // TODO 判断每一个 card 的权限
   try {
-    const { cardIndexs } = req.body;
+    const cards = req.body;
+    console.log(cards);
     const result = await Promise.all(
-      cardIndexs.map(async trackIndex => {
-        const card = await TaskCardModel.forge({ id: trackIndex.id }).save({
-          index: trackIndex.index
+      Object.values(cards).map(async card => {
+        const updatedCard = await TaskCardModel.forge({ id: card.id }).save({
+          index: card.index,
+          taskListId: card.taskListId
+
         });
-        return card;
+        return updatedCard;
       })
     );
-    res.status(200).json(result);
+    res.status(200).send(result);
   } catch (error) {
     next(error);
   }

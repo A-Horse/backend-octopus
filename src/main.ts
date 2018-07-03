@@ -8,7 +8,6 @@ import * as fs from 'fs';
 import * as rfs from 'rotating-file-stream';
 
 import { apiPrefix } from './constant';
-
 import config from './service/config';
 
 const app = express();
