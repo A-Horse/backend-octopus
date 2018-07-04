@@ -34,7 +34,6 @@ app.use(require('cookie-parser')());
 import { RootRouter } from './route/root';
 import { TaskTrackRouter } from './route/task/task-track.router';
 import { TaskCardRouter } from './route/task/task-card.router';
-import { FileRouter } from './route/file';
 import { StatusErrorHandleMiddle } from './route/middle/error-handle';
 
 import { tApiPrefix } from './constant';
@@ -44,7 +43,6 @@ import { TaskBoardRouter } from './route/task/task-board.router';
 import { UserRouter } from './route/user.router';
 
 app.use(apiPrefix, RootRouter);
-app.use(apiPrefix, FileRouter);
 app.use(apiPrefix, TaskTrackRouter);
 app.use(apiPrefix, TaskCardRouter);
 

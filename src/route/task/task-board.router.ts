@@ -8,14 +8,19 @@ import { TaskList, TaskTrackModel } from '../../model/task-track';
 import { TaskAccessModel } from '../../model/task-access';
 import { Group } from '../../model/group';
 import * as R from 'ramda';
-import { hashFileName } from '../../service/file';
 import * as path from 'path';
 import { saveImage } from '../../service/storage';
 import { knex } from '../../db/bookshelf';
+import * as md5 from 'blueimp-md5';
+
 
 const TaskBoardRouter = express.Router();
 
 const multipartMiddleware = require('connect-multiparty')();
+
+export function hashFileName(content) {
+}
+
 
 export function boardAuth(req, res, next) {
   const { boardId } = req.params;
@@ -149,7 +154,9 @@ TaskBoardRouter.post('/task-board/:boardId/invite', authJwt, async (req, res, ne
 TaskBoardRouter.post('/task-board/:id/cover', multipartMiddleware, async (req, res, next) => {
   try {
     const imageURLData = req.body.cover.replace(/^data:image\/\w+;base64,/, '');
-    const filename = hashFileName(imageURLData);
+    const hash = md5(imageURLData + Date.now()).substring(0, 20);
+    const filename = R.compose(R.join('-'), R.splitEvery(5))(hash);
+
     await saveImage(filename, COVER_STORAGE_PATH, imageURLData);
     const savedPath = path.join(COVER_STORAGE_PATH, filename);
     const board = await TaskBoardModel.where({ id: req.params.id }).fetch();
