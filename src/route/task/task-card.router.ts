@@ -101,9 +101,8 @@ TaskCardRouter.patch('/task-cards/move-batch', authJwt, async (req, res, next) =
   // TODO 判断每一个 card 的权限
   try {
     const cards = req.body;
-    console.log(cards);
     const result = await Promise.all(
-      Object.values(cards).map(async card => {
+      Object.values(cards).map(async (card: any) => {
         const updatedCard = await TaskCardModel.forge({ id: card.id }).save({
           index: card.index,
           taskListId: card.taskListId
