@@ -13,9 +13,11 @@ import config from './service/config';
 const app = express();
 
 const logDirectory = path.join(__dirname, '../log/access');
+
 if (!fs.existsSync(logDirectory)) {
   fs.mkdirSync(logDirectory);
 }
+
 const accessLogStream = rfs('access.log', {
   interval: '1d',
   path: logDirectory
