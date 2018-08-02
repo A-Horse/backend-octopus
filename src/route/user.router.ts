@@ -8,12 +8,9 @@ import { validateRequest } from '../service/validate';
 import { validate } from '../route/middle/check';
 import { JWT_KEY } from '../constant';
 import * as R from 'ramda';
+import { configure } from '../configure';
 
 const UserRouter = express.Router();
-
-UserRouter.get('/alive', (req, res) => {
-  res.json({ status: 'alive' });
-});
 
 UserRouter.get('/search', async (req, res) => {
   const result = await UserModel.where(req.query).fetch();
@@ -44,7 +41,6 @@ UserRouter.post('/logout', authJwt, (req, res) => {
 });
 
 UserRouter.post('/signin', async (req, res, next) => {
-  // TODO expries time
   try {
     const { email, password } = req.body;
     const creds = {
@@ -52,10 +48,12 @@ UserRouter.post('/signin', async (req, res, next) => {
       password: password.trim()
     };
     const user = await User.authUser(creds);
-    if (!user) return res.status(401).send();
+    if (!user) {
+      return res.status(401).send();
+    }
     return res.send({
-      jwt: signJwt({ user: user }),
-      user: user
+      jwt: signJwt(user),
+      user
     });
   } catch (error) {
     next(error);
@@ -63,10 +61,6 @@ UserRouter.post('/signin', async (req, res, next) => {
 });
 
 UserRouter.post('/signup', (req, res, next) => {
-  validateRequest(req.body, 'username', ['required']);
-  validateRequest(req.body, 'password', ['required']);
-  validateRequest(req.body, 'email', ['required']);
-
   const { username, password, email } = req.body;
   User.createUser({
     username,
@@ -74,7 +68,7 @@ UserRouter.post('/signup', (req, res, next) => {
     email
   })
     .then(user => {
-      user.save().then(user => {
+      user.save().then((user: any) => {
         const json = user.omit('password');
         const token = signJwt({ user: json });
 
