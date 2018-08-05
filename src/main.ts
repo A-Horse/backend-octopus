@@ -24,7 +24,12 @@ const accessLogStream = rfs('access.log', {
 });
 
 app.set('view engine', 'ejs');
-app.use('/storage', express.static('storage'));
+app.use(
+  '/storage',
+  express.static('storage', {
+    maxAge: 1000 * 60 * 60 * 24 * 365
+  })
+);
 
 app.use(morgan('combined'));
 app.use(morgan('combined', { stream: accessLogStream }));

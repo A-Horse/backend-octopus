@@ -3,7 +3,7 @@ import { AccessLimitError } from '../../service/error';
 
 // TODO move to auth
 export function authJwt(req, res, next) {
-  const jwtdata = req.header('jwts-token');
+  const jwtdata = req.header('jwt-token');
 
   if (!jwtdata) {
     throw new AccessLimitError();
@@ -11,7 +11,6 @@ export function authJwt(req, res, next) {
   try {
     req.jw = unsignJwt(jwtdata);
   } catch (error) {
-    console.error(error);
     throw new AccessLimitError();
   }
 
