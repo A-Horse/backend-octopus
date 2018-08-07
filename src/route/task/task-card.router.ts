@@ -48,16 +48,18 @@ TaskCardRouter.post('/task-card', authJwt, taskBoardGroupForBody, async (req, re
         taskListId: data.trackId,
         title: data.title,
         createrId: jw.user.id,
-        index: existCount + 1
+        index: existCount + 1,
+        createdAt: new Date().getTime(),
+        updatedAt: new Date().getTime()
       })
     ).save();
     const card = await new TaskCardModel({ id: createdCard.id }).fetch({
       withRelated: [
         {
-          creater: function(qb) {
+          creater: (qb) => {
             qb.select('email', 'id');
           },
-          owner: function(qb) {
+          owner: (qb) => {
             qb.select('email', 'id');
           }
         }

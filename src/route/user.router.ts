@@ -62,6 +62,9 @@ UserRouter.post('/signin', async (req, res, next) => {
 
 UserRouter.post('/signup', (req, res, next) => {
   const { username, password, email } = req.body;
+  if (configure.getConfig().DISABLE_SIGNUP) {
+    return res.status(403).send()
+  }
   User.createUser({
     username,
     password,
@@ -71,7 +74,6 @@ UserRouter.post('/signup', (req, res, next) => {
       user.save().then((user: any) => {
         const json = user.omit('password');
         const token = signJwt({ user: json });
-
         res.header(JWT_KEY, token);
         res.status(201).send(json);
       });
