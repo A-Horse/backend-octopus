@@ -56,10 +56,10 @@ TaskCardRouter.post('/task-card', authJwt, taskBoardGroupForBody, async (req, re
     const card = await new TaskCardModel({ id: createdCard.id }).fetch({
       withRelated: [
         {
-          creater: (qb) => {
+          creater: qb => {
             qb.select('email', 'id');
           },
-          owner: (qb) => {
+          owner: qb => {
             qb.select('email', 'id');
           }
         }
@@ -84,10 +84,10 @@ TaskCardRouter.patch('/task-card/:cardId', authJwt, async (req, res) => {
     const updatedCard = await new TaskCardModel().where({ id: cardId }).fetch({
       withRelated: [
         {
-          creater: function(qb) {
+          creater: qb => {
             qb.select('email', 'id');
           },
-          owner: function(qb) {
+          owner: qb => {
             qb.select('email', 'id');
           }
         }
@@ -108,7 +108,6 @@ TaskCardRouter.patch('/task-cards/move-batch', authJwt, async (req, res, next) =
         const updatedCard = await TaskCardModel.forge({ id: card.id }).save({
           index: card.index,
           taskListId: card.taskListId
-
         });
         return updatedCard;
       })
@@ -127,15 +126,14 @@ TaskCardRouter.get('/task-card/:cardId', authJwt, async (req, res, next) => {
     const card = await new TaskCardModel({ id: cardId }).fetch({
       withRelated: [
         {
-          creater: function(qb) {
+          creater: qb => {
             qb.select('email', 'id');
           },
-          owner: function(qb) {
+          owner: qb => {
             qb.select('email', 'id');
           },
-          // TODO
-          comments: function() {},
-          'comments.creater': function(qb) {
+          comments: () => {},
+          'comments.creater': (qb) => {
             qb.select('email', 'id');
           }
         }
