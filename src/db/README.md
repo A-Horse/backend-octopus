@@ -1,5 +1,5 @@
 
-
+## create all table
 ```
-node 
+node built/db/table.js create
 ```
