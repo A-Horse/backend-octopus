@@ -1,9 +1,7 @@
-'use strict';
-
 import { bookshelf } from '../db/bookshelf.js';
 
 export const GroupModel = bookshelf.Model.extend({
-  tableName: 'group'
+  tableName: 'group2'
 });
 
 export class Group {

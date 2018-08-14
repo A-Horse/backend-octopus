@@ -49,8 +49,8 @@ TaskCardRouter.post('/task-card', authJwt, taskBoardGroupForBody, async (req, re
         title: data.title,
         createrId: jw.user.id,
         index: existCount + 1,
-        createdAt: new Date().getTime(),
-        updatedAt: new Date().getTime()
+        created_at: new Date().getTime(),
+        updated_at: new Date().getTime()
       })
     ).save();
     const card = await new TaskCardModel({ id: createdCard.id }).fetch({

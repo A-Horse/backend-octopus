@@ -3,7 +3,7 @@ import { bookshelf } from '../db/bookshelf.js';
 import { TaskCardModel } from './task-card';
 
 export const TaskTrackModel = bookshelf.Model.extend({
-  tableName: 'task-track',
+  tableName: 'task-track2',
   bundleDelete() {
     return new Promise((resolve, reject) => {
       bookshelf.transaction(t => {

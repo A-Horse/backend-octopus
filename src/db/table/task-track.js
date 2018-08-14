@@ -8,6 +8,7 @@ export const createPromise = knex.schema.createTableIfNotExists(TableName, funct
   table.integer('index');
   table.string('name');
   table.string('type');
+  table.timestamps();
 });
 
 export const dropPromise = knex.schema.dropTableIfExists(TableName);
