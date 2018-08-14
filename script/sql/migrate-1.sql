@@ -1,8 +1,7 @@
 ALTER TABLE "task-card" ADD type TEXT;
 
-INSERT INTO table1 (column1, column2, ... column_n)
-SELECT column1, column2, ... column_n
-FROM _table1_old;
+INSERT INTO "task-card2" (id, title, taskTrackId, createrId, ownerId, taskBoardId, content, isDone, "index", created_at, updated_at)
+SELECT id, title, taskListId, createrId, ownerId, taskWallId, content, isDone, "index", created_at, updated_at
+FROM "task-card";
 
-# https://www.techonthenet.com/sqlite/tables/alter_table.php
 

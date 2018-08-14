@@ -76,9 +76,9 @@ TaskBoardRouter.delete('/task-board/:boardId', authJwt, boardAuth, async (req, r
   try {
     const { boardId } = req.params;
     await TaskBoardModel.where({ id: boardId }).destroy();
-    const tracks = await TaskTrackModel.where({ taskWallId: boardId }).fetchAll();
+    const tracks = await TaskTrackModel.where({ taskBoardId: boardId }).fetchAll();
     tracks.forEach(async track => {
-      await TaskCardModel.where({ taskListId: track.id }).destroy();
+      await TaskCardModel.where({ taskTrackId: track.id }).destroy();
       await track.destroy();
     });
     res.status(204).send();

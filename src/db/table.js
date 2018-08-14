@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import config from '../service/config.js';
 import * as colors from 'colors';
 
 const dbpath = './db/db.sqlite';

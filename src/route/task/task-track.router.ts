@@ -63,10 +63,10 @@ TaskTrackRouter.post('/task-board/:boardId/track', async (req, res) => {
   const { jw } = req;
   const { boardId } = req.params;
 
-  const existNumber = await TaskTrackModel.where({ taskWallId: boardId }).count();
+  const existNumber = await TaskTrackModel.where({ taskBoardId: boardId }).count();
   const savedTrack = await new TaskTrackModel().save({
     index: existNumber,
-    taskWallId: boardId,
+    taskBoardId: boardId,
     name: req.body.name
   });
   res.status(201).send({ ...savedTrack.serialize(), cards: [] });

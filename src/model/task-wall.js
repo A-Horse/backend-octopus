@@ -7,10 +7,10 @@ export const TaskBoardModel = bookshelf.Model.extend({
   tableName: 'task-board',
   cards: function() {},
   tracks: function() {
-    return this.hasMany(TaskTrackModel, 'taskWallId');
+    return this.hasMany(TaskTrackModel, 'taskBoardId');
   },
   group: function() {
-    return this.hasMany(GroupModel, 'taskWallId');
+    return this.hasMany(GroupModel, 'taskBoardId');
   }
 });
 
@@ -35,7 +35,7 @@ export class TaskWall {
         self.model.save(null, { transacting: t }).tap(function(taskWall) {
           Promise.all([
             new Group({
-              taskWallId: taskWall.get('id'),
+              taskBoardId: taskWall.get('id'),
               userId: taskWall.get('ownerId'),
               accessLevel: 1
             }).model.save(null, { transacting: t })

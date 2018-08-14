@@ -1,11 +1,10 @@
-import {knex} from '../table';
-import colors from 'colors';
+import { knex } from '../table';
 
-export const TableName = 'task-track';
+export const TableName = 'task-track2';
 
-export const createPromise = knex.schema.createTableIfNotExists(TableName, function (table) {
+export const createPromise = knex.schema.createTableIfNotExists(TableName, function(table) {
   table.increments();
-  table.integer('taskWallId');
+  table.integer('taskBoardId');
   table.integer('index');
   table.string('name');
   table.string('type');

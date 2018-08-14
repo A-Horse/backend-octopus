@@ -1,10 +1,10 @@
-import {knex} from '../table';
+import { knex } from '../table';
 
-export const TableName = 'group';
+export const TableName = 'group2';
 
-export const createPromise = knex.schema.createTableIfNotExists(TableName, function (table) {
+export const createPromise = knex.schema.createTableIfNotExists(TableName, function(table) {
   table.increments();
-  table.integer('taskWallId');
+  table.integer('taskBoardId');
   table.integer('userId');
   table.integer('accessLevel');
 });

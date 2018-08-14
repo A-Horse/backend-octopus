@@ -1,8 +1,6 @@
 'use strict';
 
-import {
-  bookshelf
-} from '../db/bookshelf.js';
+import { bookshelf } from '../db/bookshelf.js';
 
 export const GroupModel = bookshelf.Model.extend({
   tableName: 'group'
@@ -11,15 +9,13 @@ export const GroupModel = bookshelf.Model.extend({
 export class Group {
   constructor(info) {
     this.model = new GroupModel({
-      taskWallId: info.taskWallId,
+      taskBoardId: info.taskBoardId,
       userId: info.userId
     });
     return this;
   }
 
-  save() {
-
-  }
+  save() {}
 
   static getModel() {
     return GroupModel;

@@ -13,9 +13,9 @@ const TaskCardRouter = express.Router();
 TaskCardRouter.get('/task-card', authJwt, async (req, res, next) => {
   try {
     const { jw } = req;
-    const { taskWallId } = req.body;
+    const { taskBoardId } = req.body;
     const card = await TaskCardModel.where({
-      taskWallId,
+      taskBoardId,
       ownerId: jw.user.id
     }).fetchAll();
     res.json(card);
@@ -41,11 +41,11 @@ TaskCardRouter.post('/task-card', authJwt, taskBoardGroupForBody, async (req, re
   try {
     const data = R.pick(['title', 'boardId', 'trackId'], req.body);
     const { jw } = req;
-    const existCount = await TaskCardModel.where({ taskListId: data.trackId }).count();
+    const existCount = await TaskCardModel.where({ taskTrackId: data.trackId }).count();
     const createdCard = await new TaskCardModel(
       Object.assign({
-        taskWallId: data.boardId,
-        taskListId: data.trackId,
+        taskBoardId: data.boardId,
+        taskTrackId: data.trackId,
         title: data.title,
         createrId: jw.user.id,
         index: existCount + 1,
@@ -107,7 +107,7 @@ TaskCardRouter.patch('/task-cards/move-batch', authJwt, async (req, res, next) =
       Object.values(cards).map(async (card: any) => {
         const updatedCard = await TaskCardModel.forge({ id: card.id }).save({
           index: card.index,
-          taskListId: card.taskListId
+          taskTrackId: card.taskTrackId
         });
         return updatedCard;
       })
@@ -140,7 +140,7 @@ TaskCardRouter.get('/task-card/:cardId', authJwt, async (req, res, next) => {
       ]
     });
     const access = await GroupModel.where({
-      taskWallId: card.taskWallId,
+      taskBoardId: card.taskBoardId,
       userId: jw.user.id
     });
     if (access) {

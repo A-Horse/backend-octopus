@@ -9,7 +9,7 @@ export async function taskBoardGroupForBody(req, res, next) {
   const { taskBoardId } = req.body;
   try {
     const access = await GroupModel.where({
-      taskWallId: taskBoardId,
+      taskBoardId: taskBoardId,
       userId: jw.user.id
     });
     if (access) {
@@ -25,7 +25,7 @@ export async function taskBoardGroupForParams(req, res, next) {
   const { boardId } = req.params;
   try {
     const access = await GroupModel.where({
-      taskWallId: boardId,
+      taskBoardId: boardId,
       userId: jw.user.id
     });
     if (access) {

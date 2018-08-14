@@ -4,7 +4,7 @@ import { TaskCardCommentModel } from './task-card-comment';
 import { TaskBoardModel } from './task-wall';
 
 export const TaskCardModel = bookshelf.Model.extend({
-  tableName: 'task-card',
+  tableName: 'task-card2',
   creater: function() {
     return this.belongsTo(UserModel, 'createrId');
   },
@@ -15,7 +15,7 @@ export const TaskCardModel = bookshelf.Model.extend({
     return this.hasMany(TaskCardCommentModel, 'taskCardId');
   },
   board: function() {
-    return this.belongsTo(TaskBoardModel, 'taskWallId');
+    return this.belongsTo(TaskBoardModel, 'taskBoardId');
   }
 });
 
