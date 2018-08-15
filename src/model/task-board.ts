@@ -5,11 +5,11 @@ import { GroupModel } from './group';
 
 export const TaskBoardModel = bookshelf.Model.extend({
   tableName: 'task-board',
-  cards: function() {},
-  tracks: function() {
+  cards: () => {},
+  tracks: () => {
     return this.hasMany(TaskTrackModel, 'taskBoardId');
   },
-  group: function() {
+  group: () => {
     return this.hasMany(GroupModel, 'taskBoardId');
   }
 });
@@ -28,7 +28,7 @@ export class TaskWall {
     return this;
   }
 
-  bundleCreate() {
+  public bundleCreate() {
     const self = this;
     return new Promise((resolve, reject) => {
       bookshelf.transaction((t) => {
