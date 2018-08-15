@@ -16,13 +16,13 @@ export const TaskBoardModel = bookshelf.Model.extend({
 
 import { Group } from './group';
 
-import { TaskList, DEFAULT_LIST_NAME } from './task-list';
-
 export const TASKWALL_TYPE = {
   NORMAL: 'NORMAL'
 };
 
 export class TaskWall {
+  model: any;
+
   constructor(info) {
     this.model = new TaskBoardModel(info);
     return this;
@@ -30,9 +30,9 @@ export class TaskWall {
 
   bundleCreate() {
     const self = this;
-    return new Promise(function(resolve, reject) {
-      bookshelf.transaction(function(t) {
-        self.model.save(null, { transacting: t }).tap(function(taskWall) {
+    return new Promise((resolve, reject) => {
+      bookshelf.transaction((t) => {
+        self.model.save(null, { transacting: t }).tap((taskWall) => {
           Promise.all([
             new Group({
               taskBoardId: taskWall.get('id'),

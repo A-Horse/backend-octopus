@@ -2,7 +2,7 @@ import * as express from 'express';
 import { bookshelf } from '../../db/bookshelf.js';
 import { authJwt } from '../../route/middle/jwt';
 import { AccessLimitError, NotFoundError, DuplicateError } from '../../service/error';
-import { TaskWall, TaskBoardModel, TASKWALL_TYPE } from '../../model/task-wall';
+import { TaskWall, TaskBoardModel, TASKWALL_TYPE } from '../../model/task-board';
 import { TaskCard, TaskCardModel } from '../../model/task-card';
 import { TaskList, TaskTrackModel } from '../../model/task-track';
 import { TaskAccessModel } from '../../model/task-access';
@@ -13,14 +13,9 @@ import { saveImage } from '../../service/storage';
 import { knex } from '../../db/bookshelf';
 import * as md5 from 'blueimp-md5';
 
-
 const TaskBoardRouter = express.Router();
 
 const multipartMiddleware = require('connect-multiparty')();
-
-export function hashFileName(content) {
-}
-
 
 export function boardAuth(req, res, next) {
   const { boardId } = req.params;
@@ -73,6 +68,7 @@ TaskBoardRouter.get('/task-board/:id/verbose', authJwt, async (req, res, next) =
 
 TaskBoardRouter.delete('/task-board/:boardId', authJwt, boardAuth, async (req, res, next) => {
   // TODO 只要 owner 才能删除
+  // TODO 不要硬删除
   try {
     const { boardId } = req.params;
     await TaskBoardModel.where({ id: boardId }).destroy();
@@ -88,26 +84,45 @@ TaskBoardRouter.delete('/task-board/:boardId', authJwt, boardAuth, async (req, r
 });
 
 TaskBoardRouter.post('/task-board', authJwt, async (req, res, next) => {
-  try {
-    const { name } = req.body;
-    const { jw } = req;
+  const { name } = req.body;
+  const { jw } = req;
 
-    const board = await new TaskBoardModel({
+  bookshelf.transaction((t)  => {
+
+    const boardPromise =  new TaskBoardModel({
       name,
       ownerId: jw.user.id,
       createrId: jw.user.id
-    }).save();
+    }).save(null, {transacting: t});
 
-    const taskAccess = await new TaskAccessModel({
-      userId: jw.user.id,
-      boardId: board.id,
-      level: 5,
-      created_at: new Date()
-    }).save();
+    const taskAccessPromise = boardPromise.then((board) => {
+      return new TaskAccessModel({
+        userId: jw.user.id,
+        boardId: board.id,
+        level: 5,
+        created_at: new Date()
+      }).save(null, {transacting: t});
+    })
+
+    const taskSettingPromise = boardPromise.then((board) => {
+      return new TaskAccessModel({
+        userId: jw.user.id,
+        boardId: board.id,
+        level: 5,
+        created_at: new Date()
+      }).save(null, {transacting: t});
+    });
+
+
+    return Promise.all([boardPromise, taskAccessPromise])
+
+  }).then(([board, taskAccess]) => {
+    console.log(board, taskAccess);
     res.json(board);
-  } catch (error) {
+  }).catch((error) =>  {
     next(error);
-  }
+  });
+
 });
 
 TaskBoardRouter.get('/task-board/:boardId/participant', authJwt, async (req, res, next) => {
