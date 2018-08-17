@@ -12,4 +12,4 @@ INSERT INTO "group2" (id, taskBoardId, createrId, accessLevel)
 SELECT id, taskWallId, userId, accessLevel
 FROM "group";
 
-INSERT INTO "task-board-setting" (id, taskBoardId) SELECT id FROM "task-board";
+INSERT INTO "task-board-setting" (boardId) SELECT id FROM "task-board";

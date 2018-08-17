@@ -1,7 +1,7 @@
 import { bookshelf } from '../db/bookshelf.js';
 import { UserModel } from './user';
 import { TaskCardCommentModel } from './task-card-comment';
-import { TaskBoardModel } from './task-wall';
+import { TaskBoardModel } from './task-board';
 
 export const TaskCardModel = bookshelf.Model.extend({
   tableName: 'task-card2',
