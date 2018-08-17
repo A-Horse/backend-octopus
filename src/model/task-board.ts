@@ -5,11 +5,11 @@ import { GroupModel } from './group';
 
 export const TaskBoardModel = bookshelf.Model.extend({
   tableName: 'task-board',
-  cards: () => {},
-  tracks: () => {
+  cards() {},
+  tracks() {
     return this.hasMany(TaskTrackModel, 'taskBoardId');
   },
-  group: () => {
+  group() {
     return this.hasMany(GroupModel, 'taskBoardId');
   }
 });
