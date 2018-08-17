@@ -2,7 +2,7 @@ import * as express from 'express';
 import { bookshelf } from '../../db/bookshelf.js';
 import { authJwt } from '../../route/middle/jwt';
 import { AccessLimitError, NotFoundError, DuplicateError } from '../../service/error';
-import { TaskWall, TaskBoardModel, TASKWALL_TYPE } from '../../model/task-board';
+import { TaskWall, TaskBoardModel } from '../../model/task-board';
 import { TaskCard, TaskCardModel } from '../../model/task-card';
 import { TaskList, TaskTrackModel } from '../../model/task-track';
 import { TaskAccessModel } from '../../model/task-access';

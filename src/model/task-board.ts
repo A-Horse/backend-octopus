@@ -16,12 +16,12 @@ export const TaskBoardModel = bookshelf.Model.extend({
 
 import { Group } from './group';
 
-export const TASKWALL_TYPE = {
-  NORMAL: 'NORMAL'
-};
+// export const TASKWALL_TYPE = {
+//   NORMAL: 'NORMAL'
+// };
 
 export class TaskWall {
-  model: any;
+  public model: any;
 
   constructor(info) {
     this.model = new TaskBoardModel(info);

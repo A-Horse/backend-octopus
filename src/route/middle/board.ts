@@ -1,15 +1,16 @@
 import { unsignJwt } from '../../service/auth';
 
-import { JWT_STORAGE_KEY } from '../../setting';
 import { GroupModel } from '../../model/group';
 import { AccessLimitError, NotFoundError } from '../../service/error';
 
+
+// TODO
 export async function taskBoardGroupForBody(req, res, next) {
   const { jw } = req;
   const { taskBoardId } = req.body;
   try {
     const access = await GroupModel.where({
-      taskBoardId: taskBoardId,
+      taskBoardId,
       userId: jw.user.id
     });
     if (access) {
