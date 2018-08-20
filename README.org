@@ -1,4 +1,10 @@
 * Octopuse Backend
 
-** 日志
-- /log/access http 日志
+** Log
+- /log/access http log
+
+
+** Tool
+tool scripts in `src/tool`
+
+

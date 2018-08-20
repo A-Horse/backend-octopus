@@ -1,0 +1,14 @@
+*** create user
+
+``` bash
+
+```
+
+*** generator password
+#+BEGIN_SRC bash
+node built/tool/password-generator 123
+#+END_SRC
+
+it will output:
+=$2a$10$dsBGV6fJhbNZafQftuxYSe/ROAo.p6IxfSQjWXQvF5K4K/DIcOyki=
+
