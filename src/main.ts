@@ -47,7 +47,9 @@ import { tApiPrefix } from './constant';
 import { TodoBoxRouter } from './route/todo/todo-box';
 import { TodoRouter } from './route/todo/todo.router';
 import { TaskBoardRouter } from './route/task/task-board.router';
+
 import { UserRouter } from './route/user.router';
+import { TaskBoardSettingRouter } from './route/task/task-board-setting.router';
 
 app.use(apiPrefix, RootRouter);
 app.use(apiPrefix, TaskTrackRouter);
@@ -55,6 +57,7 @@ app.use(apiPrefix, TaskCardRouter);
 
 app.use(tApiPrefix, TodoBoxRouter);
 app.use(tApiPrefix, TodoRouter);
+app.use(apiPrefix, TaskBoardSettingRouter);
 app.use('/api/tk', TaskBoardRouter);
 app.use('/api/user', UserRouter);
 
