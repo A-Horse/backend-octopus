@@ -18,10 +18,9 @@ TaskBoardSettingRouter.get(
   taskBoardParamAuthMiddle,
   async (req, res, next) => {
     try {
-      const { jw } = req;
-      const { taskBoardId } = req.body;
+      const { taskBoardId } = req.params;
       const card = await TaskBoardSettingModel.where({
-        taskBoardId
+        boardId: taskBoardId
       }).fetch();
       res.json(card);
     } catch (error) {
