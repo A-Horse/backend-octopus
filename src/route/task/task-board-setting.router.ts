@@ -21,9 +21,8 @@ TaskBoardSettingRouter.get(
       const { jw } = req;
       const { taskBoardId } = req.body;
       const card = await TaskBoardSettingModel.where({
-        taskBoardId,
-        ownerId: jw.user.id
-      }).fetchAll();
+        taskBoardId
+      }).fetch();
       res.json(card);
     } catch (error) {
       next(error);
