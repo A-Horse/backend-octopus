@@ -39,7 +39,7 @@ TaskCardRouter.post('/task-card', authJwt, taskBoardGroupForBody, async (req, re
   validateRequest(req.body, 'boardId', ['required']);
   validateRequest(req.body, 'trackId', ['required']);
   try {
-    const data = R.pick(['title', 'boardId', 'trackId'], req.body);
+    const data = R.pick(['title', 'boardId', 'trackId', 'type'], req.body);
     const { jw } = req;
     const existCount = await TaskCardModel.where({ taskTrackId: data.trackId }).count();
     const createdCard = await new TaskCardModel(
@@ -49,6 +49,7 @@ TaskCardRouter.post('/task-card', authJwt, taskBoardGroupForBody, async (req, re
         title: data.title,
         createrId: jw.user.id,
         index: existCount + 1,
+        type: data.type,
         created_at: new Date().getTime(),
         updated_at: new Date().getTime()
       })
