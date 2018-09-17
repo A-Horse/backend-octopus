@@ -77,7 +77,7 @@ TaskCardRouter.patch('/task-card/:cardId', authJwt, async (req, res) => {
     const { cardId } = req.params;
     const card = await new TaskCardModel({ id: cardId }).fetch();
     if (!card) {
-      throw new NotFoundError('can not found this task card');
+      throw new NotFoundError('card not exsit!');
     }
 
     await card.save(req.body);
