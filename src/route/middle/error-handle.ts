@@ -15,7 +15,7 @@ export function StatusErrorHandleMiddle(error, req, res, next) {
     return res.status(404).send({ message: error.message });
   } else {
     // TODO log
-    console.log('un catch express error:');
+    console.log('uncatch express error:');
     console.error(error.message);
     return res.status(500).send({ message: '服务器错误!' });
   }
