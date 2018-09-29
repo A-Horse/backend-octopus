@@ -46,7 +46,10 @@ TaskBoardRouter.get('/task-board/:id/verbose', authJwt, async (req, res, next) =
       withRelated: [
         {
           tracks: R.identity,
-          'tracks.cards': R.identity,
+          'tracks.cards': qb => {
+            return qb
+              .whereRaw('not status = "DELETED" and not status = "ARCHIVE" or status is null')
+          },
           'tracks.cards.creater': qb => {
             qb.select('email', 'id');
           },
@@ -104,11 +107,14 @@ TaskBoardRouter.post('/task-board', authJwt, async (req, res, next) => {
       });
 
       const taskBoardSettingPromise = boardPromise.then(board => {
-        return new TaskBoardSettingModel().save({
-          boardId: board.id,
-          created_at: new Date().getTime(),
-          updated_at: new Date().getTime()
-        }, { transacting: t });
+        return new TaskBoardSettingModel().save(
+          {
+            boardId: board.id,
+            created_at: new Date().getTime(),
+            updated_at: new Date().getTime()
+          },
+          { transacting: t }
+        );
       });
 
       return Promise.all([boardPromise, taskAccessPromise, taskBoardSettingPromise]);
