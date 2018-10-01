@@ -3,6 +3,7 @@ import { authJwt } from '../../route/middle/jwt';
 import { TodoModel } from '../../model/todo.model';
 import { AccessLimitError } from '../../service/error';
 import { validateRequest } from '../../service/validate';
+import { TaskCardModel } from '../../model/task-card';
 
 const TodoRouter = express.Router();
 
@@ -18,6 +19,20 @@ TodoRouter.get('/user/:userId/todo', authJwt, (req, res, next) => {
     .then(todos => res.send(todos))
     .catch(next);
 });
+
+TodoRouter.get('/user/:userId/todo-task', authJwt, (req, res, next) => {
+  const { jw } = req;
+  const { userId } = req.params;
+  if (jw.user.id !== +userId) {
+    throw new AccessLimitError();
+  }
+  new TaskCardModel()
+    .query({ where: { createrId: jw.user.id } })
+    .fetchAll()
+    .then(taskCards => res.send(taskCards))
+    .catch(next);
+});
+
 
 TodoRouter.post('/todo', authJwt, async (req, res, next) => {
   try {
