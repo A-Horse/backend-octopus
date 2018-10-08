@@ -21,5 +21,4 @@ export const TaskTrackModel = bookshelf.Model.extend({
   }
 });
 
-export const DEFAULT_LIST_NAME = 'default';
 
