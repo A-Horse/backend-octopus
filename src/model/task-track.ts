@@ -23,21 +23,3 @@ export const TaskTrackModel = bookshelf.Model.extend({
 
 export const DEFAULT_LIST_NAME = 'default';
 
-export class TaskList {
-  model: any;
-  constructor(info) {
-    this.model = new TaskTrackModel(info);
-  }
-
-  static createTaskList(info) {
-    return new TaskList(info);
-  }
-
-  static getModel() {
-    return TaskTrackModel;
-  }
-
-  static getTaskList(info) {
-    return new TaskList(info);
-  }
-}

@@ -4,7 +4,7 @@ import { authJwt } from '../../route/middle/jwt';
 import { AccessLimitError, NotFoundError, DuplicateError } from '../../service/error';
 import { TaskWall, TaskBoardModel } from '../../model/task-board';
 import { TaskCard, TaskCardModel } from '../../model/task-card';
-import { TaskList, TaskTrackModel } from '../../model/task-track';
+import { TaskTrackModel } from '../../model/task-track';
 import { TaskAccessModel } from '../../model/task-access';
 import { Group } from '../../model/group';
 import * as R from 'ramda';

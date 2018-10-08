@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { authJwt } from '../middle/jwt';
-import { TaskList, TaskTrackModel } from '../../model/task-track';
+import { TaskTrackModel } from '../../model/task-track';
 import { Group } from '../../model/group';
 import { AccessLimitError, NotFoundError } from '../../service/error';
 import { validateRequest } from '../../service/validate';
@@ -8,22 +8,22 @@ import { taskBoardGroupForBody, taskBoardGroupForParams } from '../middle/board'
 
 const TaskTrackRouter = express.Router();
 
-TaskTrackRouter.get(
-  '/task-board/:boardId/track/:trackId',
-  authJwt,
-  taskBoardGroupForBody,
-  async (req, res) => {
-    const { listId } = req.params;
-    const taskTrack = await TaskList.getModel()
-      .where({ id: listId })
-      .fetch();
+// TaskTrackRouter.get(
+//   '/task-board/:boardId/track/:trackId',
+//   authJwt,
+//   taskBoardGroupForBody,
+//   async (req, res) => {
+//     const { listId } = req.params;
+//     const taskTrack = await TaskList.getModel()
+//       .where({ id: listId })
+//       .fetch();
 
-    if (!taskTrack) {
-      throw new NotFoundError('not found this task list');
-    }
-    res.send(taskTrack);
-  }
-);
+//     if (!taskTrack) {
+//       throw new NotFoundError('not found this task list');
+//     }
+//     res.send(taskTrack);
+//   }
+// );
 
 TaskTrackRouter.get(
   '/task-board/:boardId/track/:trackId/card',
