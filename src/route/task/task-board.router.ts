@@ -27,7 +27,8 @@ TaskBoardRouter.get('/user/:userId/task-board', authJwt, async (req, res, next) 
       .from('task-board as board')
       .join('task-access as access', 'access.boardId', '=', 'board.id')
       .select('board.*')
-      .where('access.userId', '=', jw.user.id);
+      .where('access.userId', '=', jw.user.id)
+      .andWhere('status', '!=', 'DELETED')
     res.json(boards);
   } catch (error) {
     next(error);
@@ -42,8 +43,7 @@ TaskBoardRouter.get('/task-board/:id/verbose', authJwt, async (req, res, next) =
         {
           tracks: R.identity,
           'tracks.cards': qb => {
-            return qb
-              .whereRaw('not status = "DELETED" and not status = "ARCHIVE" or status is null')
+            return qb.whereRaw('not status = "DELETED" and not status = "ARCHIVE" or status is null');
           },
           'tracks.cards.creater': qb => {
             qb.select('email', 'id');
@@ -65,15 +65,9 @@ TaskBoardRouter.get('/task-board/:id/verbose', authJwt, async (req, res, next) =
 
 TaskBoardRouter.delete('/task-board/:boardId', authJwt, async (req, res, next) => {
   // TODO 只要 owner 才能删除
-  // TODO 不要硬删除
   try {
     const { boardId } = req.params;
-    await TaskBoardModel.where({ id: boardId }).destroy();
-    const tracks = await TaskTrackModel.where({ taskBoardId: boardId }).fetchAll();
-    tracks.forEach(async track => {
-      await TaskCardModel.where({ taskTrackId: track.id }).destroy();
-      await track.destroy();
-    });
+    await TaskBoardModel.where({ id: boardId }).save({ status: 'DELETED' }, { method: 'udpate' });
     res.status(204).send();
   } catch (error) {
     next(error);
