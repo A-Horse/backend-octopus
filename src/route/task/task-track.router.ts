@@ -102,7 +102,7 @@ TaskTrackRouter.delete(
   '/task-board/:boardId/track/:trackId',
   authJwt,
   taskBoardGroupForBody,
-  async (req, res) => {
+  async (req, res, next) => {
     const { boardId, trackId } = req.params;
     const { jw } = req;
 
@@ -110,7 +110,12 @@ TaskTrackRouter.delete(
       await new TaskTrackModel({ id: trackId }).bundleDelete();
       res.status(204).send();
     } catch(error) {
-      throw error;
+      if (error.message === 'No Rows Updated') {
+        res.status(204).send();
+      } else {
+        next(error);
+      }
+
     }
   }
 );
