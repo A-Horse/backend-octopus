@@ -106,8 +106,12 @@ TaskTrackRouter.delete(
     const { boardId, trackId } = req.params;
     const { jw } = req;
 
-    await new TaskTrackModel({ id: trackId }).bundleDelete();
-    res.status(204).send();
+    try {
+      await new TaskTrackModel({ id: trackId }).bundleDelete();
+      res.status(204).send();
+    } catch(error) {
+      throw error;
+    }
   }
 );
 

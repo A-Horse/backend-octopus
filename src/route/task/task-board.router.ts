@@ -68,7 +68,7 @@ TaskBoardRouter.delete('/task-board/:boardId', authJwt, async (req, res, next) =
   // TODO 只要 owner 才能删除
   try {
     const { boardId } = req.params;
-    await TaskBoardModel.where({ id: boardId }).save({ status: 'DELETED' }, { method: 'udpate' });
+    await TaskBoardModel.where({ id: boardId }).save({ status: 'DELETED' }, { method: 'update' });
     res.status(204).send();
   } catch (error) {
     next(error);
