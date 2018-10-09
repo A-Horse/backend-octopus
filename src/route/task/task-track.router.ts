@@ -99,14 +99,14 @@ TaskTrackRouter.patch('/task-board/:wallId/track/:listId', async (req, res) => {
 });
 
 TaskTrackRouter.delete(
-  '/task-board/:boardId/track/:listId',
+  '/task-board/:boardId/track/:trackId',
   authJwt,
   taskBoardGroupForBody,
   async (req, res) => {
-    const { boardId, listId } = req.params;
+    const { boardId, trackId } = req.params;
     const { jw } = req;
 
-    await new TaskTrackModel({ id: listId }).bundleDelete();
+    await new TaskTrackModel({ id: trackId }).bundleDelete();
     res.status(204).send();
   }
 );
