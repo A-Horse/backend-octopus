@@ -12,16 +12,11 @@ import * as path from 'path';
 import { saveImage } from '../../service/storage';
 import { knex } from '../../db/bookshelf';
 import * as md5 from 'blueimp-md5';
-import { TaskBoardSettingModel } from '../../model/task-board-setting.model.js';
+import { TaskBoardSettingModel } from '../../model/task-board-setting.model';
 
 const TaskBoardRouter = express.Router();
 
 const multipartMiddleware = require('connect-multiparty')();
-
-export function boardAuth(req, res, next) {
-  const { boardId } = req.params;
-  return next();
-}
 
 const COVER_STORAGE_PATH = 'board-cover';
 
@@ -68,7 +63,7 @@ TaskBoardRouter.get('/task-board/:id/verbose', authJwt, async (req, res, next) =
   }
 });
 
-TaskBoardRouter.delete('/task-board/:boardId', authJwt, boardAuth, async (req, res, next) => {
+TaskBoardRouter.delete('/task-board/:boardId', authJwt, async (req, res, next) => {
   // TODO 只要 owner 才能删除
   // TODO 不要硬删除
   try {
