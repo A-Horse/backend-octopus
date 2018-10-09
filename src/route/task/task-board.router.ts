@@ -28,7 +28,8 @@ TaskBoardRouter.get('/user/:userId/task-board', authJwt, async (req, res, next) 
       .join('task-access as access', 'access.boardId', '=', 'board.id')
       .select('board.*')
       .where('access.userId', '=', jw.user.id)
-      .andWhere('status', '!=', 'DELETED')
+      .whereNull('board.status')
+      .orWhere('board.status', '<>', 'DELETED');
     res.json(boards);
   } catch (error) {
     next(error);
