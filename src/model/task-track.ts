@@ -8,7 +8,12 @@ export const TaskTrackModel = bookshelf.Model.extend({
     return new Promise((resolve, reject) => {
       bookshelf.transaction(t => {
         return Promise.all([
-          TaskCardModel.where({ taskTrackId: this.id }).destroy({ transacting: t }),
+          TaskCardModel.where({ taskTrackId: this.id }).save(
+            {
+              status: 'DELETED'
+            },
+            { transacting: t, method: 'update' }
+          ),
           this.destroy({ transacting: t })
         ])
           .then(resolve)
@@ -20,5 +25,3 @@ export const TaskTrackModel = bookshelf.Model.extend({
     return this.hasMany(TaskCardModel, 'taskTrackId');
   }
 });
-
-
