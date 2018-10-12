@@ -3,6 +3,8 @@
 ** Log
 - =/log/access= http log
 
+** start up
+
 
 ** Tool
 tool scripts in `src/tool`
