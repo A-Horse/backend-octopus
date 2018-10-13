@@ -36,7 +36,7 @@ UserRouter.get('/:userId', authJwt, async (req, res, next) => {
   }
 });
 
-UserRouter.post('/logout', authJwt, (req, res) => {
+UserRouter.post('/logout', (req, res) => {
   res.status(204).send();
 });
 
