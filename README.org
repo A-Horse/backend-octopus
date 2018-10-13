@@ -3,10 +3,9 @@
 ** Log
 - =/log/access= http log
 
-** start up
+** start ups
 *** create database first
 see `./db/readme`
-
 
 ** Tool
 tool scripts in `src/tool`
