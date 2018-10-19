@@ -27,7 +27,7 @@ TodoRouter.get('/user/:userId/todo-task', authJwt, (req, res, next) => {
     throw new AccessLimitError();
   }
   new TaskCardModel()
-    .query({ where: { createrId: jw.user.id } })
+    .query({ where: { createrId: jw.user.id, type: 'TODO' } })
     .fetchAll()
     .then(taskCards => res.send(taskCards))
     .catch(next);
