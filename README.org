@@ -8,6 +8,8 @@
 see `./db/readme`
 
 ** dev
+*** start dev server
+`tsc` and `node built/main`
 
 
 ** Tool
