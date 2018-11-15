@@ -1,0 +1,5 @@
+name: backend-octopus
+flow:
+  - install: yarn install
+  - build: yarn build
+  - restart: supervisorctl restart backend-octopus_script
