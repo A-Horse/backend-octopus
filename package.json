@@ -15,7 +15,7 @@
     "ascii-art": "^1.4.2",
     "bcrypt": "^0.8.7",
     "bcryptjs": "^2.4.0",
-    "bluebird": "^3.4.3",
+    "bluebird": "^3.5.3",
     "blueimp-md5": "^2.3.0",
     "body-parser": "^1.15.2",
     "bookshelf": "^0.10.3",
