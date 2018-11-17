@@ -1,18 +1,16 @@
 * Octopuse Backend
 
-** Log
-- =/log/access= http log
-
-** start ups
+** Start up
 *** create database first
 see `./db/readme`
 
-** dev
+
+** development
 *** start dev server
 `tsc` and `node built/main`
 
 
-** config
+** Config
 
 `config.yaml` in project root
 
@@ -20,6 +18,10 @@ see `./db/readme`
 - `DISABLE_SIGNUP`: if true will disable sign up feature, default `true`
 - `JWT_EXP_HOURS`: jwt exp hours, default `480` hours
 - `SERCET`: sercet key
+
+
+** Log file
+- =/log/access= http log
 
 ** Tool
 tool scripts in `src/tool`
