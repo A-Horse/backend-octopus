@@ -1,10 +1,10 @@
+* Octopuse Backend
+
 #+BEGIN_HTML
 <figure>
 <img src="./octopus.png" width="150"/>
 </figure>
 #+END_HTML
-
-* Octopuse Backend
 
 ** Start up
 *** create database first
