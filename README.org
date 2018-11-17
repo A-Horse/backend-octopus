@@ -1,29 +1,35 @@
+#+BEGIN_HTML
+<figure>
+<img src="./octopus.png" width="150"/>
+</figure>
+#+END_HTML
+
 * Octopuse Backend
 
 ** Start up
 *** create database first
-see `./db/readme`
+see =./db/readme=
 
 
 ** development
 *** start dev server
-`tsc` and `node built/main`
+=tsc= and `node built/main`
 
 
 ** Config
 
-`config.yaml` in project root
+=config.yaml= in project root
 
-- `SERVE_PORT`: server listen port, default `5500`
-- `DISABLE_SIGNUP`: if true will disable sign up feature, default `true`
-- `JWT_EXP_HOURS`: jwt exp hours, default `480` hours
-- `SERCET`: sercet key
+- =SERVE_PORT=: server listen port, default =5500=
+- =DISABLE_SIGNUP=: if true will disable sign up feature, default =true=
+- =JWT_EXP_HOURS=: jwt exp hours, default =480= hours
+- =SERCET=: sercet key
 
 
 ** Log file
 - =/log/access= http log
 
 ** Tool
-tool scripts in `src/tool`
+tool scripts in =src/tool=
 
 
