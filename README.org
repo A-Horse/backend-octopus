@@ -12,6 +12,15 @@ see `./db/readme`
 `tsc` and `node built/main`
 
 
+** config
+
+`config.yaml` in project root
+
+- `SERVE_PORT`: server listen port, default `5500`
+- `DISABLE_SIGNUP`: if true will disable sign up feature, default `true`
+- `JWT_EXP_HOURS`: jwt exp hours, default `480` hours
+- `SERCET`: sercet key
+
 ** Tool
 tool scripts in `src/tool`
 
