@@ -5,7 +5,7 @@ import * as http from 'http';
 import * as colors from 'colors';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as rfs from 'rotating-file-stream';
+import rfs from 'rotating-file-stream';
 
 import { apiPrefix } from './constant';
 import config from './service/config';
