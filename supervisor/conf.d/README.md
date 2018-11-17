@@ -1,7 +1,7 @@
 # supervisor
 
 ```bash
-mv backend-octopus.config /etc/supervisor/conf.d/backend-octopus.config
+cp backend-octopus.config /etc/supervisor/conf.d/backend-octopus.conf
 
 supervisorctl reload
 
