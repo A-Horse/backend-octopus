@@ -1,12 +1,9 @@
 import * as express from 'express';
 import { bookshelf } from '../../db/bookshelf.js';
 import { authJwt } from '../../route/middle/jwt';
-import { AccessLimitError, NotFoundError, DuplicateError } from '../../service/error';
+import { NotFoundError, DuplicateError } from '../../service/error';
 import { TaskBoardModel } from '../../model/task-board';
-import { TaskCard, TaskCardModel } from '../../model/task-card';
-import { TaskTrackModel } from '../../model/task-track';
 import { TaskAccessModel } from '../../model/task-access';
-import { Group } from '../../model/group';
 import * as R from 'ramda';
 import * as path from 'path';
 import { saveImage } from '../../service/storage';

@@ -1,12 +1,5 @@
 import * as express from 'express';
 import { authJwt } from '../middle/jwt';
-import { taskBoardGroupForBody } from '../middle/board';
-import { TaskCard, TaskCardModel } from '../../model/task-card';
-import { TaskCardCommentModel } from '../../model/task-card-comment';
-import { GroupModel } from '../../model/group';
-import { validateRequest } from '../../service/validate';
-import { AccessLimitError, NotFoundError } from '../../service/error';
-import * as R from 'ramda';
 import { taskBoardParamAuthMiddle } from '../middle/board.middle';
 import { TaskBoardSettingModel } from '../../model/task-board-setting.model';
 

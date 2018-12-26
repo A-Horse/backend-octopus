@@ -75,7 +75,7 @@ TodoRouter.patch('/user/:userId/todo/:todoId', authJwt, (req, res, next) => {
     id: req.params.todoId
   })
     .fetch()
-    .then(function(todo) {
+    .then((todo) => {
       todo.save(req.body).then(todo => {
         res.send(todo);
       });
