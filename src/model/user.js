@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcryptjs';
 import * as R from 'ramda';
-import { bookshelf } from '../db/bookshelf.js';
+import { bookshelf } from '../db/bookshelf';
 
 export class UserModel extends bookshelf.Model {
   get tableName() {

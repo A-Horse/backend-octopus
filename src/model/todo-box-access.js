@@ -1,4 +1,4 @@
-import {bookshelf} from '../db/bookshelf.js';
+import {bookshelf} from '../db/bookshelf';
 import {UserModal} from './user';
 import {TodoBoxModel} from './todo-box';
 

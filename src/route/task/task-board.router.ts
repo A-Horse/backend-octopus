@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { bookshelf } from '../../db/bookshelf.js';
+import { bookshelf } from '../../db/bookshelf';
 import { authJwt } from '../../route/middle/jwt';
 import { NotFoundError, DuplicateError } from '../../service/error';
 import { TaskBoardModel } from '../../model/task-board';

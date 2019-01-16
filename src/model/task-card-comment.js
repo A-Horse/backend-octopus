@@ -1,4 +1,4 @@
-import {bookshelf} from '../db/bookshelf.js';
+import {bookshelf} from '../db/bookshelf';
 import {UserModel} from './user';
 
 export const TaskCardCommentModel = bookshelf.Model.extend({

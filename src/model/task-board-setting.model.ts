@@ -1,4 +1,4 @@
-import { bookshelf } from '../db/bookshelf.js';
+import { bookshelf } from '../db/bookshelf';
 
 export class TaskBoardSettingModel extends bookshelf.Model {
   get tableName() {

@@ -1,4 +1,4 @@
-import config from '../service/config.js';
+import config from '../service/config';
 import * as path from 'path';
 
 export const knex = require('knex')({

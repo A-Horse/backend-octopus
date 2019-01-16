@@ -3,8 +3,7 @@ import { User, UserModel } from '../model/user';
 import { AccessLimitError, NotFoundError } from '../service/error';
 import { authJwt } from '../route/middle/jwt';
 import { signJwt } from '../service/auth';
-import { makeGravatarUrl } from '../service/gravator.js';
-import { validateRequest } from '../service/validate';
+
 import { validate } from '../route/middle/check';
 import { JWT_KEY } from '../constant';
 import * as R from 'ramda';

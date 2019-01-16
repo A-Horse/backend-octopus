@@ -62,9 +62,9 @@ TodoRouter.patch('/todo/:todoId', authJwt, (req, res, next) => {
     id: req.params.todoId
   })
     .fetch()
-    .then(function(todo) {
-      todo.save(req.body).then(todo => {
-        res.send(todo);
+    .then((todo) => {
+      todo.save(req.body).then(newTodo => {
+        res.send(newTodo);
       });
     })
     .catch(next);

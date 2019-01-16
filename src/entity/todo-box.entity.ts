@@ -13,9 +13,6 @@ export class TodoBox {
   })
   public type: string;
 
-  
-
-
   @CreateDateColumn()
   public createdAt: Date;
 

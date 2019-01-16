@@ -1,4 +1,4 @@
-import { bookshelf } from '../db/bookshelf.js';
+import { bookshelf } from '../db/bookshelf';
 import { UserModel } from './user';
 import { TaskCardCommentModel } from './task-card-comment';
 import { TaskBoardModel } from './task-board';

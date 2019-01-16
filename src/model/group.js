@@ -1,4 +1,4 @@
-import { bookshelf } from '../db/bookshelf.js';
+import { bookshelf } from '../db/bookshelf';
 
 export const GroupModel = bookshelf.Model.extend({
   tableName: 'group2'
