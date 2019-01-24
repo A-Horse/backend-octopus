@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { User, UserModel } from '../model/user';
-import { AccessLimitError, NotFoundError } from '../service/error';
+import { AccessLimitError } from '../service/error';
 import { authJwt } from '../route/middle/jwt';
 import { signJwt } from '../service/auth';
 
@@ -10,15 +10,6 @@ import * as R from 'ramda';
 import { configure } from '../configure';
 
 const UserRouter = express.Router();
-
-UserRouter.get('/search', async (req, res) => {
-  const result = await UserModel.where(req.query).fetch();
-  res.json(result.pick(['username', 'email', 'id']));
-});
-
-UserRouter.get('/identify', authJwt, (req, res, next) => {
-  res.status(200).send(req.jw.user);
-});
 
 UserRouter.get('/:userId', authJwt, async (req, res, next) => {
   try {

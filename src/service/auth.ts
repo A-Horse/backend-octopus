@@ -14,3 +14,4 @@ export function signJwt(user) {
 export function unsignJwt(token: string) {
   return jwt.verify(token, configure.getConfig().SERCET_KEY);
 }
+

@@ -18,6 +18,16 @@ export class Todo {
   @Column()
   public content: string;
 
+  @Column({
+    default: 'NORMAL'
+  })
+  public type: string;
+  
+  @Column({
+    default: 'ACTIVE'
+  })
+  public status: string;
+
   @Column()
   public author: string;
 
@@ -26,5 +36,8 @@ export class Todo {
 
   @UpdateDateColumn()
   public updatedAt: Date;
+
+  @Column()
+  public deletedAt: Date;
 
 }
