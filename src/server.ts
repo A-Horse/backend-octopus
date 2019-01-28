@@ -71,7 +71,7 @@ export function startServer() {
     // tslint:disable-next-line
     console.log(ascii);
     // tslint:disable-next-line
-    console.log(colors.green(`Octopus serve on http://127.0.0.1:5500`));
+    console.log(colors.green(`Octopus serve on http://0.0.0.0:5500`));
   });
 }
 

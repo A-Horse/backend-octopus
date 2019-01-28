@@ -1,4 +1,4 @@
 
-export function crerateUser() {
+export function crerateUser(username: string, password: string) {
   
 }
