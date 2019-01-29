@@ -1,0 +1,4 @@
+2019.1.29
+Migrating from postgres to mysql.
+Because of postgres not support insert primary key.
+--------------------

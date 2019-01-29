@@ -5,16 +5,14 @@ import * as R from 'ramda';
 
 class Configure {
   private configDoc: {
-    DISABLE_SIGNUP: boolean | null,
-    SERVE_PORT: number,
-    JWT_EXP_HOURS: number,
-    SERCET_KEY: string
+    DISABLE_SIGNUP: boolean | null;
+    SERVE_PORT: number;
+    JWT_EXP_HOURS: number;
+    SERCET_KEY: string;
   };
 
   constructor() {
-    const configDoc = yaml.safeLoad(
-      fs.readFileSync(path.join(__dirname, '../config.yaml'), 'utf8')
-    );
+    const configDoc = yaml.safeLoad(fs.readFileSync(path.join(__dirname, '../config.yaml'), 'utf8'));
     this.configDoc = configDoc;
 
     this.overrideConfigKeyFromEnv();
@@ -36,7 +34,6 @@ class Configure {
       return config[key];
     }, this.configDoc);
   }
- 
 }
 
 export const configure = new Configure();

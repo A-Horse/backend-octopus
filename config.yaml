@@ -1,11 +1,14 @@
 SERVE_PORT: 5500
 TOOL_SERVE_PORT: 5501
+
 DISABLE_SIGNUP: true
+
 JWT_EXP_HOURS: 480
+
 SERCET_KEY: 'octopus'
 
 # postgres
 POSTGRES_HOST: "localhost"
-POSTGRES_USERNAME: "postgres"
-POSTGRES_PASSWORD: "mysecretpassword"
+POSTGRES_USERNAME: "octopuese"
+POSTGRES_PASSWORD: "my-secret-user-pw"
 POSTGRES_DB: "octopuese"
