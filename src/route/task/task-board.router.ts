@@ -159,7 +159,10 @@ TaskBoardRouter.post('/task-board/:id/cover', multipartMiddleware, async (req, r
   try {
     const imageURLData = req.body.cover.replace(/^data:image\/\w+;base64,/, '');
     const hash = md5(imageURLData + Date.now()).substring(0, 20);
-    const filename = R.compose(R.join('-'), R.splitEvery(5))(hash);
+    const filename = R.compose(
+      R.join('-'),
+      R.splitEvery(5)
+    )(hash);
 
     await saveImage(filename, COVER_STORAGE_PATH, imageURLData);
     const savedPath = path.join(COVER_STORAGE_PATH, filename);

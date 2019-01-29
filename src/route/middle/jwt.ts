@@ -1,5 +1,5 @@
-import { unsignJwt } from '../../service/auth';
 import { NoAuthError } from '../../service/error';
+import { authServive } from '../../service/auth.service';
 
 // TODO move to auth
 export function authJwt(req, res, next) {
@@ -9,7 +9,7 @@ export function authJwt(req, res, next) {
     throw new NoAuthError();
   }
   try {
-    req.jw = unsignJwt(jwtdata);
+    req.jw = authServive.unsignJwt(jwtdata);
   } catch (error) {
     throw new NoAuthError();
   }

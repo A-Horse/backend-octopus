@@ -29,12 +29,10 @@ TaskBoardSettingRouter.patch(
   (req, res, next) => {
     const body: {
       showType?: string;
-    } =
-      req.body;
+    } = req.body;
     const { taskBoardId } = req.params;
-    TaskBoardSettingModel
-      .where({boardId: taskBoardId})
-      .save(body, {method: 'update'})
+    TaskBoardSettingModel.where({ boardId: taskBoardId })
+      .save(body, { method: 'update' })
       .then(() => {
         res.status(200).send();
       })

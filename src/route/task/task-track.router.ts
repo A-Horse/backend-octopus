@@ -25,45 +25,42 @@ const TaskTrackRouter = express.Router();
 //   }
 // );
 
-TaskTrackRouter.get(
-  '/task-board/:boardId/track/:trackId/card',
-  authJwt,
-  taskBoardGroupForParams,
-  async (req, res) => {
-    try {
-      const { trackId } = req.params;
-      const taskTrack = await TaskTrackModel.where({ id: trackId }).fetch({
-        withRelated: [
-          {
-            cards: () => {
-              /*ignore*/
-            },
-            'cards.creater': qb => {
-              qb.select('email', 'id');
-            },
-            'cards.owner': qb => {
-              qb.select('email', 'id');
-            }
+TaskTrackRouter.get('/task-board/:boardId/track/:trackId/card', authJwt, taskBoardGroupForParams, async (req, res) => {
+  try {
+    const { trackId } = req.params;
+    const taskTrack = await TaskTrackModel.where({ id: trackId }).fetch({
+      withRelated: [
+        {
+          cards: () => {
+            /*ignore*/
+          },
+          'cards.creater': qb => {
+            qb.select('email', 'id');
+          },
+          'cards.owner': qb => {
+            qb.select('email', 'id');
           }
-        ]
-      });
+        }
+      ]
+    });
 
-      if (!taskTrack) {
-        throw new NotFoundError('not found this task list');
-      }
-      res.json(taskTrack);
-    } catch (error) {
-      throw error;
+    if (!taskTrack) {
+      throw new NotFoundError('not found this task list');
     }
+    res.json(taskTrack);
+  } catch (error) {
+    throw error;
   }
-);
+});
 
 TaskTrackRouter.post('/task-board/:boardId/track', async (req, res) => {
   validateRequest(req.body, 'name', ['required']);
   const { jw } = req;
   const { boardId } = req.params;
 
-  const existNumber = await TaskTrackModel.where({ taskBoardId: boardId }).count();
+  const existNumber = await TaskTrackModel.where({
+    taskBoardId: boardId
+  }).count();
   const savedTrack = await new TaskTrackModel().save({
     index: existNumber,
     taskBoardId: boardId,
@@ -109,13 +106,12 @@ TaskTrackRouter.delete(
     try {
       await new TaskTrackModel({ id: trackId }).bundleDelete();
       res.status(204).send();
-    } catch(error) {
+    } catch (error) {
       if (error.message === 'No Rows Updated') {
         res.status(204).send();
       } else {
         next(error);
       }
-
     }
   }
 );

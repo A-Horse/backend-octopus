@@ -1,4 +1,4 @@
-import * as  express from 'express';
+import * as express from 'express';
 import { authJwt } from '../middle/jwt';
 import { TodoBoxModel } from '../../model/todo-box';
 import { TodoModel } from '../../model/todo.model';
@@ -25,7 +25,9 @@ TodoBoxRouter.get('/todo-box/:todoBoxId', authJwt, async (req, res, next) => {
   const { todoBoxId } = req.params;
   try {
     const todos = await new TodoModel()
-      .query({ where: { isDelete: null, userId: jw.user.id, todoBoxId: todoBoxId } })
+      .query({
+        where: { isDelete: null, userId: jw.user.id, todoBoxId: todoBoxId }
+      })
       .fetchAll();
     res.json(todos);
   } catch (error) {
@@ -48,7 +50,9 @@ TodoBoxRouter.delete('/todo-box', authJwt, async (req, res, next) => {
 
 TodoBoxRouter.get('/user/:userId/todo-box', authJwt, async (req, res) => {
   const { jw } = req;
-  const todoBoxs = await TodoBoxModel.where({ creatorId: jw.user.id }).fetchAll();
+  const todoBoxs = await TodoBoxModel.where({
+    creatorId: jw.user.id
+  }).fetchAll();
   res.json(todoBoxs);
 });
 

@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { createConnection } from 'typeorm';
-import { startServer } from "./server";
+import { startServer } from './server';
 import { getPostgresConfig } from './config/typeorm-config';
 import { startToolServer } from './tool-server';
 
@@ -16,5 +16,3 @@ function main() {
 }
 
 main();
-
-

@@ -33,7 +33,6 @@ TodoRouter.get('/user/:userId/todo-task', authJwt, (req, res, next) => {
     .catch(next);
 });
 
-
 TodoRouter.post('/todo', authJwt, async (req, res, next) => {
   try {
     validateRequest(req.body, 'content', ['required']);
@@ -62,7 +61,7 @@ TodoRouter.patch('/todo/:todoId', authJwt, (req, res, next) => {
     id: req.params.todoId
   })
     .fetch()
-    .then((todo) => {
+    .then(todo => {
       todo.save(req.body).then(newTodo => {
         res.send(newTodo);
       });
@@ -75,7 +74,7 @@ TodoRouter.patch('/user/:userId/todo/:todoId', authJwt, (req, res, next) => {
     id: req.params.todoId
   })
     .fetch()
-    .then((todo) => {
+    .then(todo => {
       todo.save(req.body).then(todo => {
         res.send(todo);
       });

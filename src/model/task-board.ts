@@ -12,5 +12,3 @@ export const TaskBoardModel = bookshelf.Model.extend({
     return this.hasMany(GroupModel, 'taskBoardId');
   }
 });
-
-

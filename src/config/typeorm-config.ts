@@ -3,12 +3,13 @@ import { ConnectionOptions } from 'typeorm';
 
 export function getPostgresConfig(): ConnectionOptions {
   return {
-    type: 'postgres',
+    type: 'mysql',
     host: configure.getConfigByKey('POSTGRES_HOST'),
     username: configure.getConfigByKey('POSTGRES_USERNAME'),
     password: configure.getConfigByKey('POSTGRES_PASSWORD'),
     database: configure.getConfigByKey('POSTGRES_DB'),
     synchronize: true,
+    "extra": { "insecureAuth": true },
     logging: true,
     entities: ['src/entity/**/*.ts'],
     migrations: ['src/migration/**/*.ts'],

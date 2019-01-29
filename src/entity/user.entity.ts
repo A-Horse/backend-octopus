@@ -1,12 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({unique: true})
+  @Column({ unique: true })
   public email: string;
 
   @Column({ unique: true })
@@ -19,7 +18,7 @@ export class User {
     default: 'NORMAL'
   })
   public type: string;
-  
+
   @Column({
     default: 'ACTIVE'
   })
@@ -31,4 +30,3 @@ export class User {
   @UpdateDateColumn()
   public updatedAt: Date;
 }
-

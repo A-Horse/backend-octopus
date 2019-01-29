@@ -74,4 +74,3 @@ export function startServer() {
     console.log(colors.green(`Octopus serve on http://0.0.0.0:5500`));
   });
 }
-

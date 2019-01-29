@@ -1,11 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn
-} from 'typeorm';
-
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Todo {
@@ -22,7 +15,7 @@ export class Todo {
     default: 'NORMAL'
   })
   public type: string;
-  
+
   @Column({
     default: 'ACTIVE'
   })
@@ -39,5 +32,4 @@ export class Todo {
 
   @Column()
   public deletedAt: Date;
-
 }
