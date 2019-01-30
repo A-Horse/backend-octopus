@@ -3,7 +3,6 @@ import { getRepository } from 'typeorm';
 
 export function createTodo({ userId, title, content }): Promise<Todo> {
   const todo = new Todo();
-  todo.title = title;
   todo.content = content;
 
   return getRepository(Todo).save(todo);
