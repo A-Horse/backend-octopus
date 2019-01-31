@@ -1,6 +1,11 @@
 
 declare namespace Express {
   interface Request {
-    jw?: any;
+    jw?: {
+      user: {
+        id: number;
+        username: string;
+      }
+    };
   }
 }

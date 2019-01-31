@@ -23,7 +23,6 @@ export async function migrationTodo() {
 
   todos.filter(todo => todo.get('content')).forEach(async (todo: UserModel) => {
     const newTodo = new Todo();
-    newTodo.id = todo.get('id');
 
     const creator = new User();
     creator.id = todo.get('userId');
