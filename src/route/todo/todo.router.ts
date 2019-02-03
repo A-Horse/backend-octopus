@@ -3,8 +3,8 @@ import { authJwt } from '../../route/middle/jwt';
 import { TodoModel } from '../../model/todo.model';
 import { AccessLimitError } from '../../service/error';
 import { validateRequest } from '../../service/validate';
-import { TaskCardModel } from '../../model/task-card';
 import { todoService } from '../../service/todo.service';
+import { ITodoDetail } from 'src/domain/todo/todo-detail';
 
 const TodoRouter = express.Router();
 
@@ -25,19 +25,6 @@ TodoRouter.get('/user/:userId/todo', authJwt, async (req: express.Request, res: 
   } catch (error) {
     next(error);
   }
-});
-
-TodoRouter.get('/user/:userId/todo-task', authJwt, (req, res, next) => {
-  const { jw } = req;
-  const { userId } = req.params;
-  if (jw.user.id !== +userId) {
-    throw new AccessLimitError();
-  }
-  new TaskCardModel()
-    .query({ where: { createrId: jw.user.id, type: 'TODO' } })
-    .fetchAll()
-    .then(taskCards => res.send(taskCards))
-    .catch(next);
 });
 
 TodoRouter.post('/todo', authJwt, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -63,30 +50,14 @@ TodoRouter.delete('/todo/:todoId', authJwt, async (req, res) => {
   res.status(202).send();
 });
 
-TodoRouter.patch('/todo/:todoId', authJwt, (req, res, next) => {
-  TodoModel.where({
-    id: req.params.todoId
-  })
-    .fetch()
-    .then(todo => {
-      todo.save(req.body).then(newTodo => {
-        res.send(newTodo);
-      });
-    })
-    .catch(next);
-});
-
-TodoRouter.patch('/user/:userId/todo/:todoId', authJwt, (req, res, next) => {
-  TodoModel.where({
-    id: req.params.todoId
-  })
-    .fetch()
-    .then(todo => {
-      todo.save(req.body).then(todo => {
-        res.send(todo);
-      });
-    })
-    .catch(next);
+TodoRouter.patch('/todo/:todoId', authJwt, async (req, res, next) => {
+  const todoDetail: ITodoDetail = req.body;
+  try {
+    await todoService.updateTodoDetail(todoDetail);
+    res.status(200).send();
+  } catch (error) {
+    next(error);
+  }
 });
 
 export { TodoRouter };

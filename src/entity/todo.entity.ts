@@ -1,8 +1,18 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { User } from './user.entity';
 
+export interface ITodo {
+  id: string;
+  content: string;
+  desc: string;
+  type: 'NORMAL';
+  status: 'ACTIVE' | 'DONE';
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 @Entity()
-export class Todo {
+export class Todo implements ITodo {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 

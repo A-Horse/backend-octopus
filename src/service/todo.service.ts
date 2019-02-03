@@ -1,6 +1,7 @@
 import { Todo } from "../entity/todo.entity";
 import { getUserDefaultTodos } from "../domain/todo/getTodos";
 import { createTodo } from "../domain/todo/createTodo";
+import { TodoDetailDomain, ITodoDetail } from "src/domain/todo/todo-detail";
 
 class TodoService {
   constructor() {}
@@ -14,6 +15,11 @@ class TodoService {
       userId,
       content
     })
+  }
+
+  public async updateTodoDetail(detail: ITodoDetail): Promise<void> {
+    const detailDomain = new TodoDetailDomain(detail.id);
+    await detailDomain.updateDetail(detail);
   }
 }
 
