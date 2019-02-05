@@ -2,7 +2,7 @@ import { Todo } from '../../entity/todo.entity';
 import { getRepository } from 'typeorm';
 import { User } from '../../entity/user.entity';
 
-export async function  createTodo({ userId, content }): Promise<string> {
+export async function createTodo({ userId, content }): Promise<string> {
   const todo = new Todo();
 
   const creator = new User();

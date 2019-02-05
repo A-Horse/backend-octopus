@@ -10,11 +10,16 @@ export class TodoDetailDomain {
 
   public async updateDetail(detail: ITodoDetail): Promise<void> {
     const todoEntity = new Todo();
+
+    if (detail.status !== 'DONE' && detail.status !== 'ACTIVE') {
+      throw new Error('Todo status is invalid.');
+    }
+
     todoEntity.id = this.id;
     todoEntity.content = detail.content;
-    todoEntity.desc= detail.content;
+    todoEntity.desc = detail.desc;
     todoEntity.status = detail.status;
-    
+
     await getRepository(Todo).update(this.id, todoEntity);
   }
 }

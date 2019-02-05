@@ -4,28 +4,32 @@ import { TodoModel } from '../../model/todo.model';
 import { AccessLimitError } from '../../service/error';
 import { validateRequest } from '../../service/validate';
 import { todoService } from '../../service/todo.service';
-import { ITodoDetail } from 'src/domain/todo/todo-detail';
+import { ITodoDetail } from '../../domain/todo/todo-detail';
 
 const TodoRouter = express.Router();
 
-TodoRouter.get('/user/:userId/todo', authJwt, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  const { jw } = req;
-  const { userId } = req.params;
-  if (jw.user.id !== +userId) {
-    throw new AccessLimitError();
-  }
+TodoRouter.get(
+  '/user/:userId/todo',
+  authJwt,
+  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const { jw } = req;
+    const { userId } = req.params;
+    if (jw.user.id !== +userId) {
+      throw new AccessLimitError();
+    }
 
-  try {
-    const todos = await todoService.getUserDefaultTodos({
-      offset: 0,
-      limit: 100,
-      userId
-    });
-    res.status(200).json(todos);
-  } catch (error) {
-    next(error);
+    try {
+      const todos = await todoService.getUserDefaultTodos({
+        offset: 0,
+        limit: 100,
+        userId
+      });
+      res.status(200).json(todos);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 TodoRouter.post('/todo', authJwt, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   try {
@@ -36,7 +40,7 @@ TodoRouter.post('/todo', authJwt, async (req: express.Request, res: express.Resp
       userId: jw.user.id,
       content: req.body.content,
       deadline: req.body.deadline,
-      boxId: req.body.todoBoxId,
+      boxId: req.body.todoBoxId
     });
     res.send(createdTodoId);
   } catch (error) {

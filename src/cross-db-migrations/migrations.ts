@@ -21,19 +21,21 @@ export async function migrationUser() {
 export async function migrationTodo() {
   const todos = await new TodoModel().fetchAll();
 
-  todos.filter(todo => todo.get('content')).forEach(async (todo: UserModel) => {
-    const newTodo = new Todo();
+  todos
+    .filter(todo => todo.get('content'))
+    .forEach(async (todo: UserModel) => {
+      const newTodo = new Todo();
 
-    const creator = new User();
-    creator.id = todo.get('userId');
+      const creator = new User();
+      creator.id = todo.get('userId');
 
-    newTodo.creator = creator;
+      newTodo.creator = creator;
 
-    newTodo.content = todo.get('content');
-    newTodo.deadline = todo.get('deadline') ? new Date(todo.get('deadline')) : undefined;
-    newTodo.status = todo.get('isDone') ? 'DONE': 'ACTIVE';
-    newTodo.isDelete = todo.get('isDelete') ? true : false;
+      newTodo.content = todo.get('content');
+      newTodo.deadline = todo.get('deadline') ? new Date(todo.get('deadline')) : undefined;
+      newTodo.status = todo.get('isDone') ? 'DONE' : 'ACTIVE';
+      newTodo.isDelete = todo.get('isDelete') ? true : false;
 
-    await getRepository(Todo).save(newTodo);
-  });
+      await getRepository(Todo).save(newTodo);
+    });
 }

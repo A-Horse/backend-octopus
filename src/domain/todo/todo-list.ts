@@ -1,6 +1,1 @@
-
-
-
-export class TodoListDomain {
-
-}
+export class TodoListDomain {}
