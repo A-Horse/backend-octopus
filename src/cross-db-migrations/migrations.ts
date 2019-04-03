@@ -3,6 +3,7 @@ import { User } from '../entity/user.entity';
 import { getRepository } from 'typeorm';
 import { TodoModel } from '../model/todo.model';
 import { Todo } from '../entity/todo.entity';
+import { TaskBoardModel } from '../model/task-board';
 
 export async function migrationUser() {
   const users = await new UserModel().fetchAll();
@@ -38,4 +39,8 @@ export async function migrationTodo() {
 
       await getRepository(Todo).save(newTodo);
     });
+}
+
+export async function migrationTask(): Promise<void> {
+  const TaskBoards = await new TaskBoardModel().fetchAll();
 }
