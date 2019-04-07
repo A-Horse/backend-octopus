@@ -12,8 +12,5 @@
   },
   "include": [
     "./src/**/*"
-  ],
-  "files": [
-    "./typing/express.d.ts"
   ]
 }
