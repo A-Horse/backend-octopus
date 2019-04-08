@@ -1,16 +1,16 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToOne } from 'typeorm';
-import { TaskBoard } from './task-board.entity';
+import { TaskBoardEntity } from './task-board.entity';
+import { TaskBoardShowType } from '../typing/task-board.typing';
 
 @Entity()
 export class TaskBoardSetting {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
-  @OneToOne(() => TaskBoard)
-  public taskboard: TaskBoard;
-
-  @Column()
-  public showType: string;
+  @Column({
+    default: TaskBoardShowType.COLUMN
+  })
+  public showType: TaskBoardShowType;
 
   @CreateDateColumn()
   public createdAt: Date;

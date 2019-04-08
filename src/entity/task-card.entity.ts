@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { User } from './user.entity';
-import { TaskBoard } from './task-board.entity';
+import { TaskBoardEntity } from './task-board.entity';
 import { TaskTrack } from './task-track.entity';
 
 @Entity()
@@ -44,8 +44,8 @@ export class TaskCard {
   @ManyToOne(() => TaskTrack)
   public taskTrack: TaskTrack;
 
-  @ManyToOne(() => TaskBoard)
-  public taskBoard: TaskBoard;
+  @ManyToOne(() => TaskBoardEntity)
+  public taskBoard: TaskBoardEntity;
 
   @CreateDateColumn()
   public createdAt: Date;

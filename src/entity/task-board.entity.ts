@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
+import { TaskBoardStatus } from '../typing/task-board.typing';
+import { TaskBoardSetting } from './task-boad-setting.entity';
 
 export interface ITaskBoard {
   id: string;
@@ -15,10 +17,16 @@ export interface ITaskBoard {
   isDelete: boolean;
 }
 
-@Entity()
-export class TaskBoard implements ITaskBoard {
+@Entity({
+  name: 'task_board'
+})
+export class TaskBoardEntity implements ITaskBoard {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
+
+  @OneToOne(type => TaskBoardSetting)
+  @JoinColumn()
+  setting: TaskBoardSetting;
 
   @Column({
     length: 150
@@ -38,9 +46,9 @@ export class TaskBoard implements ITaskBoard {
 
   @Column({
     length: 10,
-    default: 'ACTIVE'
+    default: TaskBoardStatus.ACTIVE
   })
-  public status: 'ACTIVE' | 'DONE';
+  public status: TaskBoardStatus;
 
   @ManyToOne(() => User)
   public creator: User;
