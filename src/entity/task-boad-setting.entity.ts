@@ -1,9 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToOne } from 'typeorm';
-import { TaskBoardEntity } from './task-board.entity';
 import { TaskBoardShowType } from '../typing/task-board.typing';
 
-@Entity()
-export class TaskBoardSetting {
+@Entity({
+  name: 'task_board_setting'
+})
+export class TaskBoardSettingEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 

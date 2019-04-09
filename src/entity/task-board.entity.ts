@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
 import { TaskBoardStatus } from '../typing/task-board.typing';
-import { TaskBoardSetting } from './task-boad-setting.entity';
+import { TaskBoardSettingEntity } from './task-boad-setting.entity';
 
 export interface ITaskBoard {
   id: string;
@@ -24,9 +24,9 @@ export class TaskBoardEntity implements ITaskBoard {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
-  @OneToOne(type => TaskBoardSetting)
+  @OneToOne(type => TaskBoardSettingEntity)
   @JoinColumn()
-  setting: TaskBoardSetting;
+  setting: TaskBoardSettingEntity;
 
   @Column({
     length: 150
