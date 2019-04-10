@@ -2,6 +2,7 @@ import { TaskBoard } from "../domain/task-board/task-board.domain";
 import { getRepository } from "../../node_modules/typeorm";
 import { TaskBoardEntity } from "../entity/task-board.entity";
 import { TaskBoardSetting } from "../domain/task-board/entity/task-board-setting.entity";
+import { UserEntity } from "../entity/user.entity";
 
 
 export class TaskBoardRepository {
@@ -32,8 +33,18 @@ export class TaskBoardRepository {
       });
     }
 
-    public saveTaskBoard(taskBoard: TaskBoard): void {
+    static async saveTaskBoard(taskBoard: TaskBoard): Promise<void> {
+        const creator = new UserEntity();
+        creator.id = taskBoard.creatorId;
 
+        const taskBoardEntity = new TaskBoardEntity();
+        taskBoardEntity.name = taskBoard.name;
+        taskBoardEntity.desc = taskBoard.desc;
+        taskBoardEntity.creator = creator;
+        taskBoardEntity.owner = creator;
+
+        await getRepository(TaskBoardEntity)
+        .save(taskBoardEntity);
     }
 }
 

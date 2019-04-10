@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 import { TaskBoardStatus } from '../typing/task-board.typing';
 import { TaskBoardSettingEntity } from './task-boad-setting.entity';
 
@@ -7,8 +7,8 @@ export interface ITaskBoard {
   id: string;
   name: string;
   desc: string;
-  creator: User;
-  owner: User;
+  creator: UserEntity;
+  owner: UserEntity;
   type: 'NORMAL';
   status: 'ACTIVE' | 'DONE';
   createdAt: Date;
@@ -50,11 +50,11 @@ export class TaskBoardEntity implements ITaskBoard {
   })
   public status: TaskBoardStatus;
 
-  @ManyToOne(() => User)
-  public creator: User;
+  @ManyToOne(() => UserEntity)
+  public creator: UserEntity;
 
-  @ManyToOne(() => User)
-  public owner: User;
+  @ManyToOne(() => UserEntity)
+  public owner: UserEntity;
 
   @CreateDateColumn()
   public createdAt: Date;

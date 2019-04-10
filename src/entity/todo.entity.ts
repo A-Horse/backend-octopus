@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 
 export interface ITodo {
   id: string;
@@ -41,8 +41,8 @@ export class Todo implements ITodo {
   @Column({ type: 'datetime', nullable: true })
   public deadline?: Date;
 
-  @ManyToOne(() => User)
-  public creator: User;
+  @ManyToOne(() => UserEntity)
+  public creator: UserEntity;
 
   @CreateDateColumn()
   public createdAt: Date;

@@ -6,6 +6,7 @@ export class TaskBoard {
     public desc: string;
 
     public setting: TaskBoardSetting;
+    public creatorId: number;
 
     constructor() {}
     

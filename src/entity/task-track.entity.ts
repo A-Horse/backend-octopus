@@ -1,12 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 import { TaskBoardEntity } from './task-board.entity';
 
 export interface ITaskTrack {
   id: string;
   name: string;
   desc: string;
-  creator: User;
+  creator: UserEntity;
   index: number;
   taskboard: TaskBoardEntity;
   type: 'NORMAL';
@@ -44,8 +44,8 @@ export class TaskTrack implements ITaskTrack {
   })
   public status: 'ACTIVE' | 'DONE';
 
-  @ManyToOne(() => User)
-  public creator: User;
+  @ManyToOne(() => UserEntity)
+  public creator: UserEntity;
 
   public index: number;
 

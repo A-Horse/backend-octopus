@@ -10,6 +10,8 @@ import { saveImage } from '../../service/storage';
 import { knex } from '../../db/bookshelf';
 import * as md5 from 'blueimp-md5';
 import { TaskBoardSettingModel } from '../../model/task-board-setting.model';
+import { createTaskBoard, saveTaskBoard } from '../../app/task/task-board.app';
+  import { TaskBoard } from '../../domain/task-board/task-board.domain';
 
 const TaskBoardRouter = express.Router();
 
@@ -112,6 +114,19 @@ TaskBoardRouter.post('/task-board', authJwt, async (req, res, next) => {
     .catch(error => {
       next(error);
     });
+});
+
+TaskBoardRouter.post('/v2/task-board', authJwt, async (req, res, next) => {
+  const { name } = req.body;
+  const { jw } = req;
+
+  try {
+    const taskBoard: TaskBoard = createTaskBoard(jw.user.id, name);
+    await saveTaskBoard(taskBoard);
+    res.status(200).send();
+  } catch(error) {
+    next(error);
+  }
 });
 
 TaskBoardRouter.get('/task-board/:boardId/participant', authJwt, async (req, res, next) => {

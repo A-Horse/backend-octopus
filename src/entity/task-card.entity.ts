@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 import { TaskBoardEntity } from './task-board.entity';
 import { TaskTrack } from './task-track.entity';
 
@@ -30,14 +30,14 @@ export class TaskCard {
   })
   public status: 'ACTIVE' | 'DONE';
 
-  @ManyToOne(() => User)
-  public creator: User;
+  @ManyToOne(() => UserEntity)
+  public creator: UserEntity;
 
-  @ManyToOne(() => User)
-  public owner: User;
+  @ManyToOne(() => UserEntity)
+  public owner: UserEntity;
 
-  @ManyToOne(() => User)
-  public assignee: User;
+  @ManyToOne(() => UserEntity)
+  public assignee: UserEntity;
 
   public index: number;
 
