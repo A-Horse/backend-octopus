@@ -1,13 +1,12 @@
-import { TaskBoardSetting } from "./entity/task-board-setting.entity";
+import { TaskBoardSetting } from './entity/task-board-setting.entity';
 
 export class TaskBoard {
-    public id: string;
-    public name: string;
-    public desc: string;
+  public id: string;
+  public name: string;
+  public desc: string;
 
-    public setting: TaskBoardSetting;
-    public creatorId: number;
+  public setting: TaskBoardSetting;
+  public creatorId: number;
 
-    constructor() {}
-    
+  constructor() {}
 }

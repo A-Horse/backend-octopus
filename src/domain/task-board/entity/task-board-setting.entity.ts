@@ -1,4 +1,4 @@
-import { TaskBoardShowType } from "../../../typing/task-board.typing";
+import { TaskBoardShowType } from '../../../typing/task-board.typing';
 
 export class TaskBoardSetting {
   public id: string;

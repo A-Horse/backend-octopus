@@ -1,10 +1,9 @@
-
 export enum TaskBoardStatus {
-    ACTIVE = 'ACTIVE',
-    DONE = 'DONE'
+  ACTIVE = 'ACTIVE',
+  DONE = 'DONE'
 }
 
 export enum TaskBoardShowType {
-    COLUMN = 'COLUMN',
-    LIST = 'LIST'
+  COLUMN = 'COLUMN',
+  LIST = 'LIST'
 }
