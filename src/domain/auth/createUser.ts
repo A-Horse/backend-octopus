@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcryptjs';
-import { User } from '../../entity/user.entity';
+import { UserEntity } from '../../entity/user.entity';
 import { getRepository } from 'typeorm';
 
 export function hashPasswd(password: string): string {
@@ -9,7 +9,7 @@ export function hashPasswd(password: string): string {
 }
 
 export async function crerateUser({ email, username, password }): Promise<void> {
-  const user = new User();
+  const user = new UserEntity();
   user.email = email;
   user.username = username;
 
@@ -17,5 +17,5 @@ export async function crerateUser({ email, username, password }): Promise<void> 
 
   user.hash = hash;
 
-  await getRepository(User).save(user);
+  await getRepository(UserEntity).save(user);
 }

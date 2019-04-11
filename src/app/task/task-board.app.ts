@@ -19,3 +19,7 @@ export function createTaskBoard(creatorId: number, name: string, desc: string = 
 export async function saveTaskBoard(taskBoard: TaskBoard): Promise<void> {
     await TaskBoardRepository.saveTaskBoard(taskBoard);
 }
+
+export async function  getUserTaskBoards(userId: number): Promise<TaskBoard[]> {
+    return await TaskBoardRepository.getUserTaskBoards(userId);
+}

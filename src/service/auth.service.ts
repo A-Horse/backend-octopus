@@ -1,5 +1,5 @@
 import { authUser } from '../domain/auth/authUser';
-import { User } from '../entity/user.entity';
+import { UserEntity } from '../entity/user.entity';
 import * as jwt from 'jsonwebtoken';
 import { configure } from '../configure';
 import { crerateUser } from '../domain/auth/createUser';
@@ -15,7 +15,7 @@ export interface AuthedData {
 
 class AuthService {
   public async login(email: string, password: string): Promise<AuthedData> {
-    const user: User = await authUser(email, password);
+    const user: UserEntity = await authUser(email, password);
     const token = this.signJwt(user);
 
     return {
@@ -36,7 +36,7 @@ class AuthService {
     return jwt.verify(token, configure.getConfig().SERCET_KEY);
   }
 
-  private signJwt(user: User): string {
+  private signJwt(user: UserEntity): string {
     return jwt.sign(
       {
         user: {

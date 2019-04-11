@@ -1,5 +1,5 @@
 import { UserModel } from '../model/user';
-import { User } from '../entity/user.entity';
+import { UserEntity } from '../entity/user.entity';
 import { getRepository } from 'typeorm';
 import { TodoModel } from '../model/todo.model';
 import { Todo } from '../entity/todo.entity';
@@ -8,14 +8,14 @@ import { TaskBoardModel } from '../model/task-board';
 export async function migrationUser() {
   const users = await new UserModel().fetchAll();
   users.forEach(async (user: UserModel) => {
-    const newUser = new User();
+    const newUser = new UserEntity();
 
     newUser.id = user.get('id');
     newUser.hash = user.get('password');
     newUser.email = user.get('email');
     newUser.username = user.get('username');
 
-    await getRepository(User).save(newUser);
+    await getRepository(UserEntity).save(newUser);
   });
 }
 
@@ -27,7 +27,7 @@ export async function migrationTodo() {
     .forEach(async (todo: UserModel) => {
       const newTodo = new Todo();
 
-      const creator = new User();
+      const creator = new UserEntity();
       creator.id = todo.get('userId');
 
       newTodo.creator = creator;

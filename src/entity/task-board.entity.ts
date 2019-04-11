@@ -24,8 +24,10 @@ export class TaskBoardEntity implements ITaskBoard {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
-  @OneToOne(type => TaskBoardSettingEntity)
-  @JoinColumn()
+  @OneToOne(type => TaskBoardSettingEntity, {
+    nullable: false
+  })
+  @JoinColumn({ name: "settingId"})
   setting: TaskBoardSettingEntity;
 
   @Column({

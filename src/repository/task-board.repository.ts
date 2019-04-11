@@ -1,8 +1,9 @@
 import { TaskBoard } from "../domain/task-board/task-board.domain";
-import { getRepository } from "../../node_modules/typeorm";
+import { getRepository, getConnection, EntityManager } from "../../node_modules/typeorm";
 import { TaskBoardEntity } from "../entity/task-board.entity";
 import { TaskBoardSetting } from "../domain/task-board/entity/task-board-setting.entity";
 import { UserEntity } from "../entity/user.entity";
+import { TaskBoardSettingEntity } from "../entity/task-boad-setting.entity";
 
 
 export class TaskBoardRepository {
@@ -10,11 +11,11 @@ export class TaskBoardRepository {
 
     getTaskBoardById(boardId: string) {}
 
-    async getUserTaskBoard(userId: string): Promise<TaskBoard[]> {
+    static async getUserTaskBoards(userId: number): Promise<TaskBoard[]> {
       const taskBoardEntitys = await getRepository(TaskBoardEntity)
       .createQueryBuilder("task_board")
-      .where("creatorId = :userId", { userId: 1 })
-      .leftJoinAndSelect('task_board.setttingId', 'task_board_setting')
+      .leftJoinAndSelect('task_board.setting', 'task_board_setting')
+      .where("creatorId = :userId", { userId })
       .getMany();
 
       return taskBoardEntitys.map((taskBoardEntity: TaskBoardEntity) => {
@@ -37,14 +38,33 @@ export class TaskBoardRepository {
         const creator = new UserEntity();
         creator.id = taskBoard.creatorId;
 
-        const taskBoardEntity = new TaskBoardEntity();
+        
+       
+
+        
+
+        await getConnection().transaction(async (transactionalEntityManager: EntityManager) => {
+          const taskBoardSettingEntity = new TaskBoardSettingEntity();
+
+          await transactionalEntityManager
+          .save(taskBoardSettingEntity);
+
+
+          const taskBoardEntity = new TaskBoardEntity();
         taskBoardEntity.name = taskBoard.name;
         taskBoardEntity.desc = taskBoard.desc;
         taskBoardEntity.creator = creator;
         taskBoardEntity.owner = creator;
+        taskBoardEntity.setting = taskBoardSettingEntity;
 
-        await getRepository(TaskBoardEntity)
-        .save(taskBoardEntity);
+        await transactionalEntityManager
+          .save(taskBoardEntity);
+
+         
+    
+
+        });
+
     }
 }
 
