@@ -22,3 +22,11 @@ export async function saveTaskBoard(taskBoard: TaskBoard): Promise<void> {
 export async function getUserTaskBoards(userId: number): Promise<TaskBoard[]> {
   return await TaskBoardRepository.getUserTaskBoards(userId);
 }
+
+export async function getTaskBoardFromUser(id: string, userId: number): Promise<TaskBoard> {
+  const board: TaskBoard =  await TaskBoardRepository.getTaskBoard(id);
+  if (userId !== board.creatorId) {
+    throw new Error('NO_PERMISSION');
+  }
+  return board;
+}

@@ -8,8 +8,6 @@ import { TaskBoardSettingEntity } from '../entity/task-boad-setting.entity';
 export class TaskBoardRepository {
   constructor() {}
 
-  getTaskBoardById(boardId: string) {}
-
   static async getUserTaskBoards(userId: number): Promise<TaskBoard[]> {
     const taskBoardEntitys = await getRepository(TaskBoardEntity)
       .createQueryBuilder('task_board')
@@ -32,6 +30,27 @@ export class TaskBoardRepository {
       return board;
     });
   }
+
+  static async getTaskBoard(id: string): Promise<TaskBoard> {
+    const taskBoardEntity: TaskBoardEntity =  await getRepository(TaskBoardEntity)
+    .createQueryBuilder('task_board')
+      .leftJoinAndSelect('task_board.setting', 'task_board_setting')
+      .where('id = :id', { id })
+      .getOne();
+
+    const board = new TaskBoard();
+      board.id = taskBoardEntity.id;
+      board.name = taskBoardEntity.name;
+      board.desc = taskBoardEntity.desc;
+
+      const taskBoardSetting = new TaskBoardSetting();
+      taskBoardSetting.id = taskBoardEntity.setting.id;
+      taskBoardSetting.showType = taskBoardEntity.setting.showType;
+
+      board.setting = taskBoardSetting;
+
+      return board;
+  } 
 
   static async saveTaskBoard(taskBoard: TaskBoard): Promise<void> {
     const creator = new UserEntity();

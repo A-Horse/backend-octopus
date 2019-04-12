@@ -6,30 +6,18 @@ import {
   UpdateDateColumn,
   ManyToOne,
   OneToOne,
-  JoinColumn
+  JoinColumn,
+  OneToMany
 } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { TaskBoardStatus } from '../typing/task-board.typing';
 import { TaskBoardSettingEntity } from './task-boad-setting.entity';
-
-export interface ITaskBoard {
-  id: string;
-  name: string;
-  desc: string;
-  creator: UserEntity;
-  owner: UserEntity;
-  type: 'NORMAL';
-  status: 'ACTIVE' | 'DONE';
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date;
-  isDelete: boolean;
-}
+import { TaskTrackEntity } from './task-track.entity';
 
 @Entity({
   name: 'task_board'
 })
-export class TaskBoardEntity implements ITaskBoard {
+export class TaskBoardEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -66,6 +54,9 @@ export class TaskBoardEntity implements ITaskBoard {
 
   @ManyToOne(() => UserEntity)
   public owner: UserEntity;
+
+  @OneToMany(() => TaskTrackEntity, track => track.board)
+  public tracks: TaskTrackEntity;
 
   @CreateDateColumn()
   public createdAt: Date;

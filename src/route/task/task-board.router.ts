@@ -10,7 +10,7 @@ import { saveImage } from '../../service/storage';
 import { knex } from '../../db/bookshelf';
 import * as md5 from 'blueimp-md5';
 import { TaskBoardSettingModel } from '../../model/task-board-setting.model';
-import { createTaskBoard, saveTaskBoard, getUserTaskBoards } from '../../app/task/task-board.app';
+import { createTaskBoard, saveTaskBoard, getUserTaskBoards, getTaskBoardFromUser } from '../../app/task/task-board.app';
 import { TaskBoard } from '../../domain/task-board/task-board.domain';
 
 const TaskBoardRouter = express.Router();
@@ -19,21 +19,21 @@ const multipartMiddleware = require('connect-multiparty')();
 
 const COVER_STORAGE_PATH = 'board-cover';
 
-TaskBoardRouter.get('/user/:userId/task-board', authJwt, async (req, res, next) => {
-  try {
-    const { jw } = req;
-    const boards = await knex
-      .from('task-board as board')
-      .join('task-access as access', 'access.boardId', '=', 'board.id')
-      .select('board.*')
-      .where('access.userId', '=', jw.user.id)
-      .whereNull('board.status')
-      .orWhere('board.status', '<>', 'DELETED');
-    res.json(boards);
-  } catch (error) {
-    next(error);
-  }
-});
+// TaskBoardRouter.get('/user/:userId/task-board', authJwt, async (req, res, next) => {
+//   try {
+//     const { jw } = req;
+//     const boards = await knex
+//       .from('task-board as board')
+//       .join('task-access as access', 'access.boardId', '=', 'board.id')
+//       .select('board.*')
+//       .where('access.userId', '=', jw.user.id)
+//       .whereNull('board.status')
+//       .orWhere('board.status', '<>', 'DELETED');
+//     res.json(boards);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 TaskBoardRouter.get('/v2/user/:userId/task-board', authJwt, async (req, res, next) => {
   try {
@@ -67,6 +67,18 @@ TaskBoardRouter.get('/task-board/:id/verbose', authJwt, async (req, res, next) =
     if (!board) {
       return next(new NotFoundError());
     }
+    return res.send(board);
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+TaskBoardRouter.get('/v2/task-board/:id/verbose', authJwt, async (req, res, next) => {
+  const { id } = req.params;
+  const { jw } = req;
+  try {
+    const board = getTaskBoardFromUser(id, jw.user.id);
     return res.send(board);
   } catch (error) {
     next(error);

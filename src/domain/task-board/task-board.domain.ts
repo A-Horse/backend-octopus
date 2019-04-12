@@ -4,9 +4,8 @@ export class TaskBoard {
   public id: string;
   public name: string;
   public desc: string;
-
-  public setting: TaskBoardSetting;
   public creatorId: number;
+  public setting: TaskBoardSetting;
 
   constructor() {}
 }

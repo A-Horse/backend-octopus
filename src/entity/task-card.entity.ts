@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { TaskBoardEntity } from './task-board.entity';
-import { TaskTrack } from './task-track.entity';
+import { TaskTrackStatus } from 'src/typing/task-track.typing';
 
 @Entity()
 export class TaskCard {
@@ -39,13 +39,10 @@ export class TaskCard {
   @ManyToOne(() => UserEntity)
   public assignee: UserEntity;
 
-  public index: number;
-
-  @ManyToOne(() => TaskTrack)
-  public taskTrack: TaskTrack;
-
-  @ManyToOne(() => TaskBoardEntity)
-  public taskBoard: TaskBoardEntity;
+  @Column({
+    nullable: false
+  })
+  public order: number;
 
   @CreateDateColumn()
   public createdAt: Date;

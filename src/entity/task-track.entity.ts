@@ -1,24 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { TaskBoardEntity } from './task-board.entity';
+import { TaskTrackStatus } from '../typing/task-track.typing';
 
-export interface ITaskTrack {
-  id: string;
-  name: string;
-  desc: string;
-  creator: UserEntity;
-  index: number;
-  taskboard: TaskBoardEntity;
-  type: 'NORMAL';
-  status: 'ACTIVE' | 'DONE';
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date;
-  isDelete: boolean;
-}
-
-@Entity()
-export class TaskTrack implements ITaskTrack {
+@Entity({
+  name: 'task_track'
+})
+export class TaskTrackEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -40,17 +28,20 @@ export class TaskTrack implements ITaskTrack {
 
   @Column({
     length: 10,
-    default: 'ACTIVE'
+    default: TaskTrackStatus.ACTIVE
   })
-  public status: 'ACTIVE' | 'DONE';
+  public status: TaskTrackStatus;
 
   @ManyToOne(() => UserEntity)
   public creator: UserEntity;
 
-  public index: number;
+  @Column({
+    nullable: false
+  })
+  public order: number;
 
-  @ManyToOne(() => TaskBoardEntity)
-  public taskboard: TaskBoardEntity;
+  @ManyToOne(type => TaskBoardEntity, board => board.tracks)
+  board: TaskBoardEntity;
 
   @CreateDateColumn()
   public createdAt: Date;
