@@ -1,7 +1,7 @@
 import { TaskBoardSetting } from './entity/task-board-setting.entity';
 import { TaskTrack } from '../task-track/task-track.domain';
 import { TaskTrackRepository } from '../../repository/task-track.repository';
-import { ITaskBoard } from '../../typing/task-board.typing';
+import { ITaskBoard, ITaskBoardSetting } from '../../typing/task-board.typing';
 
 export class TaskBoard {
   public id: string;
@@ -21,7 +21,10 @@ export class TaskBoard {
     }
     this.tracks = await TaskTrackRepository.getTracks(this.id);
     await Promise.all(this.tracks.map(t => t.load()));
-    
+  }
+
+  public getSettingValue(): ITaskBoardSetting {
+    return this.setting.getValue();
   }
 
   public getValue(): ITaskBoard {
