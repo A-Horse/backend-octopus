@@ -1,8 +1,8 @@
 import { getRepository } from '../../node_modules/typeorm';
 import { TaskTrackEntity } from '../entity/task-track.entity';
 import { TaskTrack } from '../domain/task-track/task-track.domain';
-import { UserEntity } from 'src/entity/user.entity';
-import { TaskBoardEntity } from 'src/entity/task-board.entity';
+import { UserEntity } from '../entity/user.entity';
+import { TaskBoardEntity } from '../entity/task-board.entity';
 
 export class TaskTrackRepository {
   constructor() {}
@@ -30,7 +30,7 @@ export class TaskTrackRepository {
   static async getTrackLastOrder(boardId: string): Promise<number> {
     return await getRepository(TaskTrackEntity)
       .createQueryBuilder('task_track')
-      .where('boardId =: boardId', { boardId })
+      .where('boardId = :boardId', { boardId })
       .getCount();
   }
 

@@ -5,6 +5,7 @@ import { Group } from '../../model/group';
 import { AccessLimitError, NotFoundError } from '../../service/error';
 import { validateRequest } from '../../service/validate';
 import { taskBoardGroupForBody, taskBoardGroupForParams } from '../middle/board';
+import { createTrack } from '../../app/task/task-track.app';
 
 const TaskTrackRouter = express.Router();
 
@@ -53,20 +54,39 @@ TaskTrackRouter.get('/task-board/:boardId/track/:trackId/card', authJwt, taskBoa
   }
 });
 
-TaskTrackRouter.post('/task-board/:boardId/track', async (req, res) => {
+// TaskTrackRouter.post('/task-board/:boardId/track', async (req, res) => {
+//   validateRequest(req.body, 'name', ['required']);
+//   const { jw } = req;
+//   const { boardId } = req.params;
+
+//   const existNumber = await TaskTrackModel.where({
+//     taskBoardId: boardId
+//   }).count();
+//   const savedTrack = await new TaskTrackModel().save({
+//     index: existNumber,
+//     taskBoardId: boardId,
+//     name: req.body.name
+//   });
+//   res.status(201).send({ ...savedTrack.serialize(), cards: [] });
+// });
+
+TaskTrackRouter.post('/v2/task-board/:boardId/track',authJwt,  async (req, res, next) => {
   validateRequest(req.body, 'name', ['required']);
+
   const { jw } = req;
   const { boardId } = req.params;
 
-  const existNumber = await TaskTrackModel.where({
-    taskBoardId: boardId
-  }).count();
-  const savedTrack = await new TaskTrackModel().save({
-    index: existNumber,
-    taskBoardId: boardId,
-    name: req.body.name
-  });
-  res.status(201).send({ ...savedTrack.serialize(), cards: [] });
+  try {
+    await createTrack({
+      name: req.body.name,
+      desc: req.body.desc,
+      creatorId: jw.user.id,
+      boardId: boardId
+    });
+    res.status(201).send();    
+  } catch (error) {
+    next(error);
+  }
 });
 
 TaskTrackRouter.patch('/task-board/:boardId/track/index', async (req, res) => {

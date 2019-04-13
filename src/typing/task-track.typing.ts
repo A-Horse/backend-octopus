@@ -21,6 +21,6 @@ export interface ITaskTrack {
 export interface CreateTrackInput {
   name: string;
   desc?: string;
-  creatorId: string;
+  creatorId: number;
   boardId: string;
 }

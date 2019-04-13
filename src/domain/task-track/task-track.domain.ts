@@ -1,7 +1,7 @@
 import { TaskTrackStatus, ITaskTrack } from '../../typing/task-track.typing';
 import { TaskCard } from '../task-card/task-card.domain';
 import { TaskCardRepository } from '../../repository/task-card.repository';
-import { TaskTrackRepository } from 'src/repository/task-track.repository';
+import { TaskTrackRepository } from '../../repository/task-track.repository';
 
 export class TaskTrack {
   public id: string;
