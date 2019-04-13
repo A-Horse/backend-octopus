@@ -1,10 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { TaskBoardEntity } from './task-board.entity';
-import { TaskTrackStatus } from 'src/typing/task-track.typing';
+import { TaskTrackStatus } from '../typing/task-track.typing';
 import { TaskTrackEntity } from './task-track.entity';
 
-@Entity()
+@Entity({
+  name: 'task_card'
+})
 export class TaskCardEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;

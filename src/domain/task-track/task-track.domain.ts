@@ -16,10 +16,9 @@ export class TaskTrack {
   public cards: TaskCard[];
 
   constructor() {
-    this.loadCards().then();
   }
 
-  public async loadCards(): Promise<void> {
+  public async load(): Promise<void> {
     if (!this.id) {
         throw new Error('TaskTrack not initial.');
     }

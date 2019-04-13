@@ -1,6 +1,6 @@
 import { getRepository } from '../../node_modules/typeorm';
 import { TaskCard } from '../domain/task-card/task-card.domain';
-import { TaskCardEntity } from 'src/entity/task-card.entity';
+import { TaskCardEntity } from '../entity/task-card.entity';
 
 export class TaskCardRepository {
   constructor() {}

@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { TaskBoardStatus } from '../typing/task-board.typing';
-import { TaskBoardSettingEntity } from './task-boad-setting.entity';
+import { TaskBoardSettingEntity } from './task-board-setting.entity';
 import { TaskTrackEntity } from './task-track.entity';
 
 @Entity({
@@ -50,6 +50,7 @@ export class TaskBoardEntity {
   public status: TaskBoardStatus;
 
   @ManyToOne(() => UserEntity)
+  @JoinColumn({ name: 'creatorId' })
   public creator: UserEntity;
 
   @ManyToOne(() => UserEntity)

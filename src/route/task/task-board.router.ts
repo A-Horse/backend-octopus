@@ -12,6 +12,7 @@ import * as md5 from 'blueimp-md5';
 import { TaskBoardSettingModel } from '../../model/task-board-setting.model';
 import { createTaskBoard, saveTaskBoard, getUserTaskBoards, getTaskBoardFromUser } from '../../app/task/task-board.app';
 import { TaskBoard } from '../../domain/task-board/task-board.domain';
+import { ITaskBoard } from '../../typing/task-board.typing';
 
 const TaskBoardRouter = express.Router();
 
@@ -38,47 +39,47 @@ const COVER_STORAGE_PATH = 'board-cover';
 TaskBoardRouter.get('/v2/user/:userId/task-board', authJwt, async (req, res, next) => {
   try {
     const { jw } = req;
-    const boards = await getUserTaskBoards(jw.user.id);
+    const boards: ITaskBoard[] = await getUserTaskBoards(jw.user.id);
     res.json(boards);
   } catch (error) {
     next(error);
   }
 });
 
-TaskBoardRouter.get('/task-board/:id/verbose', authJwt, async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const board = await new TaskBoardModel().where({ id }).fetch({
-      withRelated: [
-        {
-          tracks: R.identity,
-          'tracks.cards': qb => {
-            return qb.whereRaw('not status = "DELETED" and not status = "ARCHIVE" or status is null');
-          },
-          'tracks.cards.creater': qb => {
-            qb.select('email', 'id');
-          },
-          'tracks.cards.owner': qb => {
-            qb.select('email', 'id');
-          }
-        }
-      ]
-    });
-    if (!board) {
-      return next(new NotFoundError());
-    }
-    return res.send(board);
-  } catch (error) {
-    next(error);
-  }
-});
+// TaskBoardRouter.get('/task-board/:id/verbose', authJwt, async (req, res, next) => {
+//   const { id } = req.params;
+//   try {
+//     const board = await new TaskBoardModel().where({ id }).fetch({
+//       withRelated: [
+//         {
+//           tracks: R.identity,
+//           'tracks.cards': qb => {
+//             return qb.whereRaw('not status = "DELETED" and not status = "ARCHIVE" or status is null');
+//           },
+//           'tracks.cards.creater': qb => {
+//             qb.select('email', 'id');
+//           },
+//           'tracks.cards.owner': qb => {
+//             qb.select('email', 'id');
+//           }
+//         }
+//       ]
+//     });
+//     if (!board) {
+//       return next(new NotFoundError());
+//     }
+//     return res.send(board);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 
 TaskBoardRouter.get('/v2/task-board/:id/verbose', authJwt, async (req, res, next) => {
   const { id } = req.params;
   const { jw } = req;
   try {
-    const board = getTaskBoardFromUser(id, jw.user.id);
+    const board = await getTaskBoardFromUser(id, jw.user.id);
     return res.send(board);
   } catch (error) {
     next(error);

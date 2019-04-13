@@ -3,7 +3,7 @@ import { getRepository, getConnection, EntityManager } from '../../node_modules/
 import { TaskBoardEntity } from '../entity/task-board.entity';
 import { TaskBoardSetting } from '../domain/task-board/entity/task-board-setting.entity';
 import { UserEntity } from '../entity/user.entity';
-import { TaskBoardSettingEntity } from '../entity/task-boad-setting.entity';
+import { TaskBoardSettingEntity } from '../entity/task-board-setting.entity';
 
 export class TaskBoardRepository {
   constructor() {}
@@ -35,13 +35,15 @@ export class TaskBoardRepository {
     const taskBoardEntity: TaskBoardEntity =  await getRepository(TaskBoardEntity)
     .createQueryBuilder('task_board')
       .leftJoinAndSelect('task_board.setting', 'task_board_setting')
-      .where('id = :id', { id })
+      .leftJoinAndSelect('task_board.creator', 'user')
+      .where('task_board.id = :id', { id })
       .getOne();
 
     const board = new TaskBoard();
       board.id = taskBoardEntity.id;
       board.name = taskBoardEntity.name;
       board.desc = taskBoardEntity.desc;
+      board.creatorId = taskBoardEntity.creator.id;
 
       const taskBoardSetting = new TaskBoardSetting();
       taskBoardSetting.id = taskBoardEntity.setting.id;
