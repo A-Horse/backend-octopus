@@ -2,9 +2,10 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { UserEntity } from './user.entity';
 import { TaskBoardEntity } from './task-board.entity';
 import { TaskTrackStatus } from 'src/typing/task-track.typing';
+import { TaskTrackEntity } from './task-track.entity';
 
 @Entity()
-export class TaskCard {
+export class TaskCardEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
@@ -38,6 +39,9 @@ export class TaskCard {
 
   @ManyToOne(() => UserEntity)
   public assignee: UserEntity;
+
+  @ManyToOne(type => TaskTrackEntity, track => track.cards)
+  public track: TaskTrackEntity;
 
   @Column({
     nullable: false

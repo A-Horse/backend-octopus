@@ -1,7 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { TaskBoardEntity } from './task-board.entity';
 import { TaskTrackStatus } from '../typing/task-track.typing';
+import { TaskCardEntity } from './task-card.entity';
 
 @Entity({
   name: 'task_track'
@@ -48,6 +49,9 @@ export class TaskTrackEntity {
 
   @UpdateDateColumn()
   public updatedAt: Date;
+
+  @OneToMany(() => TaskCardEntity, card => card.track)
+  public cards: TaskCardEntity[];
 
   @Column({
     nullable: true

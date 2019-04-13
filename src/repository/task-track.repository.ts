@@ -1,18 +1,27 @@
-import { TaskBoard } from '../domain/task-board/task-board.domain';
-import { getRepository, getConnection, EntityManager } from '../../node_modules/typeorm';
-import { TaskBoardEntity } from '../entity/task-board.entity';
-import { TaskBoardSetting } from '../domain/task-board/entity/task-board-setting.entity';
-import { UserEntity } from '../entity/user.entity';
-import { TaskBoardSettingEntity } from '../entity/task-boad-setting.entity';
+import { getRepository } from '../../node_modules/typeorm';
 import { TaskTrackEntity } from '../entity/task-track.entity';
+import { TaskTrack } from '../domain/task-track/task-track.domain';
 
-export class TaskBoardRepository {
+export class TaskTrackRepository {
   constructor() {}
 
-  static async getTracks(boardId: string) {
-    await getRepository(TaskTrackEntity)
+  static async getTracks(boardId: string): Promise<TaskTrack[]> {
+    const trackEntitys: TaskTrackEntity[] = await getRepository(TaskTrackEntity)
     .createQueryBuilder('task_track')
     .where('boardId = :boardId', { boardId })
     .getMany();
+
+    return trackEntitys.map((trackEntity: TaskTrackEntity) => {
+        const track = new TaskTrack();
+        track.id = trackEntity.id;
+        track.name= trackEntity.name;
+        track.type = trackEntity.type;
+        track.status = trackEntity.status;
+        track.order = trackEntity.order;
+        track.createdAt = trackEntity.createdAt;
+        track.updatedAt = trackEntity.updatedAt;
+
+        return track;
+    });
   }
 }

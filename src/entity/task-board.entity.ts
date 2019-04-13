@@ -56,7 +56,7 @@ export class TaskBoardEntity {
   public owner: UserEntity;
 
   @OneToMany(() => TaskTrackEntity, track => track.board)
-  public tracks: TaskTrackEntity;
+  public tracks: TaskTrackEntity[];
 
   @CreateDateColumn()
   public createdAt: Date;
