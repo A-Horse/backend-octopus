@@ -74,7 +74,6 @@ TaskBoardRouter.get('/v2/user/:userId/task-board', authJwt, async (req, res, nex
 //   }
 // });
 
-
 TaskBoardRouter.get('/v2/task-board/:id/verbose', authJwt, async (req, res, next) => {
   const { id } = req.params;
   const { jw } = req;

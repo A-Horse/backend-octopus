@@ -32,27 +32,27 @@ export class TaskBoardRepository {
   }
 
   static async getTaskBoard(id: string): Promise<TaskBoard> {
-    const taskBoardEntity: TaskBoardEntity =  await getRepository(TaskBoardEntity)
-    .createQueryBuilder('task_board')
+    const taskBoardEntity: TaskBoardEntity = await getRepository(TaskBoardEntity)
+      .createQueryBuilder('task_board')
       .leftJoinAndSelect('task_board.setting', 'task_board_setting')
       .leftJoinAndSelect('task_board.creator', 'user')
       .where('task_board.id = :id', { id })
       .getOne();
 
     const board = new TaskBoard();
-      board.id = taskBoardEntity.id;
-      board.name = taskBoardEntity.name;
-      board.desc = taskBoardEntity.desc;
-      board.creatorId = taskBoardEntity.creator.id;
+    board.id = taskBoardEntity.id;
+    board.name = taskBoardEntity.name;
+    board.desc = taskBoardEntity.desc;
+    board.creatorId = taskBoardEntity.creator.id;
 
-      const taskBoardSetting = new TaskBoardSetting();
-      taskBoardSetting.id = taskBoardEntity.setting.id;
-      taskBoardSetting.showType = taskBoardEntity.setting.showType;
+    const taskBoardSetting = new TaskBoardSetting();
+    taskBoardSetting.id = taskBoardEntity.setting.id;
+    taskBoardSetting.showType = taskBoardEntity.setting.showType;
 
-      board.setting = taskBoardSetting;
+    board.setting = taskBoardSetting;
 
-      return board;
-  } 
+    return board;
+  }
 
   static async saveTaskBoard(taskBoard: TaskBoard): Promise<void> {
     const creator = new UserEntity();

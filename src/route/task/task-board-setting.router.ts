@@ -24,20 +24,16 @@ const TaskBoardSettingRouter = express.Router();
 //   }
 // );
 
-TaskBoardSettingRouter.get(
-  '/v2/task-board/:id/setting',
-  authJwt,
-  async (req, res, next) => {
-    const { id } = req.params;
-    const { jw } = req;
-    try {
-      const settingValue: ITaskBoardSetting = await getTaskBoardSetting(id, jw.user.id)
-      res.json(settingValue);
-    } catch (error) {
-      next(error);
-    }
+TaskBoardSettingRouter.get('/v2/task-board/:id/setting', authJwt, async (req, res, next) => {
+  const { id } = req.params;
+  const { jw } = req;
+  try {
+    const settingValue: ITaskBoardSetting = await getTaskBoardSetting(id, jw.user.id);
+    res.json(settingValue);
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 TaskBoardSettingRouter.patch(
   '/task-board/:taskBoardId/setting',

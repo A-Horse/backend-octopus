@@ -1,4 +1,3 @@
-
 export interface ITaskCard {
   id: string;
   title: string;

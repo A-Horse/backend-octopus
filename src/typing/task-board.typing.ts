@@ -1,4 +1,4 @@
-import { ITaskTrack } from "./task-track.typing";
+import { ITaskTrack } from './task-track.typing';
 
 export enum TaskBoardStatus {
   ACTIVE = 'ACTIVE',
@@ -11,8 +11,8 @@ export enum TaskBoardShowType {
 }
 
 export interface ITaskBoardSetting {
-   id: string;
-   showType: TaskBoardShowType;
+  id: string;
+  showType: TaskBoardShowType;
 }
 
 export interface ITaskBoard {

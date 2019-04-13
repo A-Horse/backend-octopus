@@ -12,12 +12,11 @@ export class TaskBoard {
 
   public tracks: TaskTrack[];
 
-  constructor() {
-  }
+  constructor() {}
 
   public async load(): Promise<void> {
     if (!this.id) {
-      throw Error('TaskBoard not initial.')
+      throw Error('TaskBoard not initial.');
     }
     this.tracks = await TaskTrackRepository.getTracks(this.id);
     await Promise.all(this.tracks.map(t => t.load()));
@@ -34,7 +33,7 @@ export class TaskBoard {
       desc: this.desc,
       creatorId: this.creatorId,
       setting: this.setting.getValue()
-    }
+    };
   }
 
   public getValueWithAllData(): ITaskBoard {
@@ -44,7 +43,6 @@ export class TaskBoard {
     return {
       ...this.getValue(),
       tracks: this.tracks.map(t => t.getValueWithCards())
-    }
+    };
   }
-  
 }

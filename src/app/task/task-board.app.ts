@@ -25,8 +25,8 @@ export async function getUserTaskBoards(userId: number): Promise<ITaskBoard[]> {
 }
 
 export async function getTaskBoardSetting(boardId: string, userId: number): Promise<ITaskBoardSetting> {
-  const board: TaskBoard =  await TaskBoardRepository.getTaskBoard(boardId);
-  
+  const board: TaskBoard = await TaskBoardRepository.getTaskBoard(boardId);
+
   if (userId !== board.creatorId) {
     throw new Error('NO_PERMISSION');
   }
@@ -35,8 +35,8 @@ export async function getTaskBoardSetting(boardId: string, userId: number): Prom
 }
 
 export async function getTaskBoardFromUser(id: string, userId: number): Promise<ITaskBoard> {
-  const board: TaskBoard =  await TaskBoardRepository.getTaskBoard(id);
-  
+  const board: TaskBoard = await TaskBoardRepository.getTaskBoard(id);
+
   if (userId !== board.creatorId) {
     throw new Error('NO_PERMISSION');
   }

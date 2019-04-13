@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  OneToMany
+} from 'typeorm';
 import { UserEntity } from './user.entity';
 import { TaskBoardEntity } from './task-board.entity';
 import { TaskTrackStatus } from '../typing/task-track.typing';
@@ -37,6 +45,7 @@ export class TaskTrackEntity {
   public creator: UserEntity;
 
   @Column({
+    type: 'double',
     nullable: false
   })
   public order: number;

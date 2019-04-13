@@ -1,6 +1,7 @@
-import { TaskTrackStatus, ITaskTrack } from "../../typing/task-track.typing";
-import { TaskCard } from "../task-card/task-card.domain";
-import { TaskCardRepository } from "../../repository/task-card.repository";
+import { TaskTrackStatus, ITaskTrack } from '../../typing/task-track.typing';
+import { TaskCard } from '../task-card/task-card.domain';
+import { TaskCardRepository } from '../../repository/task-card.repository';
+import { TaskTrackRepository } from 'src/repository/task-track.repository';
 
 export class TaskTrack {
   public id: string;
@@ -15,30 +16,29 @@ export class TaskTrack {
 
   public cards: TaskCard[];
 
-  constructor() {
-  }
+  constructor() {}
 
   public async load(): Promise<void> {
     if (!this.id) {
-        throw new Error('TaskTrack not initial.');
+      throw new Error('TaskTrack not initial.');
     }
     this.cards = await TaskCardRepository.getCardsByTrackId(this.id);
   }
 
   public getValue(): ITaskTrack {
     return {
-       id: this.id,
-       name: this.name,
-       desc: this.desc,
-       creatorId: this.creatorId,
-       type: this.type,
-       status: this.status,
-       createdAt: this.createdAt,
-       updatedAt: this.updatedAt,
-       order: this.order
-    }
+      id: this.id,
+      name: this.name,
+      desc: this.desc,
+      creatorId: this.creatorId,
+      type: this.type,
+      status: this.status,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      order: this.order
+    };
   }
-  
+
   public getValueWithCards(): ITaskTrack {
     if (!this.cards) {
       throw new Error('TaskTrack cards not loaded.');
@@ -46,6 +46,10 @@ export class TaskTrack {
     return {
       ...this.getValue(),
       cards: this.cards.map(c => c.getValue())
-    }
+    };
+  }
+
+  public async queryAndSetLastOrder(boardId: string): Promise<void> {
+    this.order = await TaskTrackRepository.getTrackLastOrder(boardId);
   }
 }
