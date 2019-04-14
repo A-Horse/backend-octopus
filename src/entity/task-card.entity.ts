@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne
+} from 'typeorm';
 import { UserEntity } from './user.entity';
 import { TaskTrackEntity } from './task-track.entity';
 import { TaskCardType } from '../typing/task-card.typing';

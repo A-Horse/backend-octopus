@@ -2,7 +2,12 @@ import { AccessLimitError, NotFoundError } from '../../service/error';
 import { TaskAccessModel } from '../../model/task-access';
 import { Request, Response, NextFunction } from 'express';
 
-export async function taskBoardAuthMiddle(taskBoardId: string, req: Request, res: Response, next: NextFunction) {
+export async function taskBoardAuthMiddle(
+  taskBoardId: string,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const { jw } = req;
   try {
     const canAccess = await TaskAccessModel.where({

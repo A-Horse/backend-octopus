@@ -4,7 +4,9 @@ import * as fs from 'fs';
 
 class Configure {
   constructor() {
-    const configDoc = yaml.safeLoad(fs.readFileSync(path.join(__dirname, '../../config.yaml'), 'utf8'));
+    const configDoc = yaml.safeLoad(
+      fs.readFileSync(path.join(__dirname, '../../config.yaml'), 'utf8')
+    );
     Object.assign(this, configDoc);
   }
 

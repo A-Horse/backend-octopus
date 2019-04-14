@@ -3,7 +3,11 @@ import * as http from 'http';
 import * as colors from 'colors';
 
 import { configure } from './configure';
-import { migrationUser, migrationTodo, migrationTask } from './cross-db-migrations/migrations';
+import {
+  migrationUser,
+  migrationTodo,
+  migrationTask
+} from './cross-db-migrations/migrations';
 import { hashPasswd } from './domain/auth/createUser';
 
 export function startToolServer() {

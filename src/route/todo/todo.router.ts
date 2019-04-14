@@ -31,22 +31,26 @@ TodoRouter.get(
   }
 );
 
-TodoRouter.post('/todo', authJwt, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  try {
-    validateRequest(req.body, 'content', ['required']);
-    const { jw } = req;
+TodoRouter.post(
+  '/todo',
+  authJwt,
+  async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    try {
+      validateRequest(req.body, 'content', ['required']);
+      const { jw } = req;
 
-    const createdTodoId: string = await todoService.createTodo({
-      userId: jw.user.id,
-      content: req.body.content,
-      deadline: req.body.deadline,
-      boxId: req.body.todoBoxId
-    });
-    res.send(createdTodoId);
-  } catch (error) {
-    next(error);
+      const createdTodoId: string = await todoService.createTodo({
+        userId: jw.user.id,
+        content: req.body.content,
+        deadline: req.body.deadline,
+        boxId: req.body.todoBoxId
+      });
+      res.send(createdTodoId);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 TodoRouter.delete('/todo/:todoId', authJwt, async (req, res) => {
   const { todoId } = req.params;

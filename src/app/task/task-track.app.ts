@@ -2,7 +2,9 @@ import { TaskTrack } from '../../domain/task-track/task-track.domain';
 import { CreateTrackInput, ITaskTrack } from '../../typing/task-track.typing';
 import { TaskTrackRepository } from '../../repository/task-track.repository';
 
-export async function createTrack(createTrackInput: CreateTrackInput): Promise<ITaskTrack> {
+export async function createTrack(
+  createTrackInput: CreateTrackInput
+): Promise<ITaskTrack> {
   const track = new TaskTrack();
 
   track.name = createTrackInput.name;

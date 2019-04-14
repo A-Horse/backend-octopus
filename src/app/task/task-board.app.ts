@@ -1,10 +1,19 @@
 import { TaskBoard } from '../../domain/task-board/task-board.domain';
 import { TaskBoardSetting } from '../../domain/task-board/entity/task-board-setting.entity';
 import { TaskBoardRepository } from '../../repository/task-board.repository';
-import { ITaskBoard, ITaskBoardSetting, TaskBoardShowType } from '../../typing/task-board.typing';
+import {
+  ITaskBoard,
+  ITaskBoardSetting,
+  TaskBoardShowType
+} from '../../typing/task-board.typing';
 import { FileService } from '../../service/file.service';
 
-export function createTaskBoard(creatorId: number, name: string, desc: string = '', showType: TaskBoardShowType = TaskBoardShowType.COLUMN): TaskBoard {
+export function createTaskBoard(
+  creatorId: number,
+  name: string,
+  desc: string = '',
+  showType: TaskBoardShowType = TaskBoardShowType.COLUMN
+): TaskBoard {
   const taskBoard = new TaskBoard();
   taskBoard.creatorId = creatorId;
   taskBoard.name = name;
@@ -25,7 +34,10 @@ export async function getUserTaskBoards(userId: number): Promise<ITaskBoard[]> {
   return (await TaskBoardRepository.getUserTaskBoards(userId)).map(b => b.getValue());
 }
 
-export async function getTaskBoardSetting(boardId: string, userId: number): Promise<ITaskBoardSetting> {
+export async function getTaskBoardSetting(
+  boardId: string,
+  userId: number
+): Promise<ITaskBoardSetting> {
   const board: TaskBoard = await TaskBoardRepository.getTaskBoard(boardId);
 
   if (userId !== board.creatorId) {
@@ -35,7 +47,10 @@ export async function getTaskBoardSetting(boardId: string, userId: number): Prom
   return board.getSettingValue();
 }
 
-export async function getTaskBoardFromUser(id: string, userId: number): Promise<ITaskBoard> {
+export async function getTaskBoardFromUser(
+  id: string,
+  userId: number
+): Promise<ITaskBoard> {
   const board: TaskBoard = await TaskBoardRepository.getTaskBoard(id);
 
   if (userId !== board.creatorId) {
@@ -46,7 +61,10 @@ export async function getTaskBoardFromUser(id: string, userId: number): Promise<
   return board.getValueWithAllData();
 }
 
-export async function updateTaskBoardCover(coverBase64: string, boardId: string): Promise<string> {
+export async function updateTaskBoardCover(
+  coverBase64: string,
+  boardId: string
+): Promise<string> {
   const filename: string = await FileService.saveBase64Image(coverBase64);
 
   const board: TaskBoard = await TaskBoardRepository.getTaskBoard(boardId);

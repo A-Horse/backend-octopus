@@ -51,7 +51,10 @@ TaskBoardRouter.delete('/task-board/:boardId', authJwt, async (req, res, next) =
   // TODO 只要 owner 才能删除
   try {
     const { boardId } = req.params;
-    await TaskBoardModel.where({ id: boardId }).save({ status: 'DELETED' }, { method: 'update' });
+    await TaskBoardModel.where({ id: boardId }).save(
+      { status: 'DELETED' },
+      { method: 'update' }
+    );
     res.status(204).send();
   } catch (error) {
     next(error);
@@ -113,24 +116,28 @@ TaskBoardRouter.post('/v2/task-board', authJwt, async (req, res, next) => {
   }
 });
 
-TaskBoardRouter.get('/task-board/:boardId/participant', authJwt, async (req, res, next) => {
-  try {
-    const participants = await TaskAccessModel.where({
-      boardId: req.params.boardId
-    }).fetchAll({
-      withRelated: [
-        {
-          user: qb => {
-            qb.select('email', 'id', 'username');
+TaskBoardRouter.get(
+  '/task-board/:boardId/participant',
+  authJwt,
+  async (req, res, next) => {
+    try {
+      const participants = await TaskAccessModel.where({
+        boardId: req.params.boardId
+      }).fetchAll({
+        withRelated: [
+          {
+            user: qb => {
+              qb.select('email', 'id', 'username');
+            }
           }
-        }
-      ]
-    });
-    res.json(participants);
-  } catch (error) {
-    next(error);
+        ]
+      });
+      res.json(participants);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 TaskBoardRouter.post('/task-board/:boardId/invite', authJwt, async (req, res, next) => {
   try {
@@ -154,15 +161,19 @@ TaskBoardRouter.post('/task-board/:boardId/invite', authJwt, async (req, res, ne
   }
 });
 
-TaskBoardRouter.post('/v2/task-board/:id/cover', multipartMiddleware, async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const coverFilename: string = await updateTaskBoardCover(req.body.cover, id);
-    res.json({ cover: coverFilename });
-  } catch (error) {
-    next(error);
+TaskBoardRouter.post(
+  '/v2/task-board/:id/cover',
+  multipartMiddleware,
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const coverFilename: string = await updateTaskBoardCover(req.body.cover, id);
+      res.json({ cover: coverFilename });
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 TaskBoardRouter.patch('/task-board/:boardId', async (req, res, next) => {
   try {

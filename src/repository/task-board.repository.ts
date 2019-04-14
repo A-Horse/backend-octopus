@@ -54,20 +54,22 @@ export class TaskBoardRepository {
     const creator = new UserEntity();
     creator.id = taskBoard.creatorId;
 
-    await getConnection().transaction(async (transactionalEntityManager: EntityManager) => {
-      const taskBoardSettingEntity = new TaskBoardSettingEntity();
+    await getConnection().transaction(
+      async (transactionalEntityManager: EntityManager) => {
+        const taskBoardSettingEntity = new TaskBoardSettingEntity();
 
-      await transactionalEntityManager.save(taskBoardSettingEntity);
+        await transactionalEntityManager.save(taskBoardSettingEntity);
 
-      const taskBoardEntity = new TaskBoardEntity();
-      taskBoardEntity.name = taskBoard.name;
-      taskBoardEntity.desc = taskBoard.desc;
-      taskBoardEntity.creator = creator;
-      taskBoardEntity.owner = creator;
-      taskBoardEntity.setting = taskBoardSettingEntity;
+        const taskBoardEntity = new TaskBoardEntity();
+        taskBoardEntity.name = taskBoard.name;
+        taskBoardEntity.desc = taskBoard.desc;
+        taskBoardEntity.creator = creator;
+        taskBoardEntity.owner = creator;
+        taskBoardEntity.setting = taskBoardSettingEntity;
 
-      await transactionalEntityManager.save(taskBoardEntity);
-    });
+        await transactionalEntityManager.save(taskBoardEntity);
+      }
+    );
   }
 
   static async updateBoardSetting(setting: TaskBoardSetting): Promise<void> {

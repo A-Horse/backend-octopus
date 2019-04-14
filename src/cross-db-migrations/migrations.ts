@@ -35,7 +35,9 @@ export async function migrationTodo() {
       newTodo.creator = creator;
 
       newTodo.content = todo.get('content');
-      newTodo.deadline = todo.get('deadline') ? new Date(todo.get('deadline')) : undefined;
+      newTodo.deadline = todo.get('deadline')
+        ? new Date(todo.get('deadline'))
+        : undefined;
       newTodo.status = todo.get('isDone') ? 'DONE' : 'ACTIVE';
       newTodo.isDelete = todo.get('isDelete') ? true : false;
 
@@ -52,7 +54,12 @@ export async function migrationTask(): Promise<void> {
         boardId: taskBoard.id
       }).fetch();
 
-      const taskBoardDomain = createTaskBoard(taskBoard.get('ownerId'), taskBoard.get('name'), taskBoard.get('description'), taskBoardSetting.get('showType'));
+      const taskBoardDomain = createTaskBoard(
+        taskBoard.get('ownerId'),
+        taskBoard.get('name'),
+        taskBoard.get('description'),
+        taskBoardSetting.get('showType')
+      );
       await saveTaskBoard(taskBoardDomain);
     })
   );

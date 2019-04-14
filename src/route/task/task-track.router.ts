@@ -27,33 +27,38 @@ const TaskTrackRouter = express.Router();
 //   }
 // );
 
-TaskTrackRouter.get('/task-board/:boardId/track/:trackId/card', authJwt, taskBoardGroupForParams, async (req, res) => {
-  try {
-    const { trackId } = req.params;
-    const taskTrack = await TaskTrackModel.where({ id: trackId }).fetch({
-      withRelated: [
-        {
-          cards: () => {
-            /*ignore*/
-          },
-          'cards.creater': qb => {
-            qb.select('email', 'id');
-          },
-          'cards.owner': qb => {
-            qb.select('email', 'id');
+TaskTrackRouter.get(
+  '/task-board/:boardId/track/:trackId/card',
+  authJwt,
+  taskBoardGroupForParams,
+  async (req, res) => {
+    try {
+      const { trackId } = req.params;
+      const taskTrack = await TaskTrackModel.where({ id: trackId }).fetch({
+        withRelated: [
+          {
+            cards: () => {
+              /*ignore*/
+            },
+            'cards.creater': qb => {
+              qb.select('email', 'id');
+            },
+            'cards.owner': qb => {
+              qb.select('email', 'id');
+            }
           }
-        }
-      ]
-    });
+        ]
+      });
 
-    if (!taskTrack) {
-      throw new NotFoundError('not found this task list');
+      if (!taskTrack) {
+        throw new NotFoundError('not found this task list');
+      }
+      res.json(taskTrack);
+    } catch (error) {
+      throw error;
     }
-    res.json(taskTrack);
-  } catch (error) {
-    throw error;
   }
-});
+);
 
 // TaskTrackRouter.post('/task-board/:boardId/track', async (req, res) => {
 //   validateRequest(req.body, 'name', ['required']);
