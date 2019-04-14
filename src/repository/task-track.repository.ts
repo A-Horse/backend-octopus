@@ -27,14 +27,14 @@ export class TaskTrackRepository {
     });
   }
 
-  static async getTrackLastOrder(boardId: string): Promise<number> {
+  static async getTrackCountInBoard(boardId: string): Promise<number> {
     return await getRepository(TaskTrackEntity)
       .createQueryBuilder('task_track')
       .where('boardId = :boardId', { boardId })
       .getCount();
   }
 
-  static async saveTrack(track: TaskTrack, { userId, boardId }): Promise<void> {
+  static async saveTrack(track: TaskTrack, { userId, boardId }): Promise<TaskTrack> {
     const creatorEntity = new UserEntity();
     creatorEntity.id = userId;
     const boardEntity = new TaskBoardEntity();
@@ -48,5 +48,13 @@ export class TaskTrackRepository {
     trackEntity.order = track.order;
 
     await getRepository(TaskTrackEntity).save(trackEntity);
+
+    track.id = trackEntity.id;
+    track.createdAt = trackEntity.createdAt;
+    track.updatedAt = trackEntity.updatedAt;
+    track.status = trackEntity.status;
+    track.type = trackEntity.type;
+
+    return track;
   }
 }

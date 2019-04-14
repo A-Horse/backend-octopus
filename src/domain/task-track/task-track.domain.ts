@@ -13,7 +13,7 @@ export class TaskTrack {
   public createdAt: Date;
   public updatedAt: Date;
   public order: number;
-
+  public boardId: string;
   public cards: TaskCard[];
 
   constructor() {}
@@ -49,7 +49,10 @@ export class TaskTrack {
     };
   }
 
-  public async queryAndSetLastOrder(boardId: string): Promise<void> {
-    this.order = await TaskTrackRepository.getTrackLastOrder(boardId);
+  public async queryAndSetLastOrder(): Promise<void> {
+    if (!this.boardId) {
+      throw new Error('TaskTrack boardId not initial.');
+    }
+    this.order = (await TaskTrackRepository.getTrackCountInBoard(this.boardId)) * 100;
   }
 }

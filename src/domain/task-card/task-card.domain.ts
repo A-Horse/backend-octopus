@@ -1,4 +1,5 @@
-import { ITaskCard } from '../../typing/task-card.typing';
+import { ITaskCard, TaskCardType } from '../../typing/task-card.typing';
+import { TaskCardRepository } from '../../repository/task-card.repository';
 
 export class TaskCard {
   public id: string;
@@ -7,8 +8,9 @@ export class TaskCard {
   public createdAt: Date;
   public updatedAt: Date;
   public status: string;
-  public type: string;
+  public type: TaskCardType;
   public order: number;
+  public trackId: string;
 
   public getValue(): ITaskCard {
     return {
@@ -21,5 +23,12 @@ export class TaskCard {
       type: this.type,
       order: this.order
     };
+  }
+
+  public async queryAndSetOrder(): Promise<void> {
+    if (!this.trackId) {
+      throw new Error('TaskCard trackId not initial.')
+    }
+    this.order = (await TaskCardRepository.getCardCountInTrack(this.trackId)) * 100;
   }
 }

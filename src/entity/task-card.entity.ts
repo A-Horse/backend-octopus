@@ -1,8 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { UserEntity } from './user.entity';
-import { TaskBoardEntity } from './task-board.entity';
-import { TaskTrackStatus } from '../typing/task-track.typing';
 import { TaskTrackEntity } from './task-track.entity';
+import { TaskCardType } from '../typing/task-card.typing';
 
 @Entity({
   name: 'task_card'
@@ -23,9 +22,9 @@ export class TaskCardEntity {
 
   @Column({
     length: 10,
-    default: 'NORMAL'
+    default: TaskCardType.NORMAL
   })
-  public type: 'NORMAL' | 'STORY' | 'TODO';
+  public type: TaskCardType;
 
   @Column({
     length: 10,
@@ -46,7 +45,8 @@ export class TaskCardEntity {
   public track: TaskTrackEntity;
 
   @Column({
-    nullable: false
+    nullable: false,
+    type: 'double'
   })
   public order: number;
 

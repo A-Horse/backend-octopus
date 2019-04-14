@@ -6,6 +6,7 @@ import { AccessLimitError, NotFoundError } from '../../service/error';
 import { validateRequest } from '../../service/validate';
 import { taskBoardGroupForBody, taskBoardGroupForParams } from '../middle/board';
 import { createTrack } from '../../app/task/task-track.app';
+import { ITaskTrack } from '../../typing/task-track.typing';
 
 const TaskTrackRouter = express.Router();
 
@@ -70,20 +71,20 @@ TaskTrackRouter.get('/task-board/:boardId/track/:trackId/card', authJwt, taskBoa
 //   res.status(201).send({ ...savedTrack.serialize(), cards: [] });
 // });
 
-TaskTrackRouter.post('/v2/task-board/:boardId/track',authJwt,  async (req, res, next) => {
+TaskTrackRouter.post('/v2/task-board/:boardId/track', authJwt, async (req, res, next) => {
   validateRequest(req.body, 'name', ['required']);
 
   const { jw } = req;
   const { boardId } = req.params;
 
   try {
-    await createTrack({
+    const track: ITaskTrack = await createTrack({
       name: req.body.name,
       desc: req.body.desc,
       creatorId: jw.user.id,
       boardId: boardId
     });
-    res.status(201).send();    
+    res.status(201).send(track);
   } catch (error) {
     next(error);
   }
