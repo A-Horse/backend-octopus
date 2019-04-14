@@ -18,7 +18,7 @@ export class TaskCardRepository {
 
     const trackEntity = new TaskTrackEntity();
     trackEntity.id = trackId;
-    
+
     taskCardEntity.track = trackEntity;
 
     await getRepository(TaskCardEntity).save(taskCardEntity);
@@ -28,7 +28,7 @@ export class TaskCardRepository {
     taskCard.type = taskCardEntity.type;
     taskCard.createdAt = taskCardEntity.createdAt;
     taskCard.updatedAt = taskCardEntity.updatedAt;
-    
+
     return taskCard;
   }
 

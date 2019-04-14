@@ -2,6 +2,7 @@ import { TaskBoardSetting } from './entity/task-board-setting.entity';
 import { TaskTrack } from '../task-track/task-track.domain';
 import { TaskTrackRepository } from '../../repository/task-track.repository';
 import { ITaskBoard, ITaskBoardSetting } from '../../typing/task-board.typing';
+import { TaskBoardRepository } from '../../repository/task-board.repository';
 
 export class TaskBoard {
   public id: string;
@@ -34,6 +35,16 @@ export class TaskBoard {
       creatorId: this.creatorId,
       setting: this.setting.getValue()
     };
+  }
+
+  public async setBoardCover(filename: string): Promise<void> {
+    this.setting.cover = filename;
+
+    await this.udpateSetting();
+  }
+
+  public udpateSetting(): Promise<void> {
+    return TaskBoardRepository.updateBoardSetting(this.setting);
   }
 
   public getValueWithAllData(): ITaskBoard {

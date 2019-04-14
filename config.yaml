@@ -12,3 +12,5 @@ POSTGRES_HOST: "localhost"
 POSTGRES_USERNAME: "octopuese"
 POSTGRES_PASSWORD: "my-secret-user-pw"
 POSTGRES_DB: "octopuese"
+
+TASK_COVER_STORAGE_PATH: 'storage/board-cover'

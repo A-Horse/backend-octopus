@@ -13,6 +13,7 @@ export enum TaskBoardShowType {
 export interface ITaskBoardSetting {
   id: string;
   showType: TaskBoardShowType;
+  cover: string;
 }
 
 export interface ITaskBoard {

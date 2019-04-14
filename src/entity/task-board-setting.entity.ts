@@ -21,6 +21,9 @@ export class TaskBoardSettingEntity {
   })
   public showType: TaskBoardShowType;
 
+  @Column() 
+  public cover: string;
+
   @CreateDateColumn()
   public createdAt: Date;
 

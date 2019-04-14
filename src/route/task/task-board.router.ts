@@ -10,7 +10,7 @@ import { saveImage } from '../../service/storage';
 import { knex } from '../../db/bookshelf';
 import * as md5 from 'blueimp-md5';
 import { TaskBoardSettingModel } from '../../model/task-board-setting.model';
-import { createTaskBoard, saveTaskBoard, getUserTaskBoards, getTaskBoardFromUser } from '../../app/task/task-board.app';
+import { createTaskBoard, saveTaskBoard, getUserTaskBoards, getTaskBoardFromUser, updateTaskBoardCover } from '../../app/task/task-board.app';
 import { TaskBoard } from '../../domain/task-board/task-board.domain';
 import { ITaskBoard } from '../../typing/task-board.typing';
 
@@ -19,22 +19,6 @@ const TaskBoardRouter = express.Router();
 const multipartMiddleware = require('connect-multiparty')();
 
 const COVER_STORAGE_PATH = 'board-cover';
-
-// TaskBoardRouter.get('/user/:userId/task-board', authJwt, async (req, res, next) => {
-//   try {
-//     const { jw } = req;
-//     const boards = await knex
-//       .from('task-board as board')
-//       .join('task-access as access', 'access.boardId', '=', 'board.id')
-//       .select('board.*')
-//       .where('access.userId', '=', jw.user.id)
-//       .whereNull('board.status')
-//       .orWhere('board.status', '<>', 'DELETED');
-//     res.json(boards);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 
 TaskBoardRouter.get('/v2/user/:userId/task-board', authJwt, async (req, res, next) => {
   try {
@@ -45,34 +29,6 @@ TaskBoardRouter.get('/v2/user/:userId/task-board', authJwt, async (req, res, nex
     next(error);
   }
 });
-
-// TaskBoardRouter.get('/task-board/:id/verbose', authJwt, async (req, res, next) => {
-//   const { id } = req.params;
-//   try {
-//     const board = await new TaskBoardModel().where({ id }).fetch({
-//       withRelated: [
-//         {
-//           tracks: R.identity,
-//           'tracks.cards': qb => {
-//             return qb.whereRaw('not status = "DELETED" and not status = "ARCHIVE" or status is null');
-//           },
-//           'tracks.cards.creater': qb => {
-//             qb.select('email', 'id');
-//           },
-//           'tracks.cards.owner': qb => {
-//             qb.select('email', 'id');
-//           }
-//         }
-//       ]
-//     });
-//     if (!board) {
-//       return next(new NotFoundError());
-//     }
-//     return res.send(board);
-//   } catch (error) {
-//     next(error);
-//   }
-// });
 
 TaskBoardRouter.get('/v2/task-board/:id/verbose', authJwt, async (req, res, next) => {
   const { id } = req.params;
@@ -192,20 +148,11 @@ TaskBoardRouter.post('/task-board/:boardId/invite', authJwt, async (req, res, ne
   }
 });
 
-TaskBoardRouter.post('/task-board/:id/cover', multipartMiddleware, async (req, res, next) => {
+TaskBoardRouter.post('/v2/task-board/:id/cover', multipartMiddleware, async (req, res, next) => {
   try {
-    const imageURLData = req.body.cover.replace(/^data:image\/\w+;base64,/, '');
-    const hash = md5(imageURLData + Date.now()).substring(0, 20);
-    const filename = R.compose(
-      R.join('-'),
-      R.splitEvery(5)
-    )(hash);
-
-    await saveImage(filename, COVER_STORAGE_PATH, imageURLData);
-    const savedPath = path.join(COVER_STORAGE_PATH, filename);
-    const board = await TaskBoardModel.where({ id: req.params.id }).fetch();
-    await board.save({ cover: savedPath });
-    res.json({ cover: savedPath });
+    const { id } = req.params;
+    const coverFilename: string = await updateTaskBoardCover(req.body.cover, id);
+    res.json({ cover: coverFilename });
   } catch (error) {
     next(error);
   }

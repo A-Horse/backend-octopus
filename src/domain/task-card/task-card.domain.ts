@@ -27,7 +27,7 @@ export class TaskCard {
 
   public async queryAndSetOrder(): Promise<void> {
     if (!this.trackId) {
-      throw new Error('TaskCard trackId not initial.')
+      throw new Error('TaskCard trackId not initial.');
     }
     this.order = (await TaskCardRepository.getCardCountInTrack(this.trackId)) * 100;
   }

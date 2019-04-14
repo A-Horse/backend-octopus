@@ -2,6 +2,7 @@ import { TaskBoard } from '../../domain/task-board/task-board.domain';
 import { TaskBoardSetting } from '../../domain/task-board/entity/task-board-setting.entity';
 import { TaskBoardRepository } from '../../repository/task-board.repository';
 import { ITaskBoard, ITaskBoardSetting } from '../../typing/task-board.typing';
+import { FileService } from '../../service/file.service';
 
 export function createTaskBoard(creatorId: number, name: string, desc: string = ''): TaskBoard {
   const taskBoard = new TaskBoard();
@@ -43,4 +44,12 @@ export async function getTaskBoardFromUser(id: string, userId: number): Promise<
 
   await board.load();
   return board.getValueWithAllData();
+}
+
+export async function updateTaskBoardCover(coverBase64: string, boardId: string): Promise<string> {
+  const filename: string = await FileService.saveBase64Image(coverBase64);
+
+  const board: TaskBoard = await TaskBoardRepository.getTaskBoard(boardId);
+  await board.setBoardCover(filename);
+  return filename;
 }

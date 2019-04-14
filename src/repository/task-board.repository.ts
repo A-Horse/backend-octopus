@@ -21,9 +21,7 @@ export class TaskBoardRepository {
       board.name = taskBoardEntity.name;
       board.desc = taskBoardEntity.desc;
 
-      const taskBoardSetting = new TaskBoardSetting();
-      taskBoardSetting.id = taskBoardEntity.setting.id;
-      taskBoardSetting.showType = taskBoardEntity.setting.showType;
+      const taskBoardSetting = TaskBoardSetting.fromData(taskBoardEntity.setting)
 
       board.setting = taskBoardSetting;
 
@@ -45,9 +43,7 @@ export class TaskBoardRepository {
     board.desc = taskBoardEntity.desc;
     board.creatorId = taskBoardEntity.creator.id;
 
-    const taskBoardSetting = new TaskBoardSetting();
-    taskBoardSetting.id = taskBoardEntity.setting.id;
-    taskBoardSetting.showType = taskBoardEntity.setting.showType;
+    const taskBoardSetting =  TaskBoardSetting.fromData(taskBoardEntity.setting)
 
     board.setting = taskBoardSetting;
 
@@ -72,5 +68,17 @@ export class TaskBoardRepository {
 
       await transactionalEntityManager.save(taskBoardEntity);
     });
+  }
+
+  static async updateBoardSetting(setting: TaskBoardSetting): Promise<void> {
+    await getConnection()
+    .createQueryBuilder()
+    .update(TaskBoardSettingEntity)
+    .set({ 
+        showType: setting.showType, 
+        cover: setting.cover
+    })
+    .where("id = :id", { id: setting.id })
+    .execute();
   }
 }
