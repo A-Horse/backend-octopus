@@ -10,7 +10,13 @@ import { saveImage } from '../../service/storage';
 import { knex } from '../../db/bookshelf';
 import * as md5 from 'blueimp-md5';
 import { TaskBoardSettingModel } from '../../model/task-board-setting.model';
-import { createTaskBoard, saveTaskBoard, getUserTaskBoards, getTaskBoardFromUser, updateTaskBoardCover } from '../../app/task/task-board.app';
+import {
+  createTaskBoard,
+  saveTaskBoard,
+  getUserTaskBoards,
+  getTaskBoardFromUser,
+  updateTaskBoardCover
+} from '../../app/task/task-board.app';
 import { TaskBoard } from '../../domain/task-board/task-board.domain';
 import { ITaskBoard } from '../../typing/task-board.typing';
 

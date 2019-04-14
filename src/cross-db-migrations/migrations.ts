@@ -4,6 +4,8 @@ import { getRepository } from 'typeorm';
 import { TodoModel } from '../model/todo.model';
 import { Todo } from '../entity/todo.entity';
 import { TaskBoardModel } from '../model/task-board';
+import { TaskBoardSettingModel } from '../model/task-board-setting.model';
+import { createTaskBoard, saveTaskBoard } from '../app/task/task-board.app';
 
 export async function migrationUser() {
   const users = await new UserModel().fetchAll();
@@ -42,5 +44,16 @@ export async function migrationTodo() {
 }
 
 export async function migrationTask(): Promise<void> {
-  const TaskBoards = await new TaskBoardModel().fetchAll();
+  const taskBoards = await new TaskBoardModel().fetchAll();
+
+  await Promise.all(
+    taskBoards.map(async (taskBoard: any) => {
+      const taskBoardSetting = await TaskBoardSettingModel.where({
+        boardId: taskBoard.id
+      }).fetch();
+
+      const taskBoardDomain = createTaskBoard(taskBoard.get('ownerId'), taskBoard.get('name'), taskBoard.get('description'), taskBoardSetting.get('showType'));
+      await saveTaskBoard(taskBoardDomain);
+    })
+  );
 }

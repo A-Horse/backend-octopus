@@ -8,7 +8,7 @@ export class TaskBoardSetting {
   constructor() {}
 
   static fromData(data: ITaskBoardSetting) {
-    const setting =  new TaskBoardSetting();
+    const setting = new TaskBoardSetting();
     setting.id = data.id;
     setting.showType = data.showType;
     setting.cover = data.cover;
@@ -22,5 +22,4 @@ export class TaskBoardSetting {
       cover: this.cover
     };
   }
-
 }

@@ -1,10 +1,10 @@
 import { TaskBoard } from '../../domain/task-board/task-board.domain';
 import { TaskBoardSetting } from '../../domain/task-board/entity/task-board-setting.entity';
 import { TaskBoardRepository } from '../../repository/task-board.repository';
-import { ITaskBoard, ITaskBoardSetting } from '../../typing/task-board.typing';
+import { ITaskBoard, ITaskBoardSetting, TaskBoardShowType } from '../../typing/task-board.typing';
 import { FileService } from '../../service/file.service';
 
-export function createTaskBoard(creatorId: number, name: string, desc: string = ''): TaskBoard {
+export function createTaskBoard(creatorId: number, name: string, desc: string = '', showType: TaskBoardShowType = TaskBoardShowType.COLUMN): TaskBoard {
   const taskBoard = new TaskBoard();
   taskBoard.creatorId = creatorId;
   taskBoard.name = name;
