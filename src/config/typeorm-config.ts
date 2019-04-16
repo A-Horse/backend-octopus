@@ -10,7 +10,7 @@ export function getPostgresConfig(): ConnectionOptions {
     database: configure.getConfigByKey('POSTGRES_DB'),
     synchronize: true,
     charset: 'utf8mb4',
-    logging: true,
+    // logging: true,
     timezone: 'Asia/Shanghai',
     entities: ['src/entity/**/*.ts'],
     migrations: ['src/migration/**/*.ts'],

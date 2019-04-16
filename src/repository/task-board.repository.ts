@@ -68,6 +68,8 @@ export class TaskBoardRepository {
         taskBoardEntity.setting = taskBoardSettingEntity;
 
         await transactionalEntityManager.save(taskBoardEntity);
+
+        taskBoard.id = taskBoardEntity.id;
       }
     );
   }

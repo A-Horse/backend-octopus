@@ -1,11 +1,15 @@
 import { UserModel } from '../model/user';
 import { UserEntity } from '../entity/user.entity';
-import { getRepository } from 'typeorm';
+import { getRepository, getConnection } from 'typeorm';
 import { TodoModel } from '../model/todo.model';
 import { Todo } from '../entity/todo.entity';
 import { TaskBoardModel } from '../model/task-board';
 import { TaskBoardSettingModel } from '../model/task-board-setting.model';
 import { createTaskBoard, saveTaskBoard } from '../app/task/task-board.app';
+import { TaskTrackModel } from '../model/task-track';
+import { createTrack } from '../app/task/task-track.app';
+import { from, range } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 
 export async function migrationUser() {
   const users = await new UserModel().fetchAll();
@@ -61,6 +65,39 @@ export async function migrationTask(): Promise<void> {
         taskBoardSetting.get('showType')
       );
       await saveTaskBoard(taskBoardDomain);
+
+      const tracks = await TaskTrackModel.where({
+        taskBoardId: taskBoard.id
+      }).fetchAll();
+
+      const trackDatas = tracks.map((t) => {
+        return {
+          id: t.id,
+          name: t.get('name')
+        }
+      });
+
+      await new Promise((resolve) => {
+        range(0, trackDatas.length).pipe(
+          concatMap((index) => {
+            return from(new Promise((resolve2) => {
+              createTrack({
+                name: trackDatas[index].name,
+                desc: '',
+                creatorId: taskBoard.get('ownerId'),
+                boardId: taskBoardDomain.id
+              }).then(() => {
+                resolve2()
+              });
+            }))
+          })
+        ).subscribe({
+          complete: () => {
+            resolve();
+          }
+        })
+      })
+  
     })
   );
 }

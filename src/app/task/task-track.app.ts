@@ -17,7 +17,6 @@ export async function createTrack(
     userId: createTrackInput.creatorId,
     boardId: createTrackInput.boardId
   });
-
   await track.load();
 
   return savedTrack.getValueWithCards();
