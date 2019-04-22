@@ -7,10 +7,9 @@ JWT_EXP_HOURS: 480
 
 SERCET_KEY: 'octopus'
 
-# postgres
-POSTGRES_HOST: "localhost"
-POSTGRES_USERNAME: "octopuese"
-POSTGRES_PASSWORD: "my-secret-user-pw"
-POSTGRES_DB: "octopuese"
+MYSQL_HOST: "localhost"
+MYSQL_USERNAME: "octopuese"
+MYSQL_PASSWORD: "my-secret-user-pw"
+MYSQL_DB: "octopuese"
 
 TASK_COVER_STORAGE_PATH: 'storage/board-cover'

@@ -1,5 +1,4 @@
 import * as express from 'express';
-import * as Ascii from 'ascii-art';
 import * as morgan from 'morgan';
 import * as http from 'http';
 import * as colors from 'colors';
@@ -67,10 +66,5 @@ export function startServer() {
   const server = http.createServer(app);
   server.listen(config['SERVE_PORT'], '0.0.0.0');
 
-  Ascii.font(`Octopus`, 'Doom', 'bright_blue', ascii => {
-    // tslint:disable-next-line
-    console.log(ascii);
-    // tslint:disable-next-line
-    console.log(colors.green(`Octopus serve on http://0.0.0.0:5500`));
-  });
+  console.log(colors.green(`Octopus serve on http://0.0.0.0:5500`));
 }

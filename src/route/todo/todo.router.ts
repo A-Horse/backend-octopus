@@ -45,7 +45,9 @@ TodoRouter.post(
         deadline: req.body.deadline,
         boxId: req.body.todoBoxId
       });
-      res.send(createdTodoId);
+      res.send({
+        id: createdTodoId
+      });
     } catch (error) {
       next(error);
     }

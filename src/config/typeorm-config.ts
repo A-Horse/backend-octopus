@@ -4,10 +4,10 @@ import { ConnectionOptions } from 'typeorm';
 export function getPostgresConfig(): ConnectionOptions {
   return {
     type: 'mysql',
-    host: configure.getConfigByKey('POSTGRES_HOST'),
-    username: configure.getConfigByKey('POSTGRES_USERNAME'),
-    password: configure.getConfigByKey('POSTGRES_PASSWORD'),
-    database: configure.getConfigByKey('POSTGRES_DB'),
+    host: configure.getConfigByKey('MYSQL_HOST'),
+    username: configure.getConfigByKey('MYSQL_USERNAME'),
+    password: configure.getConfigByKey('MYSQL_PASSWORD'),
+    database: configure.getConfigByKey('MYSQL_DB'),
     synchronize: true,
     charset: 'utf8mb4',
     // logging: true,
