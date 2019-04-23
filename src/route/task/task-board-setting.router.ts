@@ -1,7 +1,6 @@
 import * as express from 'express';
 import { authJwt } from '../middle/jwt';
-import { taskBoardParamAuthMiddle } from '../middle/board.middle';
-import { TaskBoardSettingModel } from '../../model/task-board-setting.model';
+// import { taskBoardParamAuthMiddle } from '../middle/board.middle';
 import { ITaskBoardSetting } from '../../typing/task-board.typing';
 import { getTaskBoardSetting } from '../../app/task/task-board.app';
 
@@ -39,24 +38,24 @@ TaskBoardSettingRouter.get(
   }
 );
 
-TaskBoardSettingRouter.patch(
-  '/task-board/:taskBoardId/setting',
-  authJwt,
-  taskBoardParamAuthMiddle,
-  (req, res, next) => {
-    const body: {
-      showType?: string;
-    } = req.body;
-    const { taskBoardId } = req.params;
-    TaskBoardSettingModel.where({ boardId: taskBoardId })
-      .save(body, { method: 'update' })
-      .then(() => {
-        res.status(200).send();
-      })
-      .catch(error => {
-        next(error);
-      });
-  }
-);
+// TaskBoardSettingRouter.patch(
+//   '/task-board/:taskBoardId/setting',
+//   authJwt,
+//   taskBoardParamAuthMiddle,
+//   (req, res, next) => {
+//     const body: {
+//       showType?: string;
+//     } = req.body;
+//     const { taskBoardId } = req.params;
+//     TaskBoardSettingModel.where({ boardId: taskBoardId })
+//       .save(body, { method: 'update' })
+//       .then(() => {
+//         res.status(200).send();
+//       })
+//       .catch(error => {
+//         next(error);
+//       });
+//   }
+// );
 
 export { TaskBoardSettingRouter };

@@ -1,6 +1,5 @@
 import * as express from 'express';
 import { authJwt } from '../../route/middle/jwt';
-import { TodoModel } from '../../model/todo.model';
 import { AccessLimitError } from '../../service/error';
 import { validateRequest } from '../../service/validate';
 import { todoService } from '../../service/todo.service';
@@ -54,11 +53,11 @@ TodoRouter.post(
   }
 );
 
-TodoRouter.delete('/todo/:todoId', authJwt, async (req, res) => {
-  const { todoId } = req.params;
-  await TodoModel.forge({ id: todoId }).save({ isDelete: true });
-  res.status(202).send();
-});
+// TodoRouter.delete('/todo/:todoId', authJwt, async (req, res) => {
+//   const { todoId } = req.params;
+//   await TodoModel.forge({ id: todoId }).save({ isDelete: true });
+//   res.status(202).send();
+// });
 
 TodoRouter.patch('/todo/:todoId', authJwt, async (req, res, next) => {
   const todoDetail: ITodoDetail = req.body;
