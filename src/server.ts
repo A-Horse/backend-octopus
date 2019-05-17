@@ -50,7 +50,7 @@ import { TaskBoardRouter } from './route/task/task-board.router';
 import { UserRouter } from './route/user.router';
 import { TaskBoardSettingRouter } from './route/task/task-board-setting.router';
 
-app.use(apiPrefix, RootRouter);
+app.use(RootRouter);
 app.use(apiPrefix, TaskTrackRouter);
 app.use(apiPrefix, TaskCardRouter);
 
