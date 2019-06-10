@@ -40,26 +40,5 @@ UserRouter.post('/signup', async (req, res, next) => {
   });
 });
 
-// UserRouter.post(
-//   '/update-password',
-//   authJwt,
-//   validate({
-//     oldPassword: ['required'],
-//     newPassword: ['required']
-//   }),
-//   async (req, res, next) => {
-//     try {
-//       const { jw } = req;
-//       const authed = await UserModel.authUser(jw.user.id, req.body.oldPassword);
-//       if (authed) {
-//         await UserModel.forge({ id: jw.user.id }).updatePassword(req.body.newPassword);
-//         return res.status(204).send();
-//       }
-//       throw new AccessLimitError();
-//     } catch (error) {
-//       next(error);
-//     }
-//   }
-// );
 
 export { UserRouter };
