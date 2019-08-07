@@ -23,7 +23,7 @@ export class Projectntity {
     nullable: false
   })
   @JoinColumn({ name: 'settingId' })
-  setting: ProjectSettingEntity;
+  public setting: ProjectSettingEntity;
 
   @Column({
     length: 150
