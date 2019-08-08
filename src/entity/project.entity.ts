@@ -15,7 +15,7 @@ import { UserEntity } from './user.entity';
 @Entity({
   name: 'project'
 })
-export class Projectntity {
+export class ProjectEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
