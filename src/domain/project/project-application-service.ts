@@ -1,6 +1,6 @@
 import { ProjectSetting } from './model/project-setting';
 import { Project } from './model/project';
-import { ProjectRepository } from './repository/project-repository';
+import { ProjectRepository } from './project-repository';
 
 export class ProjectAppliactionService {
     static getUserProjects(userId: string): Promise<Project[]> {

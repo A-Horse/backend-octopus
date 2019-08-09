@@ -1,7 +1,7 @@
-import { UserEntity } from './../../entity/user.entity';
-import { ProjectSettingEntity } from './../../entity/project-setting.entity';
+import { UserEntity } from '../../entity/user.entity';
+import { ProjectSettingEntity } from '../../entity/project-setting.entity';
 import { ProjectSetting } from './model/project-setting';
-import { ProjectEntity } from './../../entity/project.entity';
+import { ProjectEntity } from '../../entity/project.entity';
 import { getRepository, getConnection, EntityManager } from 'typeorm';
 import { Project } from './model/project';
 
