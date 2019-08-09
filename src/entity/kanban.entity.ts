@@ -53,9 +53,6 @@ import {
     @ManyToOne(() => UserEntity)
     public creator: UserEntity;
   
-    @ManyToOne(() => UserEntity)
-    public owner: UserEntity;
-  
     @OneToMany(() => KanbanTrackerEntity, tracker => tracker.kanban)
     public trackers: KanbanTrackerEntity[];
 

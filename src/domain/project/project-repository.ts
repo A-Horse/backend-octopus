@@ -12,6 +12,8 @@ export class ProjectRepository {
     const projectEntitys = await getRepository(ProjectEntity)
       .createQueryBuilder('project')
       .leftJoinAndSelect('project.setting', 'project_setting')
+      .leftJoinAndSelect('kanban.creator', 'user')
+      .leftJoinAndSelect('kanban.owner', 'user') 
       .where('creatorId = :userId', { userId })
       .getMany();
 
