@@ -26,7 +26,7 @@ export class Project {
     updatedAt,
     setting
   }) {
-    this.id= id;
+    this.id = id;
     this.name = name;
     this.desc = desc;
     this.type = type;
@@ -37,12 +37,9 @@ export class Project {
     this.setting = setting;
   }
 
-  public createKanban() {
-    
-  }
+  public createKanban() {}
 
-  public createKanbanCard() {
-  }
+  public createKanbanCard() {}
 
   static fromDataEntity(dataEntity: ProjectEntity): Project {
     const setting = ProjectSetting.fromDataEntity(dataEntity.setting);
@@ -60,5 +57,18 @@ export class Project {
     });
     return project;
   }
-  
+
+  public toJSON(): any {
+    return {
+      id: this.id,
+      name: this.name,
+      desc: this.desc,
+      type: this.type,
+      status: this.status,
+      creatorId: this.creatorId,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      setting: this.setting.toJSON()
+    };
+  }
 }

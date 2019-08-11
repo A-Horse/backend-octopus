@@ -42,7 +42,7 @@ import {
       length: 10,
       default: 'NORMAL'
     })
-    public type: 'NORMAL';
+    public type: string;
   
     @Column({
       length: 10,

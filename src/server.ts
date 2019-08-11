@@ -49,6 +49,7 @@ import { TaskBoardRouter } from './route/task/task-board.router';
 
 import { UserRouter } from './route/user.router';
 import { TaskBoardSettingRouter } from './route/task/task-board-setting.router';
+import { ProjectRouter } from './domain/project/project-router';
 
 app.use(RootRouter);
 app.use(apiPrefix, TaskTrackRouter);
@@ -59,6 +60,8 @@ app.use(tApiPrefix, TodoRouter);
 app.use(apiPrefix, TaskBoardSettingRouter);
 app.use('/api/tk', TaskBoardRouter);
 app.use('/api/user', UserRouter);
+
+app.use(apiPrefix, ProjectRouter);
 
 app.use(StatusErrorHandleMiddle);
 

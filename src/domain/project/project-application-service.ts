@@ -3,7 +3,7 @@ import { Project } from './model/project';
 import { ProjectRepository } from './project-repository';
 
 export class ProjectAppliactionService {
-    static getUserProjects(userId: string): Promise<Project[]> {
+    static getUserProjects(userId: number): Promise<Project[]> {
         return ProjectRepository.getUserProject(userId);
     }
 
@@ -14,7 +14,7 @@ export class ProjectAppliactionService {
             desc: projectData.desc,
             type: projectData.type,
             status: projectData.status,
-            creatorId: projectData.creator.id,
+            creatorId: projectData.creatorId,
             updatedAt: null,
             createdAt: null,
             setting: new ProjectSetting({
@@ -24,4 +24,5 @@ export class ProjectAppliactionService {
         });
         return ProjectRepository.saveProject(project);
     }
+
 }

@@ -8,8 +8,6 @@ import { hashPasswd } from './domain/auth/createUser';
 export function startToolServer() {
   const app = express();
 
- 
-
   app.get('/hash-passwd/:password', (req, res) => {
     const password = req.params.password;
     res.status(200).send(hashPasswd(password));
