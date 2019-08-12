@@ -12,13 +12,25 @@ export class ProjectRepository {
       .createQueryBuilder('project')
       .leftJoinAndSelect('project.setting', 'project_setting')
       .leftJoinAndSelect('project.creator', 'user as creator')
-      .leftJoinAndSelect('project.owner', 'user as owner') 
+      .leftJoinAndSelect('project.owner', 'user as owner')
       .where('creatorId = :userId', { userId })
       .getMany();
 
     return projectEntitys.map((projectEntity: ProjectEntity) => {
       return Project.fromDataEntity(projectEntity);
-    }); 
+    });
+  }
+
+  static async getProjectDetail(projectId: string) {
+    const projectEntity = await getRepository(ProjectEntity)
+      .createQueryBuilder('project')
+      .leftJoinAndSelect('project.setting', 'project_setting')
+      .leftJoinAndSelect('project.creator', 'user as creator')
+      .leftJoinAndSelect('project.owner', 'user as owner')
+      .where('project.id = :projectId', { projectId })
+      .getOne();
+
+    return Project.fromDataEntity(projectEntity);
   }
 
   static async saveProject(project: Project): Promise<string> {
@@ -27,7 +39,7 @@ export class ProjectRepository {
 
     const projectSettingEntity = new ProjectSettingEntity();
     projectSettingEntity.cover = project.setting.cover;
-    
+
     const projectEntity = new ProjectEntity();
     projectEntity.name = project.name;
     projectEntity.desc = project.desc;
@@ -37,11 +49,13 @@ export class ProjectRepository {
     projectEntity.owner = creator;
     projectEntity.setting = projectSettingEntity;
 
-    await getConnection().transaction(async (transactionalEntityManager: EntityManager) => {
-      await transactionalEntityManager.save(projectSettingEntity);
-      await transactionalEntityManager.save(projectEntity);
-    });
-    
+    await getConnection().transaction(
+      async (transactionalEntityManager: EntityManager) => {
+        await transactionalEntityManager.save(projectSettingEntity);
+        await transactionalEntityManager.save(projectEntity);
+      }
+    );
+
     return projectEntity.id;
   }
 }

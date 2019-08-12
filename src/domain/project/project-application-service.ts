@@ -7,6 +7,10 @@ export class ProjectAppliactionService {
         return ProjectRepository.getUserProject(userId);
     }
 
+    static getProjectDetail(projectId: string): Promise<Project> {
+        return ProjectRepository.getProjectDetail(projectId);
+    }
+
     static createProject(projectData: any): Promise<string> {
         const project = new Project({
             id: projectData.id,
@@ -24,5 +28,7 @@ export class ProjectAppliactionService {
         });
         return ProjectRepository.saveProject(project);
     }
+
+    
 
 }
