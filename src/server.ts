@@ -50,6 +50,7 @@ import { TaskBoardRouter } from './route/task/task-board.router';
 import { UserRouter } from './route/user.router';
 import { TaskBoardSettingRouter } from './route/task/task-board-setting.router';
 import { ProjectRouter } from './domain/project/project-router';
+import { KanbanRouter } from './domain/kanban/kanban-router';
 
 app.use(RootRouter);
 app.use(apiPrefix, TaskTrackRouter);
@@ -62,6 +63,7 @@ app.use('/api/tk', TaskBoardRouter);
 app.use('/api/user', UserRouter);
 
 app.use(apiPrefix, ProjectRouter);
+app.use(apiPrefix, KanbanRouter);
 
 app.use(StatusErrorHandleMiddle);
 

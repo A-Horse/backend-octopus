@@ -1,12 +1,7 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  OneToOne
+    Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn
 } from 'typeorm';
+
 import { TaskBoardShowType } from '../typing/task-board.typing';
 
 @Entity({

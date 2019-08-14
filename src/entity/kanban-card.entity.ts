@@ -1,16 +1,12 @@
-import { KanbanTrackerEntity } from './kanban-tracker.entity';
-import { KanbanColumnEntity } from './kanban-column.entity';
-import { KanbanCardType } from './../typing/kanban-card.typing';
 import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    ManyToOne
-  } from 'typeorm';
-  import { UserEntity } from './user.entity';
-  
+    Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn
+} from 'typeorm';
+
+import { KanbanCardType } from '../typing/kanban-card.typing';
+import { KanbanColumnEntity } from './kanban-column.entity';
+import { KanbanTrackerEntity } from './kanban-tracker.entity';
+import { UserEntity } from './user.entity';
+
   @Entity({
     name: 'kanban_card'
   })

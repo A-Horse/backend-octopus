@@ -1,20 +1,15 @@
-import { KanbanColumnEntity } from './kanban-column.entity';
-import { KanbanTrackerEntity } from './kanban-tracker.entity';
-import { KanbanSettingEntity } from './kanban-setting.entity';
-import { ProjectStatus } from './../typing/project.typing';
+import { ProjectEntity } from './project.entity';
 import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    ManyToOne,
-    OneToOne,
-    JoinColumn,
-    OneToMany
-  } from 'typeorm';
-  import { UserEntity } from './user.entity';
-  
+    Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne,
+    PrimaryGeneratedColumn, UpdateDateColumn
+} from 'typeorm';
+
+import { ProjectStatus } from '../typing/project.typing';
+import { KanbanColumnEntity } from './kanban-column.entity';
+import { KanbanSettingEntity } from './kanban-setting.entity';
+import { KanbanTrackerEntity } from './kanban-tracker.entity';
+import { UserEntity } from './user.entity';
+
   @Entity({
     name: 'kanban'
   })
@@ -52,6 +47,9 @@ import {
   
     @ManyToOne(() => UserEntity)
     public creator: UserEntity;
+
+    @ManyToOne(() => ProjectEntity)
+    public project: ProjectEntity;
   
     @OneToMany(() => KanbanTrackerEntity, tracker => tracker.kanban)
     public trackers: KanbanTrackerEntity[];

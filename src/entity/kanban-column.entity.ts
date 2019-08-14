@@ -1,17 +1,12 @@
+import {
+    Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn
+} from 'typeorm';
+
+import { KanbanColumnStatus } from '../typing/kanban-column.typing';
 import { KanbanCardEntity } from './kanban-card.entity';
 import { KanbanEntity } from './kanban.entity';
-import { KanbanColumnStatus } from './../typing/kanban-column.typing';
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    ManyToOne,
-    OneToMany
-  } from 'typeorm';
-  import { UserEntity } from './user.entity';
-  
+import { UserEntity } from './user.entity';
+
   @Entity({
     name: 'kanban_column'
   })

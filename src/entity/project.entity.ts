@@ -1,15 +1,10 @@
-import { ProjectStatus, ProjectType } from './../typing/project.typing';
-import { ProjectSettingEntity } from './project-setting.entity';
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  OneToOne,
-  JoinColumn,
+    Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn,
+    UpdateDateColumn
 } from 'typeorm';
+
+import { ProjectStatus, ProjectType } from '../typing/project.typing';
+import { ProjectSettingEntity } from './project-setting.entity';
 import { UserEntity } from './user.entity';
 
 @Entity({

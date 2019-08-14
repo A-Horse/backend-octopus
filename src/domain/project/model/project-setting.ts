@@ -4,6 +4,7 @@ export class ProjectSetting {
   private id: string;
   public cover: string;
   public coverUrl: string;
+  public isStar: string;
 
   constructor({ id, cover }) {
     this.id = id;

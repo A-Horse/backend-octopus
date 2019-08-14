@@ -1,16 +1,11 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  OneToMany
+    Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn
 } from 'typeorm';
-import { UserEntity } from './user.entity';
-import { TaskBoardEntity } from './task-board.entity';
+
 import { TaskTrackStatus } from '../typing/task-track.typing';
+import { TaskBoardEntity } from './task-board.entity';
 import { TaskCardEntity } from './task-card.entity';
+import { UserEntity } from './user.entity';
 
 @Entity({
   name: 'task_track'

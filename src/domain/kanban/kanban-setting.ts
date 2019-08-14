@@ -1,15 +1,21 @@
 import { KanbanSettingEntity } from './../../entity/kanban-setting.entity';
 
 export class KanbanSetting {
-public id: string;
+  public id: string;
 
-    constructor({id}) {
-        this.id = id;
-    }
+  constructor({ id }) {
+    this.id = id;
+  }
 
-    static fromDataEntity(dataEntity: KanbanSettingEntity) {
-        return new KanbanSetting({
-            id: dataEntity.id
-        })
-    }
+  static fromDataEntity(dataEntity: KanbanSettingEntity) {
+    return new KanbanSetting({
+      id: dataEntity.id
+    });
+  }
+
+  public toJSON() {
+      return {
+          id: this.id
+      }
+  }
 }

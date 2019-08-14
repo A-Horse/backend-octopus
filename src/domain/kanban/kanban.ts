@@ -36,4 +36,16 @@ export class Kanban {
       setting: setting
     });
   }
+
+  public toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      desc: this.desc,
+      creatorId: this.creatorId,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      setting: this.setting.toJSON()
+    }
+  }
 }
