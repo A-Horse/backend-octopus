@@ -1,7 +1,7 @@
 import { KanbanColumnStatus } from './../../typing/kanban-column.typing';
 import { KanbanColumnEntity } from './../../entity/kanban-column.entity';
 
-export class kanbanColumn {
+export class KanbanColumn {
     public id: string;
     public name: string;
     public status: KanbanColumnStatus;
@@ -17,7 +17,7 @@ export class kanbanColumn {
         creatorId,
         order,
         createdAt,
-        updatedAt
+        updatedAt   
     }) {
         this.id = id;
         this.name = name;
