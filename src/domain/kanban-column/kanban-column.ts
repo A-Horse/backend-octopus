@@ -5,7 +5,7 @@ export class KanbanColumn {
     public id: string;
     public name: string;
     public status: KanbanColumnStatus;
-    public creatorId: string;
+    public creatorId: number;
     public order: number;
     public createdAt: Date;
     public udpatedAt: Date;

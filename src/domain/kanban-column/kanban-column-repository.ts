@@ -1,3 +1,4 @@
+import { UserEntity } from './../../entity/user.entity';
 import { KanbanColumnEntity } from './../../entity/kanban-column.entity';
 import { getRepository } from 'typeorm';
 import { KanbanColumn } from './kanban-column';
@@ -7,42 +8,24 @@ export class KanbanColumnRepository {
     constructor() {}
 
     static async getKanbanColumns(kanbanId: number): Promise<KanbanColumn[]> {
-        const projectEntitys = await getRepository(KanbanColumnEntity)
+        const columnEntitys = await getRepository(KanbanColumnEntity)
           .createQueryBuilder('kanban_column')
           .leftJoinAndSelect('kanban_column.creator', 'user as creator')
-          .leftJoinAndSelect('project.owner', 'user as owner')
-          .where('creatorId = :kanbanId', { kanbanId })
+          .where('kanbanId = :kanbanId', { kanbanId })
           .getMany();
     
-        return projectEntitys.map((projectEntity: ProjectEntity) => {
-          return Project.fromDataEntity(projectEntity);
+        return columnEntitys.map((kanbanColumnEntity: KanbanColumnEntity) => {
+          return KanbanColumn.fromDataEntity(kanbanColumnEntity);
         });
       }
     
-      static async getProjectDetail(projectId: string) {
-        const projectEntity = await getRepository(ProjectEntity)
-          .createQueryBuilder('project')
-          .leftJoinAndSelect('project.setting', 'project_setting')
-          .leftJoinAndSelect('project.creator', 'user as creator')
-          .leftJoinAndSelect('project.owner', 'user as owner')
-          .where('project.id = :projectId', { projectId })
-          .getOne();
-    
-        return Project.fromDataEntity(projectEntity);
-      }
-    
-      static async createProject(project: Project): Promise<string> {
+      static async createProject(column: KanbanColumn): Promise<string> {
         const creator = new UserEntity();
-        creator.id = project.creatorId;
+        creator.id = column.creatorId;
     
-        const projectSettingEntity = new ProjectSettingEntity();
-        projectSettingEntity.cover = project.setting.cover;
-    
-        const projectEntity = new ProjectEntity();
-        projectEntity.name = project.name;
-        projectEntity.desc = project.desc;
-        projectEntity.type = project.type;
-        projectEntity.status = project.status;
+        const kanbanColumnEntity = new KanbanColumnEntity();
+        kanbanColumnEntity.name = column.name;
+        colukanbanColumnEntitymn.status = column.status;
         projectEntity.creator = creator;
         projectEntity.owner = creator;
         projectEntity.setting = projectSettingEntity;
