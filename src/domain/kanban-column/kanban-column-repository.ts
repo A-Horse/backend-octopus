@@ -1,6 +1,6 @@
 import { UserEntity } from './../../entity/user.entity';
 import { KanbanColumnEntity } from './../../entity/kanban-column.entity';
-import { getRepository } from 'typeorm';
+import { getRepository, getConnection } from 'typeorm';
 import { KanbanColumn } from './kanban-column';
 
 
@@ -18,25 +18,28 @@ export class KanbanColumnRepository {
           return KanbanColumn.fromDataEntity(kanbanColumnEntity);
         });
       }
+
+      static async getKanbanColumnCount(kanbanId: string): Promise<number> {
+        return await getRepository(KanbanColumnEntity)
+        .createQueryBuilder('kanban_column')
+        .where('kanbanId = :kanbanId')
+        .getCount();
+      }
     
-      static async createProject(column: KanbanColumn): Promise<string> {
+      static async createKanbanColumn(column: KanbanColumn): Promise<string> {
         const creator = new UserEntity();
         creator.id = column.creatorId;
     
         const kanbanColumnEntity = new KanbanColumnEntity();
         kanbanColumnEntity.name = column.name;
-        colukanbanColumnEntitymn.status = column.status;
-        projectEntity.creator = creator;
-        projectEntity.owner = creator;
-        projectEntity.setting = projectSettingEntity;
+        kanbanColumnEntity.status = column.status;
+        kanbanColumnEntity.creator = creator;
+
+        column.initOrder();
+        kanbanColumnEntity.order = column.order;
     
-        await getConnection().transaction(
-          async (transactionalEntityManager: EntityManager) => {
-            await transactionalEntityManager.save(projectSettingEntity);
-            await transactionalEntityManager.save(projectEntity);
-          }
-        );
+        await getRepository(KanbanColumnEntity).save(kanbanColumnEntity);
     
-        return projectEntity.id;
+        return kanbanColumnEntity.id;
       }
 }
