@@ -7,11 +7,12 @@ export class Kanban {
   public desc: string;
   public type: string;
   public creatorId: number;
+  public projectId: string;
   public createdAt: Date;
   public updatedAt: Date;
   public setting: KanbanSetting;
 
-  constructor({ id, name, desc, type, creatorId, createdAt, updatedAt, setting }) {
+  constructor({ id, name, desc, type, creatorId, createdAt, updatedAt, setting, projectId }) {
     this.id = id;
     this.name = name;
     this.desc = desc;
@@ -20,6 +21,7 @@ export class Kanban {
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.setting = setting;
+    this.projectId = projectId;
   }
 
   static fromDataEntity(dataEntity: KanbanEntity) {
@@ -30,10 +32,11 @@ export class Kanban {
       name: dataEntity.name,
       desc: dataEntity.desc,
       type: dataEntity.type,
+      projectId: dataEntity.project.id,
       creatorId: dataEntity.creator.id,
       createdAt: dataEntity.createdAt,
       updatedAt: dataEntity.updatedAt,
-      setting: setting
+      setting: setting,
     });
   }
 
@@ -42,6 +45,7 @@ export class Kanban {
       id: this.id,
       name: this.name,
       desc: this.desc,
+      projectId: this.projectId,
       creatorId: this.creatorId,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,

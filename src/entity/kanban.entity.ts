@@ -48,7 +48,9 @@ import { UserEntity } from './user.entity';
     @ManyToOne(() => UserEntity)
     public creator: UserEntity;
 
-    @ManyToOne(() => ProjectEntity)
+    @ManyToOne(() => ProjectEntity, {
+      nullable: false
+    })
     public project: ProjectEntity;
   
     @OneToMany(() => KanbanTrackerEntity, tracker => tracker.kanban)

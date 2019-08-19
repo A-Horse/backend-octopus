@@ -1,3 +1,4 @@
+import { CreateKanbanInput, KanbanType } from './../../typing/kanban.typing';
 import { KanbanSetting } from './kanban-setting';
 import { KanbanRepository } from './kanban-repository';
 import { Kanban } from './kanban';
@@ -9,13 +10,14 @@ export class kanbanApplicationService {
     return KanbanRepository.getProjectKanbans(projectId);
   }
 
-  static createProjectKanban(kanbanData: any) {
+  static createProjectKanban(createKanbanInput: CreateKanbanInput) {
     const project = new Kanban({
-      id: kanbanData.id,
-      name: kanbanData.name,
-      desc: kanbanData.desc,
-      type: kanbanData.type,
-      creatorId: kanbanData.creatorId,
+      id: null,
+      name: createKanbanInput.name,
+      desc: createKanbanInput.desc,
+      type: KanbanType.NORMAL,
+      projectId: createKanbanInput.projectId,
+      creatorId: createKanbanInput.creatorId,
       updatedAt: null,
       createdAt: null,
       setting: new KanbanSetting({

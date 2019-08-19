@@ -22,16 +22,15 @@ KanbanRouter.post('/project/:projectId/kanban', authJwt, async (req, res, next) 
   const { jw } = req;
 
   try {
-    await kanbanApplicationService.createProjectKanban({
+    const id = await kanbanApplicationService.createProjectKanban({
       name,
-      creatorId: jw.user.id
+      creatorId: jw.user.id,
+      projectId: req.params.projectId
     });
-
-    res.status(200).send();
+    res.status(200).send(id);
   } catch (error) {
     next(error);
   }
 });
-
 
 export { KanbanRouter };

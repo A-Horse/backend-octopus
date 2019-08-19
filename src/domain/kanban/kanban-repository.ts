@@ -1,5 +1,5 @@
+import { ProjectEntity } from './../../entity/project.entity';
 import { KanbanSettingEntity } from './../../entity/kanban-setting.entity';
-import { ProjectSettingEntity } from './../../entity/project-setting.entity';
 import { UserEntity } from './../../entity/user.entity';
 import { KanbanId } from './../../typing/kanban.typing';
 import { KanbanEntity } from './../../entity/kanban.entity';
@@ -13,6 +13,7 @@ export class KanbanRepository {
       .where('projectId = :projectId', { projectId })
       .leftJoinAndSelect('kanban.creator', 'user')
       .leftJoinAndSelect('kanban.setting', 'kanban_setting')
+      .leftJoinAndSelect('kanban.project', 'project')
       .getMany();
 
     return KanbanEntitys.map((kanbanEntity: KanbanEntity) => {
@@ -26,11 +27,14 @@ export class KanbanRepository {
 
     const kanbanSettingEntity = new KanbanSettingEntity();
 
+    const projectEntity = new ProjectEntity();
+    projectEntity.id = kanban.projectId;
+
     const kanbanEntity = new KanbanEntity();
-    kanbanEntity.id = kanban.id;
-    kanbanEntity.name = name;
+    kanbanEntity.name = kanban.name;
     kanbanEntity.desc = kanban.desc;
     kanbanEntity.type = kanban.type;
+    kanbanEntity.project = projectEntity;
     kanbanEntity.creator = creator;
     kanbanEntity.setting = kanbanSettingEntity;
 
