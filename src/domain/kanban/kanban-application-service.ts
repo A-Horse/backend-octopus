@@ -22,6 +22,6 @@ export class kanbanApplicationService {
         id: null
       })
     });
-    return KanbanRepository.createkanban(project);
+    return KanbanRepository.savekanban(project);
   }
 }

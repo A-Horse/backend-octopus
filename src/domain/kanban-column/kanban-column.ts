@@ -1,3 +1,4 @@
+import { KanbanColumnRepository } from './kanban-column-repository';
 import { KanbanColumnStatus } from './../../typing/kanban-column.typing';
 import { KanbanColumnEntity } from './../../entity/kanban-column.entity';
 
@@ -9,8 +10,9 @@ export class KanbanColumn {
   public order: number;
   public createdAt: Date;
   public udpatedAt: Date;
+  public kanbanId: string;
 
-  constructor({ id, name, status, creatorId, order, createdAt, updatedAt }) {
+  constructor({ id, name, status, creatorId, order, createdAt, updatedAt, kanbanId }) {
     this.id = id;
     this.name = name;
     this.status = status;
@@ -18,6 +20,7 @@ export class KanbanColumn {
     this.order = order;
     this.createdAt = createdAt;
     this.udpatedAt = updatedAt;
+    this.kanbanId = kanbanId;
   }
 
   static fromDataEntity(dataEntity: KanbanColumnEntity): KanbanColumn {
@@ -28,9 +31,12 @@ export class KanbanColumn {
       creatorId: dataEntity.creator.id,
       order: dataEntity.order,
       createdAt: dataEntity.createdAt,
-      updatedAt: dataEntity.updatedAt
+      updatedAt: dataEntity.updatedAt,
+      kanbanId: dataEntity.kanban.id
     });
   }
 
-  public initOrder(): void {}
+  public async initOrder(): Promise<void> {
+    this.order = (await KanbanColumnRepository.getKanbanColumnCount(this.kanbanId)) * 100;
+  }
 }

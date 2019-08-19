@@ -11,6 +11,7 @@ export class KanbanColumnRepository {
         const columnEntitys = await getRepository(KanbanColumnEntity)
           .createQueryBuilder('kanban_column')
           .leftJoinAndSelect('kanban_column.creator', 'user as creator')
+          .leftJoinAndSelect('kanban_column.kanban', 'kanban')        
           .where('kanbanId = :kanbanId', { kanbanId })
           .getMany();
     
@@ -26,7 +27,7 @@ export class KanbanColumnRepository {
         .getCount();
       }
     
-      static async createKanbanColumn(column: KanbanColumn): Promise<string> {
+      static async saveKanbanColumn(column: KanbanColumn): Promise<string> {
         const creator = new UserEntity();
         creator.id = column.creatorId;
     
@@ -35,7 +36,7 @@ export class KanbanColumnRepository {
         kanbanColumnEntity.status = column.status;
         kanbanColumnEntity.creator = creator;
 
-        column.initOrder();
+        await column.initOrder();
         kanbanColumnEntity.order = column.order;
     
         await getRepository(KanbanColumnEntity).save(kanbanColumnEntity);

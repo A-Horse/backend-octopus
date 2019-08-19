@@ -26,6 +26,6 @@ export class ProjectAppliactionService {
         cover: null
       })
     });
-    return ProjectRepository.createProject(project);
+    return ProjectRepository.saveProject(project);
   }
 }

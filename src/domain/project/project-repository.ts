@@ -33,7 +33,7 @@ export class ProjectRepository {
     return Project.fromDataEntity(projectEntity);
   }
 
-  static async createProject(project: Project): Promise<string> {
+  static async saveProject(project: Project): Promise<string> {
     const creator = new UserEntity();
     creator.id = project.creatorId;
 

@@ -20,7 +20,7 @@ export class KanbanRepository {
     });
   }
 
-  static async createkanban(kanban: Kanban): Promise<KanbanId> {
+  static async savekanban(kanban: Kanban): Promise<KanbanId> {
     const creator = new UserEntity();
     creator.id = kanban.creatorId;
 
