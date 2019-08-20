@@ -26,6 +26,7 @@ export class ProjectRepository {
     const projectEntity = await getRepository(ProjectEntity)
       .createQueryBuilder('project')
       .leftJoinAndSelect('project.setting', 'project_setting')
+      .leftJoinAndSelect('project_setting.defaultKanban', 'kanban')
       .leftJoinAndSelect('project.creator', 'user as creator')
       .leftJoinAndSelect('project.owner', 'user as owner')
       .where('project.id = :projectId', { projectId })

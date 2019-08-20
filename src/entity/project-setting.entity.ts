@@ -30,6 +30,7 @@ export class ProjectSettingEntity {
     nullable: true,
     eager: true
   })
+  @JoinColumn({ name: "defaultKanbanId" })
   public defaultKanban: KanbanEntity;
 
   @CreateDateColumn()
