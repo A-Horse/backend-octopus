@@ -1,5 +1,12 @@
+import { KanbanEntity } from './kanban.entity';
 import {
-    Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  JoinColumn,
+  ManyToOne
 } from 'typeorm';
 
 @Entity({
@@ -18,6 +25,12 @@ export class ProjectSettingEntity {
     default: false
   })
   public isStar: boolean;
+
+  @ManyToOne(() => KanbanEntity, {
+    nullable: true,
+    eager: true
+  })
+  public defaultKanban: KanbanEntity;
 
   @CreateDateColumn()
   public createdAt: Date;

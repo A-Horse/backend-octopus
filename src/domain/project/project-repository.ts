@@ -1,13 +1,14 @@
-import { UserEntity } from '../../entity/user.entity';
+import { EntityManager, getConnection, getRepository } from 'typeorm';
+
 import { ProjectSettingEntity } from '../../entity/project-setting.entity';
 import { ProjectEntity } from '../../entity/project.entity';
-import { getRepository, getConnection, EntityManager } from 'typeorm';
+import { UserEntity } from '../../entity/user.entity';
 import { Project } from './model/project';
 
 export class ProjectRepository {
   constructor() {}
 
-  static async getUserProject(userId: number): Promise<Project[]> {
+  static async getUserProjects(userId: number): Promise<Project[]> {
     const projectEntitys = await getRepository(ProjectEntity)
       .createQueryBuilder('project')
       .leftJoinAndSelect('project.setting', 'project_setting')
@@ -21,7 +22,7 @@ export class ProjectRepository {
     });
   }
 
-  static async getProjectDetail(projectId: string) {
+  static async getProjectDetail(projectId: string): Promise<Project>  {
     const projectEntity = await getRepository(ProjectEntity)
       .createQueryBuilder('project')
       .leftJoinAndSelect('project.setting', 'project_setting')

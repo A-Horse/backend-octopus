@@ -14,8 +14,8 @@ export class KanbanSetting {
   }
 
   public toJSON() {
-      return {
-          id: this.id
-      }
+    return {
+      id: this.id
+    };
   }
 }

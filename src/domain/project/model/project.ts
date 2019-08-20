@@ -1,7 +1,10 @@
-import { ProjectEntity } from './../../../entity/project.entity';
+import { ProjectEntity } from '../../../entity/project.entity';
+import { KanbanCardType } from '../../../typing/kanban-card.typing';
+import { CreateKanbanInput } from '../../../typing/kanban.typing';
+import { ProjectStatus, ProjectType } from '../../../typing/project.typing';
+import { Kanban } from '../../kanban/kanban';
+import { KanbanSetting } from '../../kanban/kanban-setting';
 import { ProjectSetting } from './project-setting';
-import { ProjectStatus, ProjectType } from './../../../typing/project.typing';
-import { runInThisContext } from 'vm';
 
 export class Project {
   public id: string;
@@ -37,7 +40,23 @@ export class Project {
     this.setting = setting;
   }
 
-  public createKanban() {}
+  public createKanban(createKanbanInput: CreateKanbanInput) {
+    const kanban = new Kanban({
+      id: null,
+      name: createKanbanInput.name,
+      desc: createKanbanInput.desc,
+      type: KanbanCardType.NORMAL,
+      projectId: createKanbanInput.projectId,
+      creatorId: createKanbanInput.creatorId,
+      updatedAt: null,
+      createdAt: null,
+      setting: new KanbanSetting({
+        id: null
+      })
+    });
+
+    if (this.setting) return kanban;
+  }
 
   public createKanbanCard() {}
 
