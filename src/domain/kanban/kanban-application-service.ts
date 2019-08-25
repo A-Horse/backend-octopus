@@ -15,8 +15,8 @@ export class kanbanApplicationService {
     const kanbanColumns = await KanbanColumnRepository.getKanbanColumns(kanbanId);
 
     return {
-      ...kanban.toJSON,
-      columns: kanbanColumns.map(k => k.toJSON)
+      ...kanban.toJSON(),
+      columns: kanbanColumns.map(k => k.toJSON())
     }
   }
 }

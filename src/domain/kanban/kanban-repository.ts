@@ -24,7 +24,7 @@ export class KanbanRepository {
   static async getKanban(kanbanId: string): Promise<Kanban> {
     const kanbanEntity = await getRepository(KanbanEntity)
       .createQueryBuilder('kanban')
-      .where('id = :kanbanId', { kanbanId })
+      .where('kanban.id = :kanbanId', { kanbanId })
       .leftJoinAndSelect('kanban.creator', 'user')
       .leftJoinAndSelect('kanban.setting', 'kanban_setting')
       .leftJoinAndSelect('kanban.project', 'project')
