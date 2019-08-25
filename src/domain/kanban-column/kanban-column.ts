@@ -1,8 +1,9 @@
+import { JSONEntity } from './../interface/json';
 import { KanbanColumnRepository } from './kanban-column-repository';
 import { KanbanColumnStatus } from './../../typing/kanban-column.typing';
 import { KanbanColumnEntity } from './../../entity/kanban-column.entity';
 
-export class KanbanColumn {
+export class KanbanColumn implements JSONEntity {
   public id: string;
   public name: string;
   public status: KanbanColumnStatus;
@@ -15,7 +16,7 @@ export class KanbanColumn {
   constructor({ id, name, status, creatorId, order, createdAt, updatedAt, kanbanId }) {
     this.id = id;
     this.name = name;
-    this.status = status;
+    this.status = status || KanbanColumnStatus.ACTIVE;
     this.creatorId = creatorId;
     this.order = order;
     this.createdAt = createdAt;
@@ -36,6 +37,21 @@ export class KanbanColumn {
     });
   }
 
+
+  public toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      status: this.status,
+      creatorId: this.creatorId,
+      order: this.order,
+      createdAt: this.createdAt,
+      updatedAt: this.udpatedAt,
+      kanbanId: this.kanbanId
+    };
+  }
+
+  
   public async initOrder(): Promise<void> {
     this.order = (await KanbanColumnRepository.getKanbanColumnCount(this.kanbanId)) * 100;
   }

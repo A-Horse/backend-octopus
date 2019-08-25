@@ -21,7 +21,18 @@ export class KanbanRepository {
     });
   }
 
- 
+  static async getKanban(kanbanId: string): Promise<Kanban> {
+    const kanbanEntity = await getRepository(KanbanEntity)
+      .createQueryBuilder('kanban')
+      .where('id = :kanbanId', { kanbanId })
+      .leftJoinAndSelect('kanban.creator', 'user')
+      .leftJoinAndSelect('kanban.setting', 'kanban_setting')
+      .leftJoinAndSelect('kanban.project', 'project')
+      .getOne();
+
+    return Kanban.fromDataEntity(kanbanEntity);
+  }
+
   static async savekanban(kanban: Kanban): Promise<KanbanId> {
     const creator = new UserEntity();
     creator.id = kanban.creatorId;

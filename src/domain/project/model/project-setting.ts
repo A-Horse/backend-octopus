@@ -21,7 +21,7 @@ export class ProjectSetting {
     return new ProjectSetting({
       id: dataEntity.id,
       cover: dataEntity.cover,
-      defaultKanbanId: 'hihi'
+      defaultKanbanId: dataEntity.defaultKanban.id
     });
   }
 

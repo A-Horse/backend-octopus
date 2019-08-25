@@ -17,6 +17,15 @@ KanbanRouter.get('/project/:projectId/kanbans', authJwt, async (req, res, next) 
   }
 });
 
-
+KanbanRouter.get('/kanban/:kanbanId/detail', authJwt, async (req, res, next) => {
+  try {
+    const kanbanDetailData = await kanbanApplicationService.getKanbanDetail(
+      req.params.kanbanId
+    );
+    res.json(kanbanDetailData);
+  } catch (error) {
+    next(error);
+  }
+});
 
 export { KanbanRouter };
