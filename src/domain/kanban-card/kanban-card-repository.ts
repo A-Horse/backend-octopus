@@ -16,8 +16,8 @@ export class KanbanCardRepository {
     const cardEntitys = await getRepository(KanbanCardEntity)
       .createQueryBuilder('kanban_card')
       .leftJoinAndSelect('kanban_card.creator', 'user as creator')
-      .leftJoinAndSelect('kanban.assignee', 'user as assignee')
-      .leftJoinAndSelect('kanban.column', 'column')
+      .leftJoinAndSelect('kanban_card.assignee', 'user as assignee')
+      .leftJoinAndSelect('kanban_card.column', 'column')
       .where('columnId = :columnId', { columnId })
       .getMany();
 
