@@ -38,6 +38,10 @@ export class KanbanColumn implements JSONEntity {
   }
 
 
+  public async initOrder(): Promise<void> {
+    this.order = (await KanbanColumnRepository.getKanbanColumnCount(this.kanbanId)) * 100;
+  }
+
   public toJSON() {
     return {
       id: this.id,
@@ -49,10 +53,5 @@ export class KanbanColumn implements JSONEntity {
       updatedAt: this.udpatedAt,
       kanbanId: this.kanbanId
     };
-  }
-
-  
-  public async initOrder(): Promise<void> {
-    this.order = (await KanbanColumnRepository.getKanbanColumnCount(this.kanbanId)) * 100;
   }
 }
