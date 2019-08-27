@@ -27,4 +27,19 @@ KanbanCardRouter.get(
   }
 );
 
+KanbanCardRouter.post('/project/:projectId/card', authJwt, async (req, res, next) => {
+  const { jw } = req;
+
+  try {
+    const cardId: string = await KanbanCardApplicationService.createCard({
+      creatorId: jw.user.id,
+      ...req.body
+    });
+
+    res.status(201).send(cardId);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export { KanbanCardRouter };

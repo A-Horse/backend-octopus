@@ -11,8 +11,9 @@
   "author": "fwchen",
   "license": "ISC",
   "dependencies": {
+    "@types/lodash": "^4.14.137",
     "app-root-path": "^2.0.1",
-    "bcrypt": "^0.8.7",
+    "bcrypt": "^3.0.6",
     "bcryptjs": "^2.4.0",
     "bluebird": "^3.5.3",
     "blueimp-md5": "^2.3.0",

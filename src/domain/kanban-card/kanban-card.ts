@@ -2,6 +2,7 @@ import { KanbanCardRepository } from './kanban-card-repository';
 import { KanbanCardType } from './../../typing/kanban-card.typing';
 import { KanbanCardEntity } from './../../entity/kanban-card.entity';
 import { JSONEntity } from './../interface/json';
+import * as _ from 'lodash';
 
 export class KanbanCard implements JSONEntity {
   public id: string;
@@ -54,8 +55,8 @@ export class KanbanCard implements JSONEntity {
       creatorId: dataEntity.creator.id,
       assigneeId: dataEntity.assignee.id,
       columnId: dataEntity.column.id,
-      kanbanId: dataEntity.kanban.id,
-      projectId: dataEntity.project.id,
+      kanbanId: _.get(dataEntity, ['kanban', 'id'], null),
+      projectId: _.get(dataEntity, ['project', 'id'], null),
       order: dataEntity.order,
       createdAt: dataEntity.createdAt,
       updatedAt: dataEntity.updatedAt

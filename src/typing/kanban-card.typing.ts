@@ -7,8 +7,10 @@ export enum KanbanCardType {
 export interface CreateProjectCardInput {
   title: string;
   content: string;
-  type: KanbanCardType |null;
+  type: KanbanCardType | null;
   creatorId: number;
+  kanbanId: string;
+  projectId?: string;
   assigneeId: number;
   columnId: string;
 }
