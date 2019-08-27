@@ -9,9 +9,9 @@ import { KanbanEntity } from './kanban.entity';
 import { UserEntity } from './user.entity';
 
   @Entity({
-    name: 'kanban_tracker'
+    name: 'kanban_epic'
   })
-  export class KanbanTrackerEntity {
+  export class KanbanEpicEntity {
     @PrimaryGeneratedColumn('uuid')
     public id: string;
   
@@ -35,10 +35,10 @@ import { UserEntity } from './user.entity';
     @JoinColumn({ name: 'creatorId' })
     public creator: UserEntity;
 
-    @ManyToOne(() => KanbanEntity, kanban => kanban.trackers)
+    @ManyToOne(() => KanbanEntity, kanban => kanban.epics)
     public kanban: KanbanEntity;
   
-    @OneToMany(() => KanbanCardEntity, card => card.track)
+    @OneToMany(() => KanbanCardEntity, card => card.epic)
     public cards: KanbanCardEntity[];
   
     @CreateDateColumn()

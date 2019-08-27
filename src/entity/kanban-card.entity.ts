@@ -11,7 +11,7 @@ import {
 
 import { KanbanCardType } from '../typing/kanban-card.typing';
 import { KanbanColumnEntity } from './kanban-column.entity';
-import { KanbanTrackerEntity } from './kanban-tracker.entity';
+import { KanbanEpicEntity } from './kanban-epic.entity';
 import { UserEntity } from './user.entity';
 
 @Entity({
@@ -48,10 +48,10 @@ export class KanbanCardEntity {
   })
   public column: KanbanColumnEntity;
 
-  @ManyToOne(type => KanbanTrackerEntity, track => track.cards, {
+  @ManyToOne(type => KanbanEpicEntity, epic => epic.cards, {
     nullable: true
   })
-  public track: KanbanTrackerEntity;
+  public epic: KanbanEpicEntity;
 
   @ManyToOne(type => ProjectEntity, project => project.cards)
   public project: ProjectEntity;

@@ -8,7 +8,7 @@ import {
 import { ProjectStatus } from '../typing/project.typing';
 import { KanbanColumnEntity } from './kanban-column.entity';
 import { KanbanSettingEntity } from './kanban-setting.entity';
-import { KanbanTrackerEntity } from './kanban-tracker.entity';
+import { KanbanEpicEntity } from './kanban-epic.entity';
 import { UserEntity } from './user.entity';
 
   @Entity({
@@ -54,8 +54,8 @@ import { UserEntity } from './user.entity';
     })
     public project: ProjectEntity;
   
-    @OneToMany(() => KanbanTrackerEntity, tracker => tracker.kanban)
-    public trackers: KanbanTrackerEntity[];
+    @OneToMany(() => KanbanEpicEntity, epic => epic.kanban)
+    public epics: KanbanEpicEntity[];
 
     @OneToMany(() => KanbanColumnEntity, column => column.kanban)
     public columns: KanbanColumnEntity[];
