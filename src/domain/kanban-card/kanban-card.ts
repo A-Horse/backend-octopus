@@ -30,7 +30,7 @@ export class KanbanCard implements JSONEntity {
     this.id = id;
     this.title = title;
     this.content = content;
-    this.type = type;
+    this.type = type || KanbanCardType.NORMAL;
     this.creatorId = creatorId;
     this.assigneeId = assigneeId;
     this.columnId = columnId;
