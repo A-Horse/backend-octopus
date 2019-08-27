@@ -1,6 +1,8 @@
+import { KanbanCardEntity } from './kanban-card.entity';
 import {
     Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn,
-    UpdateDateColumn
+    UpdateDateColumn,
+    OneToMany
 } from 'typeorm';
 
 import { ProjectStatus, ProjectType } from '../typing/project.typing';
@@ -47,6 +49,9 @@ export class ProjectEntity {
 
   @ManyToOne(() => UserEntity)
   public owner: UserEntity;
+
+  @OneToMany(() => KanbanCardEntity, card => card.kanban)
+  public cards: KanbanCardEntity[];
 
   @CreateDateColumn()
   public createdAt: Date;

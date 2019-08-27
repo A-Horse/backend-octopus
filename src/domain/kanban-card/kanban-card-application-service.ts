@@ -7,7 +7,7 @@ export class KanbanCardApplicationService {
     return KanbanCardRepository.getColumnCards(columnId);
   }
 
-  static async createCard(createProjectCardInput: CreateProjectCardInput) {
+  static async createCard(createProjectCardInput: CreateProjectCardInput): Promise<string> {
     const card = new KanbanCard({
       id: null,
       title: createProjectCardInput.title,
@@ -16,6 +16,8 @@ export class KanbanCardApplicationService {
       creatorId: createProjectCardInput.creatorId,
       assigneeId: createProjectCardInput.assigneeId,
       columnId: createProjectCardInput.columnId,
+      kanbanId: createProjectCardInput.kanbanId,
+      projectId: createProjectCardInput.projectId,
       order: null,
       createdAt: undefined,
       updatedAt: undefined

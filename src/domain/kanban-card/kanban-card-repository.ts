@@ -1,3 +1,5 @@
+import { ProjectEntity } from './../../entity/project.entity';
+import { KanbanEntity } from './../../entity/kanban.entity';
 import { KanbanColumnEntity } from './../../entity/kanban-column.entity';
 import { UserEntity } from './../../entity/user.entity';
 import { KanbanCard } from './kanban-card';
@@ -32,6 +34,15 @@ export class KanbanCardRepository {
     const creator = new UserEntity();
     creator.id = card.creatorId;
 
+    const projectEntity = new ProjectEntity();
+    projectEntity.id = card.projectId;
+
+    let kanbanEntity;
+    if (card.kanbanId) {
+      kanbanEntity = new KanbanEntity();
+      kanbanEntity.id = card.kanbanId;
+    }
+
     let kanbanColumnEntity;
     if (card.columnId) {
       kanbanColumnEntity = new KanbanColumnEntity();
@@ -41,6 +52,8 @@ export class KanbanCardRepository {
     const cardEntity = new KanbanCardEntity();
     cardEntity.title = card.title;
     cardEntity.content = card.content;
+    cardEntity.project = projectEntity;
+    cardEntity.kanban = kanbanEntity;
 
     await card.initOrder();
     cardEntity.order = card.order;
