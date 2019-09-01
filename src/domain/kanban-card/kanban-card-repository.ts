@@ -31,29 +31,30 @@ export class KanbanCardRepository {
   }
 
   static async saveKanbanCard(card: KanbanCard): Promise<string> {
+    const cardEntity = new KanbanCardEntity();
+
     const creator = new UserEntity();
     creator.id = card.creatorId;
+    cardEntity.creator = creator;
 
     const projectEntity = new ProjectEntity();
     projectEntity.id = card.projectId;
+    cardEntity.project = projectEntity;
 
-    let kanbanEntity;
     if (card.kanbanId) {
-      kanbanEntity = new KanbanEntity();
+      const kanbanEntity = new KanbanEntity();
       kanbanEntity.id = card.kanbanId;
+      cardEntity.kanban = kanbanEntity;
     }
 
-    let kanbanColumnEntity;
     if (card.columnId) {
-      kanbanColumnEntity = new KanbanColumnEntity();
+      const kanbanColumnEntity = new KanbanColumnEntity();
       kanbanColumnEntity.id = card.columnId;
+      cardEntity.column = kanbanColumnEntity;
     }
 
-    const cardEntity = new KanbanCardEntity();
     cardEntity.title = card.title;
     cardEntity.content = card.content;
-    cardEntity.project = projectEntity;
-    cardEntity.kanban = kanbanEntity;
 
     await card.initOrder();
     cardEntity.order = card.order;
