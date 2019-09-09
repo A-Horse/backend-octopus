@@ -1,4 +1,5 @@
 import { ProjectSettingEntity } from '../../../entity/project-setting.entity';
+import * as _ from 'lodash';
 
 export class ProjectSetting {
   private id: string;
@@ -21,7 +22,7 @@ export class ProjectSetting {
     return new ProjectSetting({
       id: dataEntity.id,
       cover: dataEntity.cover,
-      defaultKanbanId: dataEntity.defaultKanban.id
+      defaultKanbanId: _.get(dataEntity, ['defaultKanban', 'id'], null)
     });
   }
 

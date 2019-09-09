@@ -12,13 +12,14 @@ export class ProjectRepository {
     const projectEntitys = await getRepository(ProjectEntity)
       .createQueryBuilder('project')
       .leftJoinAndSelect('project.setting', 'project_setting')
-      .leftJoinAndSelect('project_setting.defaultKanban', 'kanban as project_s_kanban')
+      .leftJoinAndSelect('project_setting.defaultKanban', 'kanban as project_default_kanban')
       .leftJoinAndSelect('project.creator', 'user as creator')
       .leftJoinAndSelect('project.owner', 'user as owner')
       .where('project.creatorId = :userId', { userId })
       .getMany();
 
     return projectEntitys.map((projectEntity: ProjectEntity) => {
+      
       return Project.fromDataEntity(projectEntity);
     });
   }
