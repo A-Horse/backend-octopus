@@ -1,6 +1,6 @@
 import { KanbanCardType } from 'src/typing/kanban-card.typing';
 
-import { CreateKanbanInput } from '../../typing/kanban.typing';
+import { CreateKanbanInput, KanbanId } from '../../typing/kanban.typing';
 import { Kanban } from '../kanban/kanban';
 import { KanbanRepository } from '../kanban/kanban-repository';
 import { KanbanSetting } from '../kanban/kanban-setting';
@@ -34,11 +34,12 @@ export class ProjectAppliactionService {
     return ProjectRepository.saveProject(project);
   }
 
-  static async createProjectKanban(createKanbanInput: CreateKanbanInput) {
+  static async createProjectKanban(createKanbanInput: CreateKanbanInput): Promise<KanbanId> {
     const project: Project = await ProjectRepository.getProjectDetail(
       createKanbanInput.projectId
     );
 
-    const kanban = project.createKanban(createKanbanInput);
+    const kanban = await project.createKanban(createKanbanInput);
+    return await KanbanRepository.savekanban(kanban);
   }
 }

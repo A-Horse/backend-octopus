@@ -54,8 +54,7 @@ export class Project {
         id: null
       })
     });
-
-    if (this.setting) return kanban;
+    return kanban;
   }
 
   public createKanbanCard() {}
