@@ -1,6 +1,6 @@
 import { KanbanCardRepository } from './kanban-card-repository';
 import { KanbanCardType } from './../../typing/kanban-card.typing';
-import { KanbanCardEntity } from './../../entity/kanban-card.entity';
+import { ProjectCardEntity } from '../../entity/project-card.entity';
 import { JSONEntity } from './../interface/json';
 import * as _ from 'lodash';
 
@@ -46,7 +46,7 @@ export class KanbanCard implements JSONEntity {
     this.updatedAt = updatedAt;
   }
 
-  static fromDataEntity(dataEntity: KanbanCardEntity): KanbanCard {
+  static fromDataEntity(dataEntity: ProjectCardEntity): KanbanCard {
     return new KanbanCard({
       id: dataEntity.id,
       title: dataEntity.title,

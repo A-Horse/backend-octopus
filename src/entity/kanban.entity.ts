@@ -1,4 +1,4 @@
-import { KanbanCardEntity } from './kanban-card.entity';
+import { ProjectCardEntity } from './project-card.entity';
 import { ProjectEntity } from './project.entity';
 import {
     Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne,
@@ -60,8 +60,8 @@ import { UserEntity } from './user.entity';
     @OneToMany(() => KanbanColumnEntity, column => column.kanban)
     public columns: KanbanColumnEntity[];
 
-    @OneToMany(() => KanbanCardEntity, card => card.kanban)
-    public cards: KanbanCardEntity[];
+    @OneToMany(() => ProjectCardEntity, card => card.kanban)
+    public cards: ProjectCardEntity[];
   
     @CreateDateColumn()
     public createdAt: Date;

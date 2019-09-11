@@ -3,7 +3,7 @@ import {
 } from 'typeorm';
 
 import { KanbanColumnStatus } from '../typing/kanban-column.typing';
-import { KanbanCardEntity } from './kanban-card.entity';
+import { ProjectCardEntity } from './project-card.entity';
 import { KanbanEntity } from './kanban.entity';
 import { UserEntity } from './user.entity';
 
@@ -37,8 +37,8 @@ import { UserEntity } from './user.entity';
     @ManyToOne(() => KanbanEntity, board => board.columns)
     public kanban: KanbanEntity;
      
-    @OneToMany(() => KanbanCardEntity, card => card.column)
-    public cards: KanbanCardEntity[];
+    @OneToMany(() => ProjectCardEntity, card => card.column)
+    public cards: ProjectCardEntity[];
   
     @CreateDateColumn()
     public createdAt: Date;

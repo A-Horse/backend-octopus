@@ -15,9 +15,9 @@ import { KanbanEpicEntity } from './kanban-epic.entity';
 import { UserEntity } from './user.entity';
 
 @Entity({
-  name: 'kanban_card'
+  name: 'project_card'
 })
-export class KanbanCardEntity {
+export class ProjectCardEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
