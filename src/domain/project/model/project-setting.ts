@@ -2,19 +2,27 @@ import { ProjectSettingEntity } from '../../../entity/project-setting.entity';
 import * as _ from 'lodash';
 
 export class ProjectSetting {
-  private id: string;
+  public id: string;
   public cover: string;
   public coverUrl: string;
-  public isStar: string;
+  public isStar: boolean;
   public defaultKanbanId: string;
 
-  constructor({ id, cover, defaultKanbanId }: {
+  constructor({
+    id,
+    cover,
+    defaultKanbanId,
+    isStar
+  }: {
     id?: string;
     cover?: string;
     defaultKanbanId?: string;
+    isStar?: boolean;
   }) {
     this.id = id;
     this.cover = cover;
+    this.coverUrl = `/${this.cover}`;
+    this.isStar = isStar;
     this.defaultKanbanId = defaultKanbanId;
   }
 
@@ -22,7 +30,8 @@ export class ProjectSetting {
     return new ProjectSetting({
       id: dataEntity.id,
       cover: dataEntity.cover,
-      defaultKanbanId: _.get(dataEntity, ['defaultKanban', 'id'], null)
+      defaultKanbanId: _.get(dataEntity, ['defaultKanban', 'id'], null),
+      isStar: dataEntity.isStar
     });
   }
 

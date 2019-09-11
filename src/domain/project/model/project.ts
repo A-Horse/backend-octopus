@@ -5,6 +5,7 @@ import { ProjectStatus, ProjectType } from '../../../typing/project.typing';
 import { Kanban } from '../../kanban/kanban';
 import { KanbanSetting } from '../../kanban/kanban-setting';
 import { ProjectSetting } from './project-setting';
+import { ProjectRepository } from '../project-repository';
 
 export class Project {
   public id: string;
@@ -58,6 +59,11 @@ export class Project {
   }
 
   public createKanbanCard() {}
+
+  public async setDefaultKanban(kanbanId: string): Promise<void> {
+    this.setting.defaultKanbanId = kanbanId;
+    await ProjectRepository.updateProjectSetting(this.setting);
+  }
 
   static fromDataEntity(dataEntity: ProjectEntity): Project {
     const setting = ProjectSetting.fromDataEntity(dataEntity.setting);

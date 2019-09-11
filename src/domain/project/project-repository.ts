@@ -4,6 +4,8 @@ import { ProjectSettingEntity } from '../../entity/project-setting.entity';
 import { ProjectEntity } from '../../entity/project.entity';
 import { UserEntity } from '../../entity/user.entity';
 import { Project } from './model/project';
+import { ProjectSetting } from './model/project-setting';
+import { KanbanEntity } from '../../entity/kanban.entity';
 
 export class ProjectRepository {
   constructor() {}
@@ -12,19 +14,21 @@ export class ProjectRepository {
     const projectEntitys = await getRepository(ProjectEntity)
       .createQueryBuilder('project')
       .leftJoinAndSelect('project.setting', 'project_setting')
-      .leftJoinAndSelect('project_setting.defaultKanban', 'kanban as project_default_kanban')
+      .leftJoinAndSelect(
+        'project_setting.defaultKanban',
+        'kanban as project_default_kanban'
+      )
       .leftJoinAndSelect('project.creator', 'user as creator')
       .leftJoinAndSelect('project.owner', 'user as owner')
       .where('project.creatorId = :userId', { userId })
       .getMany();
 
     return projectEntitys.map((projectEntity: ProjectEntity) => {
-      
       return Project.fromDataEntity(projectEntity);
     });
   }
 
-  static async getProjectDetail(projectId: string): Promise<Project>  {
+  static async getProjectDetail(projectId: string): Promise<Project> {
     const projectEntity = await getRepository(ProjectEntity)
       .createQueryBuilder('project')
       .leftJoinAndSelect('project.setting', 'project_setting')
@@ -61,5 +65,25 @@ export class ProjectRepository {
     );
 
     return projectEntity.id;
+  }
+
+  static async updateProjectSetting(setting: ProjectSetting): Promise<void> {
+    let defaultKanbanEntity: KanbanEntity;
+    if (setting.defaultKanbanId) {
+      
+      defaultKanbanEntity = new KanbanEntity();
+      defaultKanbanEntity.id = setting.defaultKanbanId;
+    }
+
+    await getConnection()
+      .createQueryBuilder()
+      .update(ProjectSettingEntity)
+      .set({
+        defaultKanban: defaultKanbanEntity,
+        isStar: setting.isStar,
+        cover: setting.cover
+      })
+      .where({ id: setting.id })
+      .execute();
   }
 }
