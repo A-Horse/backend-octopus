@@ -16,6 +16,31 @@ export class KanbanCardRepository {
       .getCount();
   }
 
+  static async getCard(cardId: string): Promise<KanbanCard> {
+    const cardEntity = await getRepository(ProjectCardEntity)
+      .createQueryBuilder('kanban_card')
+      .leftJoinAndSelect('kanban_card.creator', 'user as creator')
+      .leftJoinAndSelect('kanban_card.assignee', 'user as assignee')
+      .leftJoinAndSelect('kanban_card.column', 'column')
+      .leftJoinAndMapOne(
+        'kanban_card.orderInKanban',
+        ProjectCardOrderInKanbanEntity,
+        'project_card_order_in_kanban',
+        'kanban_card.id = project_card_order_in_kanban.cardId'
+      )
+      .where('kanban_card.id = :cardId', { cardId })
+      .getOne();
+
+    return [cardEntity]
+      .map((cardEntity: ProjectCardEntity) => {
+        return KanbanCard.fromDataEntity({
+          ...cardEntity,
+          orderInKanban: _.get(cardEntity, ['orderInKanban', 'order'], null)
+        });
+      })
+      .sort((a, b) => a.orderInKanban - b.orderInKanban)[0];
+  }
+
   static async getColumnCards(kanbanId: string, columnId: string): Promise<KanbanCard[]> {
     const cardEntitys = await getRepository(ProjectCardEntity)
       .createQueryBuilder('kanban_card')
