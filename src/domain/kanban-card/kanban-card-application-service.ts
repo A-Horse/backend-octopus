@@ -4,7 +4,7 @@ import { CreateProjectCardInput } from '../../typing/kanban-card.typing';
 
 export class KanbanCardApplicationService {
   static async getColumnCards({ kanbanId, columnId }): Promise<KanbanCard[]> {
-    return KanbanCardRepository.getColumnCards(columnId);
+    return KanbanCardRepository.getColumnCards(kanbanId, columnId);
   }
 
   static async createCard(createProjectCardInput: CreateProjectCardInput): Promise<string> {
@@ -18,11 +18,9 @@ export class KanbanCardApplicationService {
       columnId: createProjectCardInput.columnId,
       kanbanId: createProjectCardInput.kanbanId,
       projectId: createProjectCardInput.projectId,
-      order: null,
       createdAt: undefined,
       updatedAt: undefined
     });
-
     return KanbanCardRepository.saveKanbanCard(card);
   }
 }

@@ -14,7 +14,7 @@ export class KanbanCard implements JSONEntity {
   public columnId: string;
   public kanbanId: string;
   public projectId: string;
-  public order: number;
+  public orderInKanban: number;
   public createdAt: Date;
   public updatedAt: Date;
 
@@ -27,11 +27,11 @@ export class KanbanCard implements JSONEntity {
     assigneeId,
     columnId,
     kanbanId,
+    orderInKanban,
     projectId,
-    order,
     createdAt,
     updatedAt
-  }) {
+  }: any) {
     this.id = id;
     this.title = title;
     this.content = content;
@@ -40,8 +40,8 @@ export class KanbanCard implements JSONEntity {
     this.assigneeId = assigneeId;
     this.columnId = columnId;
     this.kanbanId = kanbanId;
+    this.orderInKanban = orderInKanban;
     this.projectId = projectId;
-    this.order = order;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -57,14 +57,13 @@ export class KanbanCard implements JSONEntity {
       columnId: _.get(dataEntity, ['column', 'id'], null),
       kanbanId: _.get(dataEntity, ['kanban', 'id'], null),
       projectId: _.get(dataEntity, ['project', 'id'], null),
-      order: dataEntity.order,
       createdAt: dataEntity.createdAt,
       updatedAt: dataEntity.updatedAt
     });
   }
 
   public async initOrder(): Promise<void> {
-    this.order = (await KanbanCardRepository.getColumnCardCount(this.columnId)) * 100;
+    this.orderInKanban = (await KanbanCardRepository.getColumnCardCount(this.columnId)) * 100;
   }
 
   public toJSON() {
@@ -75,7 +74,7 @@ export class KanbanCard implements JSONEntity {
       type: this.type,
       creatorId: this.creatorId,
       columnId: this.columnId,
-      order: this.order,
+      order: this.orderInKanban,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt
     };

@@ -13,6 +13,7 @@ import { KanbanCardType } from '../typing/kanban-card.typing';
 import { KanbanColumnEntity } from './kanban-column.entity';
 import { KanbanEpicEntity } from './kanban-epic.entity';
 import { UserEntity } from './user.entity';
+import { ProjectCardOrderInKanbanEntity } from './project-card-order-in-kanban.entity';
 
 @Entity({
   name: 'project_card'
@@ -61,15 +62,11 @@ export class ProjectCardEntity {
   })
   public kanban: KanbanEntity;
 
-  @Column({
-    nullable: false,
-    type: 'double'
-  })
-  public order: number;
-
   @CreateDateColumn()
   public createdAt: Date;
 
   @UpdateDateColumn()
   public updatedAt: Date;
+
+  public orderInKanban: ProjectCardOrderInKanbanEntity;
 }

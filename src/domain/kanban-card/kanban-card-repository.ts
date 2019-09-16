@@ -3,8 +3,10 @@ import { KanbanEntity } from './../../entity/kanban.entity';
 import { KanbanColumnEntity } from './../../entity/kanban-column.entity';
 import { UserEntity } from './../../entity/user.entity';
 import { KanbanCard } from './kanban-card';
+import * as _ from 'lodash';
 import { ProjectCardEntity } from '../../entity/project-card.entity';
-import { getRepository } from 'typeorm';
+import { getRepository, getConnection, EntityManager } from 'typeorm';
+import { ProjectCardOrderInKanbanEntity } from '../../entity/project-card-order-in-kanban.entity';
 
 export class KanbanCardRepository {
   static async getColumnCardCount(columnId: string): Promise<number> {
@@ -14,20 +16,29 @@ export class KanbanCardRepository {
       .getCount();
   }
 
-  static async getColumnCards(columnId: string): Promise<KanbanCard[]> {
+  static async getColumnCards(kanbanId: string, columnId: string): Promise<KanbanCard[]> {
     const cardEntitys = await getRepository(ProjectCardEntity)
       .createQueryBuilder('kanban_card')
       .leftJoinAndSelect('kanban_card.creator', 'user as creator')
       .leftJoinAndSelect('kanban_card.assignee', 'user as assignee')
       .leftJoinAndSelect('kanban_card.column', 'column')
+      .leftJoinAndMapOne(
+        'kanban_card.orderInKanban',
+        ProjectCardOrderInKanbanEntity,
+        'project_card_order_in_kanban',
+        'kanban_card.id = project_card_order_in_kanban.cardId'
+      )
       .where('columnId = :columnId', { columnId })
       .getMany();
 
     return cardEntitys
       .map((cardEntity: ProjectCardEntity) => {
-        return KanbanCard.fromDataEntity(cardEntity);
+        return KanbanCard.fromDataEntity({
+          ...cardEntity,
+          orderInKanban: _.get(cardEntity, ['orderInKanban', 'order'], null)
+        });
       })
-      .sort((a, b) => a.order - b.order);
+      .sort((a, b) => a.orderInKanban - b.orderInKanban);
   }
 
   static async saveKanbanCard(card: KanbanCard): Promise<string> {
@@ -41,10 +52,19 @@ export class KanbanCardRepository {
     projectEntity.id = card.projectId;
     cardEntity.project = projectEntity;
 
+    let orderInkanbanEntity: ProjectCardOrderInKanbanEntity;
+
     if (card.kanbanId) {
       const kanbanEntity = new KanbanEntity();
       kanbanEntity.id = card.kanbanId;
       cardEntity.kanban = kanbanEntity;
+
+      await card.initOrder();
+
+      orderInkanbanEntity = new ProjectCardOrderInKanbanEntity();
+      orderInkanbanEntity.card = cardEntity;
+      orderInkanbanEntity.kanban = kanbanEntity;
+      orderInkanbanEntity.order = card.orderInKanban;
     }
 
     if (card.columnId) {
@@ -56,10 +76,15 @@ export class KanbanCardRepository {
     cardEntity.title = card.title;
     cardEntity.content = card.content;
 
-    await card.initOrder();
-    cardEntity.order = card.order;
+    await getConnection().transaction(
+      async (transactionalEntityManager: EntityManager) => {
+        await transactionalEntityManager.save(cardEntity);
 
-    await getRepository(ProjectCardEntity).save(cardEntity);
+        if (orderInkanbanEntity) {
+          await transactionalEntityManager.save(orderInkanbanEntity);
+        }
+      }
+    );
 
     return cardEntity.id;
   }
