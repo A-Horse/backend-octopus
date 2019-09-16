@@ -1,14 +1,14 @@
-import { KanbanCardRepository } from './kanban-card-repository';
-import { KanbanCardType } from './../../typing/kanban-card.typing';
+import { ProjectCardRepository } from './kanban-card-repository';
+import { ProjectCardType } from '../../typing/kanban-card.typing';
 import { ProjectCardEntity } from '../../entity/project-card.entity';
-import { JSONEntity } from './../interface/json';
+import { JSONEntity } from '../interface/json';
 import * as _ from 'lodash';
 
-export class KanbanCard implements JSONEntity {
+export class ProjectCard implements JSONEntity {
   public id: string;
   public title: string;
   public content: string;
-  public type: KanbanCardType;
+  public type: ProjectCardType;
   public creatorId: number;
   public assigneeId: number;
   public columnId: string;
@@ -35,7 +35,7 @@ export class KanbanCard implements JSONEntity {
     this.id = id;
     this.title = title;
     this.content = content;
-    this.type = type || KanbanCardType.NORMAL;
+    this.type = type || ProjectCardType.NORMAL;
     this.creatorId = creatorId;
     this.assigneeId = assigneeId;
     this.columnId = columnId;
@@ -46,8 +46,8 @@ export class KanbanCard implements JSONEntity {
     this.updatedAt = updatedAt;
   }
 
-  static fromDataEntity(dataEntity: ProjectCardEntity): KanbanCard {
-    return new KanbanCard({
+  static fromDataEntity(dataEntity: ProjectCardEntity): ProjectCard {
+    return new ProjectCard({
       id: dataEntity.id,
       title: dataEntity.title,
       content: dataEntity.content,
@@ -63,7 +63,7 @@ export class KanbanCard implements JSONEntity {
   }
 
   public async initOrder(): Promise<void> {
-    this.orderInKanban = (await KanbanCardRepository.getColumnCardCount(this.columnId)) * 100;
+    this.orderInKanban = (await ProjectCardRepository.getColumnCardCount(this.columnId)) * 100;
   }
 
   public toJSON() {

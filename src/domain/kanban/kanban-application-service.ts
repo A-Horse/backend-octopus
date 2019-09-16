@@ -1,7 +1,7 @@
 import { KanbanColumnRepository } from './../kanban-column/kanban-column-repository';
 import { KanbanRepository } from './kanban-repository';
 import { Kanban } from './kanban';
-import { KanbanCardRepository } from '../kanban-card/kanban-card-repository';
+import { ProjectCardRepository } from '../project-card/kanban-card-repository';
 
 export class kanbanApplicationService {
 
@@ -25,8 +25,8 @@ export class kanbanApplicationService {
     targetCardId,
     isBefore
   }): Promise<any> {
-    const card = await KanbanCardRepository.getCard(cardId);
-    const targetCard = await KanbanCardRepository.getCard(targetCardId);
+    const card = await ProjectCardRepository.getCard(cardId);
+    const targetCard = await ProjectCardRepository.getCard(targetCardId);
 
 
   }

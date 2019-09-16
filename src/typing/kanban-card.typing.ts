@@ -1,4 +1,4 @@
-export enum KanbanCardType {
+export enum ProjectCardType {
   NORMAL = 'NORMAL',
   STORY = 'STORY',
   TODO = 'TODO'
@@ -7,7 +7,7 @@ export enum KanbanCardType {
 export interface CreateProjectCardInput {
   title: string;
   content: string;
-  type: KanbanCardType | null;
+  type: ProjectCardType | null;
   creatorId: number;
   kanbanId: string;
   projectId?: string;

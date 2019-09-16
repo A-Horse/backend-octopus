@@ -9,7 +9,7 @@ import {
   UpdateDateColumn
 } from 'typeorm';
 
-import { KanbanCardType } from '../typing/kanban-card.typing';
+import { ProjectCardType } from '../typing/kanban-card.typing';
 import { KanbanColumnEntity } from './kanban-column.entity';
 import { KanbanEpicEntity } from './kanban-epic.entity';
 import { UserEntity } from './user.entity';
@@ -34,9 +34,9 @@ export class ProjectCardEntity {
 
   @Column({
     length: 10,
-    default: KanbanCardType.NORMAL
+    default: ProjectCardType.NORMAL
   })
-  public type: KanbanCardType;
+  public type: ProjectCardType;
 
   @ManyToOne(() => UserEntity)
   public creator: UserEntity;

@@ -38,8 +38,6 @@ app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('cookie-parser')());
 
 import { RootRouter } from './route/root';
-import { TaskTrackRouter } from './route/task/task-track.router';
-import { TaskCardRouter } from './route/task/task-card.router';
 import { StatusErrorHandleMiddle } from './route/middle/error-handle';
 
 import { tApiPrefix } from './constant';
@@ -52,11 +50,9 @@ import { TaskBoardSettingRouter } from './route/task/task-board-setting.router';
 import { ProjectRouter } from './domain/project/project-router';
 import { KanbanRouter } from './domain/kanban/kanban-router';
 import { KanbanColumnRouter } from './domain/kanban-column/kanban-column-router';
-import { KanbanCardRouter } from './domain/kanban-card/kanban-card-router';
+import { ProjectCardRouter } from './domain/project-card/kanban-card-router';
 
 app.use(RootRouter);
-app.use(apiPrefix, TaskTrackRouter);
-app.use(apiPrefix, TaskCardRouter);
 
 app.use(tApiPrefix, TodoBoxRouter);
 app.use(tApiPrefix, TodoRouter);
@@ -67,7 +63,7 @@ app.use('/api/user', UserRouter);
 app.use(apiPrefix, ProjectRouter);
 app.use(apiPrefix, KanbanRouter);
 app.use(apiPrefix, KanbanColumnRouter);
-app.use(apiPrefix, KanbanCardRouter);
+app.use(apiPrefix, ProjectCardRouter);
 
 app.use(StatusErrorHandleMiddle);
 
