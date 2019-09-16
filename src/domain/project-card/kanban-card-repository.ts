@@ -9,11 +9,59 @@ import { getRepository, getConnection, EntityManager } from 'typeorm';
 import { ProjectCardOrderInKanbanEntity } from '../../entity/project-card-order-in-kanban.entity';
 
 export class ProjectCardRepository {
-  static async getColumnCardCount(columnId: string): Promise<number> {
+  static async getKanbanCardCount(kanbanId: string): Promise<number> {
     return await getRepository(ProjectCardEntity)
       .createQueryBuilder('kanban_card')
-      .where('columnId = :columnId', { columnId })
+      .where('kanbanId = :kanbanId', { kanbanId })
       .getCount();
+  }
+
+  static async getPreviousOrderInKanban(
+    kanbanId: string,
+    order: number
+  ): Promise<number | null> {
+    return await getRepository(ProjectCardEntity)
+      .createQueryBuilder('kanban_card')
+      .leftJoinAndMapOne(
+        'kanban_card.orderInKanban',
+        ProjectCardOrderInKanbanEntity,
+        'project_card_order_in_kanban',
+        'kanban_card.id = project_card_order_in_kanban.cardId'
+      )
+      .where(
+        'kanban_card.kanbanId = :kanbanId and project_card_order_in_kanban.order < :order',
+        {
+          kanbanId,
+          order
+        }
+      )
+      .limit(1)
+      .getOne()
+      .then(card => _.get(card, ['orderInKanban', 'order'], null));
+  }
+
+  static async getNextOrderInKanban(
+    kanbanId: string,
+    order: number
+  ): Promise<number | null> {
+    return await getRepository(ProjectCardEntity)
+      .createQueryBuilder('kanban_card')
+      .leftJoinAndMapOne(
+        'kanban_card.orderInKanban',
+        ProjectCardOrderInKanbanEntity,
+        'project_card_order_in_kanban',
+        'kanban_card.id = project_card_order_in_kanban.cardId'
+      )
+      .where(
+        'kanban_card.kanbanId = :kanbanId and project_card_order_in_kanban.order > :order',
+        {
+          kanbanId,
+          order
+        }
+      )
+      .limit(1)
+      .getOne()
+      .then(card => _.get(card, ['orderInKanban', 'order'], null));
   }
 
   static async getCard(cardId: string): Promise<ProjectCard> {
@@ -41,7 +89,10 @@ export class ProjectCardRepository {
       .sort((a, b) => a.orderInKanban - b.orderInKanban)[0];
   }
 
-  static async getColumnCards(kanbanId: string, columnId: string): Promise<ProjectCard[]> {
+  static async getColumnCards(
+    kanbanId: string,
+    columnId: string
+  ): Promise<ProjectCard[]> {
     const cardEntitys = await getRepository(ProjectCardEntity)
       .createQueryBuilder('kanban_card')
       .leftJoinAndSelect('kanban_card.creator', 'user as creator')
@@ -84,7 +135,7 @@ export class ProjectCardRepository {
       kanbanEntity.id = card.kanbanId;
       cardEntity.kanban = kanbanEntity;
 
-      await card.initOrder();
+      await card.initOrderInKanban();
 
       orderInkanbanEntity = new ProjectCardOrderInKanbanEntity();
       orderInkanbanEntity.card = cardEntity;
@@ -112,5 +163,19 @@ export class ProjectCardRepository {
     );
 
     return cardEntity.id;
+  }
+
+  static async updateCardOrderInKanban(card: ProjectCard): Promise<void> {
+    await getConnection()
+      .createQueryBuilder()
+      .update(ProjectCardOrderInKanbanEntity)
+      .set({
+        order: card.orderInKanban
+      })
+      .where({
+        kanbanId: card.kanbanId,
+        cardId: card.id
+      })
+      .execute();
   }
 }
