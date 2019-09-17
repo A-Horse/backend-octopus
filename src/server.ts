@@ -54,8 +54,6 @@ import { KanbanRouter } from './domain/kanban/kanban-router';
 import { KanbanColumnRouter } from './domain/kanban-column/kanban-column-router';
 import { ProjectCardRouter } from './domain/project-card/kanban-card-router';
 
-
-
 app.use(RootRouter);
 
 app.use(tApiPrefix, TodoBoxRouter);
