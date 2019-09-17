@@ -30,10 +30,12 @@ KanbanRouter.get('/kanban/:kanbanId/detail', authJwt, async (req, res, next) => 
 
 KanbanRouter.get('/kanban/:kanbanId/card-rank', authJwt, async (req, res, next) => {
   try {
-    const kanbanDetailData = await kanbanApplicationService.getKanbanDetail(
-      req.params.kanbanId
-    );
-    res.json(kanbanDetailData);
+    await kanbanApplicationService.rankCard({
+      cardId: req.body.cardId,
+      targetCardId: req.body.targetCardId,
+      isBefore: req.body.isBefore
+    });
+    res.status(200).send();
   } catch (error) {
     next(error);
   }
