@@ -9,6 +9,10 @@ import rfs from 'rotating-file-stream';
 import { apiPrefix } from './constant';
 import config from './service/config';
 
+const helmet = require('helmet');
+
+
+
 const app = express();
 
 const logDirectory = path.join(__dirname, '../log/access');
@@ -22,7 +26,7 @@ const accessLogStream = rfs('access.log', {
   path: logDirectory
 });
 
-app.set('view engine', 'ejs');
+app.use(helmet());
 app.use(
   '/storage',
   express.static('storage', {
@@ -43,21 +47,19 @@ import { StatusErrorHandleMiddle } from './route/middle/error-handle';
 import { tApiPrefix } from './constant';
 import { TodoBoxRouter } from './route/todo/todo-box';
 import { TodoRouter } from './route/todo/todo.router';
-import { TaskBoardRouter } from './route/task/task-board.router';
 
 import { UserRouter } from './route/user.router';
-import { TaskBoardSettingRouter } from './route/task/task-board-setting.router';
 import { ProjectRouter } from './domain/project/project-router';
 import { KanbanRouter } from './domain/kanban/kanban-router';
 import { KanbanColumnRouter } from './domain/kanban-column/kanban-column-router';
 import { ProjectCardRouter } from './domain/project-card/kanban-card-router';
 
+
+
 app.use(RootRouter);
 
 app.use(tApiPrefix, TodoBoxRouter);
 app.use(tApiPrefix, TodoRouter);
-app.use(apiPrefix, TaskBoardSettingRouter);
-app.use('/api/tk', TaskBoardRouter);
 app.use('/api/user', UserRouter);
 
 app.use(apiPrefix, ProjectRouter);
