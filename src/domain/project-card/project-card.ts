@@ -52,6 +52,7 @@ export class ProjectCard implements JSONEntity {
       title: dataEntity.title,
       content: dataEntity.content,
       type: dataEntity.type,
+      orderInKanban: dataEntity.orderInKanban,
       creatorId: _.get(dataEntity, ['creator', 'id'], null),
       assigneeId: _.get(dataEntity, ['assignee', 'id'], null),
       columnId: _.get(dataEntity, ['column', 'id'], null),
