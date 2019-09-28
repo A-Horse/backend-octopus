@@ -7,7 +7,9 @@ export class ProjectCardApplicationService {
     return ProjectCardRepository.getColumnCards(kanbanId, columnId);
   }
 
-  static async createCard(createProjectCardInput: CreateProjectCardInput): Promise<string> {
+  static async createCard(
+    createProjectCardInput: CreateProjectCardInput
+  ): Promise<string> {
     const card = new ProjectCard({
       id: null,
       title: createProjectCardInput.title,
@@ -21,6 +23,7 @@ export class ProjectCardApplicationService {
       createdAt: undefined,
       updatedAt: undefined
     });
+    await card.initCardId();
     return ProjectCardRepository.saveProjectCard(card);
   }
 }

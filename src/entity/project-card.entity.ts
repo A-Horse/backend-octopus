@@ -5,8 +5,8 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  PrimaryColumn
 } from 'typeorm';
 
 import { ProjectCardType } from '../typing/kanban-card.typing';
@@ -19,7 +19,7 @@ import { ProjectCardOrderInKanbanEntity } from './project-card-order-in-kanban.e
   name: 'project_card'
 })
 export class ProjectCardEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn()
   public id: string;
 
   @Column({

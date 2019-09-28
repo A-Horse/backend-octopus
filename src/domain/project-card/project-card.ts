@@ -63,16 +63,30 @@ export class ProjectCard implements JSONEntity {
     });
   }
 
+  public async initCardId(): Promise<void> {
+    const cardCountInProject = await ProjectCardRepository.getProjectCardCount(
+      this.projectId
+    );
+    this.id = `${this.projectId}-${cardCountInProject.toString()}`;
+  }
+
   public async initOrderInKanban(): Promise<void> {
-    this.orderInKanban = (await ProjectCardRepository.getKanbanCardCount(this.kanbanId)) * 100;
+    this.orderInKanban =
+      (await ProjectCardRepository.getKanbanCardCount(this.kanbanId)) * 100;
   }
 
   public async calcPreviousOrderInKanban(): Promise<number | null> {
-    return await ProjectCardRepository.getPreviousOrderInKanban(this.kanbanId, this.orderInKanban);
+    return await ProjectCardRepository.getPreviousOrderInKanban(
+      this.kanbanId,
+      this.orderInKanban
+    );
   }
 
   public async calcNextOrderInKanban(): Promise<number | null> {
-    return await ProjectCardRepository.getNextOrderInKanban(this.kanbanId, this.orderInKanban);
+    return await ProjectCardRepository.getNextOrderInKanban(
+      this.kanbanId,
+      this.orderInKanban
+    );
   }
 
   public toJSON() {
