@@ -1,3 +1,4 @@
+import { PROJECT_CARD_ORDER_INIT_INTERVAL } from './constant';
 import { ProjectCardRepository } from './kanban-card-repository';
 import { ProjectCardType } from '../../typing/kanban-card.typing';
 import { ProjectCardEntity } from '../../entity/project-card.entity';
@@ -72,7 +73,7 @@ export class ProjectCard implements JSONEntity {
 
   public async initOrderInKanban(): Promise<void> {
     this.orderInKanban =
-      (await ProjectCardRepository.getKanbanCardCount(this.kanbanId)) * 100;
+      (await ProjectCardRepository.getKanbanCardCount(this.kanbanId)) * PROJECT_CARD_ORDER_INIT_INTERVAL;
   }
 
   public async calcPreviousOrderInKanban(): Promise<number | null> {

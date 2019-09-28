@@ -1,0 +1,1 @@
+export const PROJECT_CARD_ORDER_INIT_INTERVAL = 100;

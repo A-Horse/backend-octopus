@@ -1,3 +1,5 @@
+import { PROJECT_CARD_ORDER_INIT_INTERVAL } from './../project-card/constant';
+import { ProjectCard } from './../project-card/project-card';
 import { KanbanColumnRepository } from './../kanban-column/kanban-column-repository';
 import { KanbanRepository } from './kanban-repository';
 import { Kanban } from './kanban';
@@ -19,18 +21,31 @@ export class kanbanApplicationService {
     };
   }
 
-  static async rankCard({ cardId, targetCardId, isBefore }): Promise<void> {
+  static async rankCard({ cardId, targetCardId, isBefore }): Promise<number> {
+    console.log('-----------------');
+    console.log(cardId, targetCardId, isBefore);
     const card = await ProjectCardRepository.getCard(cardId);
     const targetCard = await ProjectCardRepository.getCard(targetCardId);
 
     let targetOrderInKanban: number;
     if (isBefore) {
       targetOrderInKanban = await targetCard.calcPreviousOrderInKanban();
+      if (targetOrderInKanban === null) {
+        targetOrderInKanban =
+          (await ProjectCardRepository.getMinOrderInKanban(card.kanbanId)) -
+          PROJECT_CARD_ORDER_INIT_INTERVAL;
+      }
     } else {
       targetOrderInKanban = await targetCard.calcNextOrderInKanban();
+      if (targetOrderInKanban === null) {
+        targetOrderInKanban =
+          (await ProjectCardRepository.getMaxOrderInKanban(card.kanbanId)) +
+          PROJECT_CARD_ORDER_INIT_INTERVAL;
+      }
     }
 
     card.orderInKanban = targetOrderInKanban;
     await ProjectCardRepository.updateCardOrderInKanban(card);
+    return card.orderInKanban;
   }
 }

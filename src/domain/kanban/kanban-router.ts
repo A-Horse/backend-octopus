@@ -28,14 +28,17 @@ KanbanRouter.get('/kanban/:kanbanId/detail', authJwt, async (req, res, next) => 
   }
 });
 
-KanbanRouter.get('/kanban/:kanbanId/card-rank', authJwt, async (req, res, next) => {
+KanbanRouter.post('/kanban/:kanbanId/card-rank', authJwt, async (req, res, next) => {
   try {
-    await kanbanApplicationService.rankCard({
+    const newOrder: number = await kanbanApplicationService.rankCard({
       cardId: req.body.cardId,
       targetCardId: req.body.targetCardId,
       isBefore: req.body.isBefore
     });
-    res.status(200).send();
+    res.status(200).send([{
+      cardId: req.body.cardId,
+      order: newOrder
+    }]);
   } catch (error) {
     next(error);
   }

@@ -5,7 +5,12 @@ import { UserEntity } from '../../entity/user.entity';
 import { ProjectCard } from './project-card';
 import * as _ from 'lodash';
 import { ProjectCardEntity } from '../../entity/project-card.entity';
-import { getRepository, getConnection, EntityManager } from 'typeorm';
+import {
+  getRepository,
+  getConnection,
+  EntityManager,
+  AdvancedConsoleLogger
+} from 'typeorm';
 import { ProjectCardOrderInKanbanEntity } from '../../entity/project-card-order-in-kanban.entity';
 
 export class ProjectCardRepository {
@@ -22,7 +27,6 @@ export class ProjectCardRepository {
       .where('projectId = :projectId', { projectId })
       .getCount();
   }
-
 
   static async getPreviousOrderInKanban(
     kanbanId: string,
@@ -43,9 +47,52 @@ export class ProjectCardRepository {
           order
         }
       )
+      .orderBy('project_card_order_in_kanban.order', 'DESC')
       .limit(1)
       .getOne()
-      .then(card => _.get(card, ['orderInKanban', 'order'], null));
+      .then(card => {
+        return _.get(card, ['orderInKanban', 'order'], null);
+      });
+  }
+
+  static async getMinOrderInKanban(kanbanId: string): Promise<number | null> {
+    return await getRepository(ProjectCardEntity)
+      .createQueryBuilder('project_card')
+      .leftJoinAndMapOne(
+        'project_card.orderInKanban',
+        ProjectCardOrderInKanbanEntity,
+        'project_card_order_in_kanban',
+        'project_card.id = project_card_order_in_kanban.cardId'
+      )
+      .where('project_card.kanbanId = :kanbanId', {
+        kanbanId
+      })
+      .orderBy('project_card_order_in_kanban.order', 'ASC')
+      .limit(1)
+      .getOne()
+      .then(card => {
+        return _.get(card, ['orderInKanban', 'order']);
+      });
+  }
+
+  static async getMaxOrderInKanban(kanbanId: string): Promise<number | null> {
+    return await getRepository(ProjectCardEntity)
+      .createQueryBuilder('project_card')
+      .leftJoinAndMapOne(
+        'project_card.orderInKanban',
+        ProjectCardOrderInKanbanEntity,
+        'project_card_order_in_kanban',
+        'project_card.id = project_card_order_in_kanban.cardId'
+      )
+      .where('project_card.kanbanId = :kanbanId', {
+        kanbanId
+      })
+      .orderBy('project_card_order_in_kanban.order', 'DESC')
+      .limit(1)
+      .getOne()
+      .then(card => {
+        return _.get(card, ['orderInKanban', 'order']);
+      });
   }
 
   static async getNextOrderInKanban(
@@ -78,6 +125,7 @@ export class ProjectCardRepository {
       .leftJoinAndSelect('project_card.creator', 'user as creator')
       .leftJoinAndSelect('project_card.assignee', 'user as assignee')
       .leftJoinAndSelect('project_card.column', 'column')
+      .leftJoinAndSelect('project_card.kanban', 'kanban')
       .leftJoinAndMapOne(
         'project_card.orderInKanban',
         ProjectCardOrderInKanbanEntity,
@@ -181,7 +229,7 @@ export class ProjectCardRepository {
       .set({
         order: card.orderInKanban
       })
-      .where({
+      .where('kanbanId = :kanbanId and cardId = :cardId', {
         kanbanId: card.kanbanId,
         cardId: card.id
       })
