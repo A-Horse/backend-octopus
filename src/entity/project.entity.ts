@@ -1,8 +1,15 @@
 import { ProjectCardEntity } from './project-card.entity';
 import {
-    Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn,
-    UpdateDateColumn,
-    OneToMany
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  UpdateDateColumn,
+  OneToMany,
+  PrimaryColumn,
+  Unique
 } from 'typeorm';
 
 import { ProjectStatus, ProjectType } from '../typing/project.typing';
@@ -13,7 +20,7 @@ import { UserEntity } from './user.entity';
   name: 'project'
 })
 export class ProjectEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn()
   public id: string;
 
   @OneToOne(type => ProjectSettingEntity, {

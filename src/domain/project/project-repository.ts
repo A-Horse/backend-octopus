@@ -8,7 +8,11 @@ import { ProjectSetting } from './model/project-setting';
 import { KanbanEntity } from '../../entity/kanban.entity';
 
 export class ProjectRepository {
-  constructor() {}
+  static async getAllProjectCount(): Promise<number> {
+    return await getRepository(ProjectEntity)
+      .createQueryBuilder('project')
+      .getCount();
+  }
 
   static async getUserProjects(userId: number): Promise<Project[]> {
     const projectEntitys = await getRepository(ProjectEntity)
@@ -49,6 +53,7 @@ export class ProjectRepository {
     projectSettingEntity.cover = project.setting.cover;
 
     const projectEntity = new ProjectEntity();
+    projectEntity.id = project.id;
     projectEntity.name = project.name;
     projectEntity.desc = project.desc;
     projectEntity.type = project.type;

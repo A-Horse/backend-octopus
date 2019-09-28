@@ -1,3 +1,4 @@
+import { ProjectIdFactory } from './model/project-id-factory';
 import { CreateKanbanInput, KanbanId } from '../../typing/kanban.typing';
 import { KanbanRepository } from '../kanban/kanban-repository';
 import { Project } from './model/project';
@@ -13,9 +14,12 @@ export class ProjectAppliactionService {
     return ProjectRepository.getProjectDetail(projectId);
   }
 
-  static createProject(projectData: any): Promise<string> {
+  static async createProject(projectData: any): Promise<string> {
+    const idFactory = new ProjectIdFactory();
+    const id = await idFactory.generateId();
+
     const project = new Project({
-      id: projectData.id,
+      id: id,
       name: projectData.name,
       desc: projectData.desc,
       type: projectData.type,
