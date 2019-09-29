@@ -1,4 +1,4 @@
-import { KanbanSettingEntity } from './../../entity/kanban-setting.entity';
+import { KanbanSettingEntity } from '../../entity/kanban-setting.entity';
 
 export class KanbanSetting {
   public id: string;

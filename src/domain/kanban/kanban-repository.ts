@@ -1,10 +1,11 @@
-import { ProjectEntity } from './../../entity/project.entity';
-import { KanbanSettingEntity } from './../../entity/kanban-setting.entity';
-import { UserEntity } from './../../entity/user.entity';
-import { KanbanId } from './../../typing/kanban.typing';
-import { KanbanEntity } from './../../entity/kanban.entity';
+import { EntityManager, getConnection, getRepository } from 'typeorm';
+
+import { KanbanSettingEntity } from '../../entity/kanban-setting.entity';
+import { KanbanEntity } from '../../entity/kanban.entity';
+import { ProjectEntity } from '../../entity/project.entity';
+import { UserEntity } from '../../entity/user.entity';
+import { KanbanId } from '../../typing/kanban.typing';
 import { Kanban } from './kanban';
-import { getRepository, getConnection, EntityManager } from 'typeorm';
 
 export class KanbanRepository {
   static async getProjectKanbans(projectId: string): Promise<Kanban[]> {

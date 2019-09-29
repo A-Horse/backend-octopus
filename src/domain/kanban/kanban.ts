@@ -1,6 +1,6 @@
-import { JSONEntity } from './../interface/json';
+import { KanbanEntity } from '../../entity/kanban.entity';
+import { JSONEntity } from '../interface/json';
 import { KanbanSetting } from './kanban-setting';
-import { KanbanEntity } from './../../entity/kanban.entity';
 
 export class Kanban implements JSONEntity {
   public id: string;

@@ -22,6 +22,6 @@ export class ProjectCardOrderInKanbanEntity {
   })
   public card: ProjectCardEntity;
 
-  @Column()
+  @Column({type: 'float'})
   public order: number;
 }

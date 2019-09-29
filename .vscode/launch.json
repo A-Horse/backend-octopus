@@ -13,8 +13,9 @@
             "cwd": "${workspaceRoot}",
             "windows": {
               "outFiles": [
-                "${workspaceFolder}\\built\\**\\*.js"
+                "${workspaceFolder}\\**\\*.js"
               ],
+              "sourceMaps": true,
               "program": "${workspaceFolder}\\node_modules\\.bin\\ts-node",
               "args": ["src\\main.ts"]
             }
