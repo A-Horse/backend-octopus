@@ -52,7 +52,7 @@ import { UserRouter } from './route/user.router';
 import { ProjectRouter } from './domain/project/project-router';
 import { KanbanRouter } from './domain/kanban/kanban-router';
 import { KanbanColumnRouter } from './domain/kanban-column/kanban-column-router';
-import { ProjectCardRouter } from './domain/project-card/kanban-card-router';
+import { ProjectIssueRouter } from './domain/project-issue/project-issue-router';
 
 app.use(RootRouter);
 
@@ -63,7 +63,7 @@ app.use('/api/user', UserRouter);
 app.use(apiPrefix, ProjectRouter);
 app.use(apiPrefix, KanbanRouter);
 app.use(apiPrefix, KanbanColumnRouter);
-app.use(apiPrefix, ProjectCardRouter);
+app.use(apiPrefix, ProjectIssueRouter);
 
 app.use(StatusErrorHandleMiddle);
 

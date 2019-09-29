@@ -1,13 +1,13 @@
-import { ProjectCardApplicationService } from './kanban-card-application-service';
-import { ProjectCardRepository } from './kanban-card-repository';
+import { ProjectIssueApplicationService } from './kanban-issue-application-service';
+import { ProjectIssueRepository } from './project-issue-repository';
 
 import * as express from 'express';
 import { authJwt } from '../../route/middle/jwt';
-import { ProjectCard } from './project-card';
+import { ProjectCard } from './project-issue';
 
-const ProjectCardRouter = express.Router();
+const ProjectIssueRouter = express.Router();
 
-ProjectCardRouter.get(
+ProjectIssueRouter.get(
   '/kanban/:kanbanId/column/:columnId/cards',
   authJwt,
   async (req, res, next) => {
@@ -15,7 +15,7 @@ ProjectCardRouter.get(
     const { jw } = req;
 
     try {
-      const cards: ProjectCard[] = await ProjectCardApplicationService.getColumnCards({
+      const cards: ProjectCard[] = await ProjectIssueApplicationService.getColumnCards({
         kanbanId: req.params.kanbanId,
         columnId: req.params.columnId
       });
@@ -27,11 +27,11 @@ ProjectCardRouter.get(
   }
 );
 
-ProjectCardRouter.post('/project/:projectId/card', authJwt, async (req, res, next) => {
+ProjectIssueRouter.post('/project/:projectId/card', authJwt, async (req, res, next) => {
   const { jw } = req;
 
   try {
-    const cardId: string = await ProjectCardApplicationService.createCard({
+    const cardId: string = await ProjectIssueApplicationService.createCard({
       creatorId: jw.user.id,
       ...req.body
     });
@@ -42,4 +42,4 @@ ProjectCardRouter.post('/project/:projectId/card', authJwt, async (req, res, nex
   }
 });
 
-export { ProjectCardRouter };
+export { ProjectIssueRouter };

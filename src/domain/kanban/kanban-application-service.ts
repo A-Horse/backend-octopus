@@ -1,7 +1,7 @@
 import { KanbanColumnRepository } from '../kanban-column/kanban-column-repository';
-import { PROJECT_CARD_ORDER_INIT_INTERVAL } from '../project-card/constant';
-import { ProjectCardRepository } from '../project-card/kanban-card-repository';
-import { ProjectCard } from '../project-card/project-card';
+import { PROJECT_CARD_ORDER_INIT_INTERVAL } from '../project-issue/constant';
+import { ProjectIssueRepository } from '../project-issue/project-issue-repository';
+import { ProjectCard } from '../project-issue/project-issue';
 import { Kanban } from './kanban';
 import { KanbanRepository } from './kanban-repository';
 
@@ -23,8 +23,8 @@ export class kanbanApplicationService {
 
   // TODO move in to kanban
   static async rankCard({ cardId, targetCardId, isBefore }): Promise<number> {
-    const card = await ProjectCardRepository.getCard(cardId);
-    const targetCard = await ProjectCardRepository.getCard(targetCardId);
+    const card = await ProjectIssueRepository.getCard(cardId);
+    const targetCard = await ProjectIssueRepository.getCard(targetCardId);
 
     let targetOrderInKanban: number;
     if (isBefore) {
@@ -32,7 +32,7 @@ export class kanbanApplicationService {
 
       if (targetOrderInKanban === null) {
         card.orderInKanban =
-          (await ProjectCardRepository.getMinOrderInKanban(card.kanbanId)) -
+          (await ProjectIssueRepository.getMinOrderInKanban(card.kanbanId)) -
           PROJECT_CARD_ORDER_INIT_INTERVAL;
       } else {
         card.orderInKanban = targetCard.orderInKanban - Math.abs(card.orderInKanban - targetOrderInKanban) / 2;
@@ -42,7 +42,7 @@ export class kanbanApplicationService {
       targetOrderInKanban = await targetCard.calcNextOrderInKanban();
       if (targetOrderInKanban === null) {
         card.orderInKanban =
-          (await ProjectCardRepository.getMaxOrderInKanban(card.kanbanId)) +
+          (await ProjectIssueRepository.getMaxOrderInKanban(card.kanbanId)) +
           PROJECT_CARD_ORDER_INIT_INTERVAL;
       } else {
         card.orderInKanban = targetCard.orderInKanban + Math.abs(card.orderInKanban - targetOrderInKanban) / 2;
@@ -50,7 +50,7 @@ export class kanbanApplicationService {
 
     }
 
-    await ProjectCardRepository.updateCardOrderInKanban(card);
+    await ProjectIssueRepository.updateCardOrderInKanban(card);
     return card.orderInKanban;
   }
 }

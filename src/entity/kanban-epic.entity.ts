@@ -4,7 +4,7 @@ import {
 } from 'typeorm';
 
 import { KanbanTrackerStatus } from '../typing/kanban-tracker.typing';
-import { ProjectCardEntity } from './project-card.entity';
+import { ProjectIssueEntity } from './project-issue.entity';
 import { KanbanEntity } from './kanban.entity';
 import { UserEntity } from './user.entity';
 
@@ -38,8 +38,8 @@ import { UserEntity } from './user.entity';
     @ManyToOne(() => KanbanEntity, kanban => kanban.epics)
     public kanban: KanbanEntity;
   
-    @OneToMany(() => ProjectCardEntity, card => card.epic)
-    public cards: ProjectCardEntity[];
+    @OneToMany(() => ProjectIssueEntity, card => card.epic)
+    public cards: ProjectIssueEntity[];
   
     @CreateDateColumn()
     public createdAt: Date;

@@ -16,9 +16,9 @@ import { UserEntity } from './user.entity';
 import { ProjectCardOrderInKanbanEntity } from './project-card-order-in-kanban.entity';
 
 @Entity({
-  name: 'project_card'
+  name: 'project_issue'
 })
-export class ProjectCardEntity {
+export class ProjectIssueEntity {
   @PrimaryColumn()
   public id: string;
 

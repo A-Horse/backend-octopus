@@ -1,7 +1,7 @@
 import { PROJECT_CARD_ORDER_INIT_INTERVAL } from './constant';
-import { ProjectCardRepository } from './kanban-card-repository';
+import { ProjectIssueRepository } from './project-issue-repository';
 import { ProjectCardType } from '../../typing/kanban-card.typing';
-import { ProjectCardEntity } from '../../entity/project-card.entity';
+import { ProjectIssueEntity } from '../../entity/project-issue.entity';
 import { JSONEntity } from '../interface/json';
 import * as _ from 'lodash';
 
@@ -47,7 +47,7 @@ export class ProjectCard implements JSONEntity {
     this.updatedAt = updatedAt;
   }
 
-  static fromDataEntity(dataEntity: ProjectCardEntity): ProjectCard {
+  static fromDataEntity(dataEntity: ProjectIssueEntity): ProjectCard {
     return new ProjectCard({
       id: dataEntity.id,
       title: dataEntity.title,
@@ -65,7 +65,7 @@ export class ProjectCard implements JSONEntity {
   }
 
   public async initCardId(): Promise<void> {
-    const cardCountInProject = await ProjectCardRepository.getProjectCardCount(
+    const cardCountInProject = await ProjectIssueRepository.getProjectCardCount(
       this.projectId
     );
     this.id = `${this.projectId}-${cardCountInProject.toString()}`;
@@ -73,18 +73,18 @@ export class ProjectCard implements JSONEntity {
 
   public async initOrderInKanban(): Promise<void> {
     this.orderInKanban =
-      (await ProjectCardRepository.getKanbanCardCount(this.kanbanId)) * PROJECT_CARD_ORDER_INIT_INTERVAL;
+      (await ProjectIssueRepository.getKanbanCardCount(this.kanbanId)) * PROJECT_CARD_ORDER_INIT_INTERVAL;
   }
 
   public async calcPreviousOrderInKanban(): Promise<number | null> {
-    return await ProjectCardRepository.getPreviousOrderInKanban(
+    return await ProjectIssueRepository.getPreviousOrderInKanban(
       this.kanbanId,
       this.orderInKanban
     );
   }
 
   public async calcNextOrderInKanban(): Promise<number | null> {
-    return await ProjectCardRepository.getNextOrderInKanban(
+    return await ProjectIssueRepository.getNextOrderInKanban(
       this.kanbanId,
       this.orderInKanban
     );

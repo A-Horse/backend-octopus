@@ -4,10 +4,10 @@ import {
   Entity,
   ManyToOne,
 } from 'typeorm';
-import { ProjectCardEntity } from './project-card.entity';
+import { ProjectIssueEntity } from './project-issue.entity';
 
 @Entity({
-  name: 'project_card_order_in_kanban'
+  name: 'project_issue_order_in_kanban'
 })
 export class ProjectCardOrderInKanbanEntity {
   @ManyToOne(type => KanbanEntity, {
@@ -16,11 +16,11 @@ export class ProjectCardOrderInKanbanEntity {
   })
   public kanban: KanbanEntity;
 
-  @ManyToOne(type => ProjectCardEntity, {
+  @ManyToOne(type => ProjectIssueEntity, {
     nullable: false,
     primary: true
   })
-  public card: ProjectCardEntity;
+  public card: ProjectIssueEntity;
 
   @Column({type: 'float'})
   public order: number;

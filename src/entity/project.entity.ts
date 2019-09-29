@@ -1,4 +1,4 @@
-import { ProjectCardEntity } from './project-card.entity';
+import { ProjectIssueEntity } from './project-issue.entity';
 import {
   Column,
   CreateDateColumn,
@@ -57,8 +57,8 @@ export class ProjectEntity {
   @ManyToOne(() => UserEntity)
   public owner: UserEntity;
 
-  @OneToMany(() => ProjectCardEntity, card => card.kanban)
-  public cards: ProjectCardEntity[];
+  @OneToMany(() => ProjectIssueEntity, card => card.kanban)
+  public cards: ProjectIssueEntity[];
 
   @CreateDateColumn()
   public createdAt: Date;

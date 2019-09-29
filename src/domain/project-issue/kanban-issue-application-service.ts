@@ -1,10 +1,10 @@
-import { ProjectCardRepository } from './kanban-card-repository';
-import { ProjectCard } from './project-card';
+import { ProjectIssueRepository } from './project-issue-repository';
+import { ProjectCard } from './project-issue';
 import { CreateProjectCardInput } from '../../typing/kanban-card.typing';
 
-export class ProjectCardApplicationService {
+export class ProjectIssueApplicationService {
   static async getColumnCards({ kanbanId, columnId }): Promise<ProjectCard[]> {
-    return ProjectCardRepository.getColumnCards(kanbanId, columnId);
+    return ProjectIssueRepository.getColumnCards(kanbanId, columnId);
   }
 
   static async createCard(
@@ -24,6 +24,6 @@ export class ProjectCardApplicationService {
       updatedAt: undefined
     });
     await card.initCardId();
-    return ProjectCardRepository.saveProjectCard(card);
+    return ProjectIssueRepository.saveProjectCard(card);
   }
 }
