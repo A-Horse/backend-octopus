@@ -26,4 +26,17 @@ export class ProjectIssueApplicationService {
     await card.initCardId();
     return ProjectIssueRepository.saveProjectCard(card);
   }
+
+  static async getProjectIssues({
+    projectId,
+    pageSize,
+    pageNumber
+  }): Promise<ProjectCard[]> {
+    return await ProjectIssueRepository.getProjectIssues({
+      projectId,
+      pageSize,
+      pageNumber
+    });
+
+  }
 }

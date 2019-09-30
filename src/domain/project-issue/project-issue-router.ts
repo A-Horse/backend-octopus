@@ -1,9 +1,11 @@
+import { validate } from './../../util/express-validate';
 import { ProjectIssueApplicationService } from './kanban-issue-application-service';
 import { ProjectIssueRepository } from './project-issue-repository';
 
 import * as express from 'express';
 import { authJwt } from '../../route/middle/jwt';
 import { ProjectCard } from './project-issue';
+import { check, query } from 'express-validator';
 
 const ProjectIssueRouter = express.Router();
 
@@ -27,7 +29,7 @@ ProjectIssueRouter.get(
   }
 );
 
-ProjectIssueRouter.post('/project/:projectId/card', authJwt, async (req, res, next) => {
+ProjectIssueRouter.post('/project/:projectId/issue', authJwt, async (req, res, next) => {
   const { jw } = req;
 
   try {
@@ -41,5 +43,24 @@ ProjectIssueRouter.post('/project/:projectId/card', authJwt, async (req, res, ne
     next(error);
   }
 });
+
+ProjectIssueRouter.get(
+  '/project/:projectId/issues',
+  validate([query('pageSize').isInt(), query('pageNumber').isInt()]),
+  authJwt,
+  async (req, res, next) => {
+    try {
+      const issues = await ProjectIssueApplicationService.getProjectIssues({
+        projectId: req.params.projectId,
+        pageSize: req.query.pagaSize,
+        pageNumber: req.query.pageNumber
+      });
+
+      res.status(201).send(issues.map(i => i.toJSON()));
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export { ProjectIssueRouter };

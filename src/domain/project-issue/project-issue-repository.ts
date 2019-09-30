@@ -28,6 +28,37 @@ export class ProjectIssueRepository {
       .getCount();
   }
 
+  static async getProjectIssues({
+    projectId,
+    pageSize,
+    pageNumber
+  }): Promise<ProjectCard[]> {
+    const cardEntitys = await getRepository(ProjectIssueEntity)
+      .createQueryBuilder('project_issue')
+      .leftJoinAndSelect('project_issue.creator', 'user as creator')
+      .leftJoinAndSelect('project_issue.assignee', 'user as assignee')
+      .leftJoinAndSelect('project_issue.column', 'column')
+      .leftJoinAndMapOne(
+        'project_issue.orderInKanban',
+        ProjectCardOrderInKanbanEntity,
+        'project_issue_order_in_kanban',
+        'project_issue.id = project_issue_order_in_kanban.cardId'
+      )
+      .where('projectId = :projectId', { projectId })
+      .limit(pageSize)
+      .offset(pageSize * pageNumber)
+      .getMany();
+
+    return cardEntitys
+      .map((cardEntity: ProjectIssueEntity) => {
+        return ProjectCard.fromDataEntity({
+          ...cardEntity,
+          orderInKanban: _.get(cardEntity, ['orderInKanban', 'order'], null)
+        });
+      })
+      .sort((a, b) => a.orderInKanban - b.orderInKanban);
+  }
+
   static async getPreviousOrderInKanban(
     kanbanId: string,
     order: number
