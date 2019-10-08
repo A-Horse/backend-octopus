@@ -11,6 +11,7 @@
             "program": "${workspaceFolder}/node_modules/.bin/ts-node",
             "args": ["src/main.ts"],
             "cwd": "${workspaceRoot}",
+            "runtimeExecutable": "/usr/local/bin/node",
             "windows": {
               "outFiles": [
                 "${workspaceFolder}\\**\\*.js"

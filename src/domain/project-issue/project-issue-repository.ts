@@ -21,7 +21,7 @@ export class ProjectIssueRepository {
       .getCount();
   }
 
-  static async getProjectCardCount(projectId: string): Promise<number> {
+  static async getProjectIssueCount(projectId: string): Promise<number> {
     return await getRepository(ProjectIssueEntity)
       .createQueryBuilder('project_issue')
       .where('projectId = :projectId', { projectId })

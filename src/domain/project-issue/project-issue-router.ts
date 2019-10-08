@@ -50,13 +50,13 @@ ProjectIssueRouter.get(
   authJwt,
   async (req, res, next) => {
     try {
-      const issues = await ProjectIssueApplicationService.getProjectIssues({
+      const issuesPagtiation = await ProjectIssueApplicationService.getProjectIssues({
         projectId: req.params.projectId,
-        pageSize: req.query.pagaSize,
-        pageNumber: req.query.pageNumber
+        pageSize: parseInt(req.query.pageSize, 10),
+        pageNumber: parseInt(req.query.pageNumber, 10)
       });
 
-      res.status(201).send(issues.map(i => i.toJSON()));
+      res.status(201).json(issuesPagtiation);
     } catch (error) {
       next(error);
     }

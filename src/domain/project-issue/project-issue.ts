@@ -65,7 +65,7 @@ export class ProjectCard implements JSONEntity {
   }
 
   public async initCardId(): Promise<void> {
-    const cardCountInProject = await ProjectIssueRepository.getProjectCardCount(
+    const cardCountInProject = await ProjectIssueRepository.getProjectIssueCount(
       this.projectId
     );
     this.id = `${this.projectId}-${cardCountInProject.toString()}`;

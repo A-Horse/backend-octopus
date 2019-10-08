@@ -1,6 +1,7 @@
 import { ProjectIssueRepository } from './project-issue-repository';
 import { ProjectCard } from './project-issue';
 import { CreateProjectCardInput } from '../../typing/kanban-card.typing';
+import { PagtiationList } from 'src/typing/pagtiation.typing';
 
 export class ProjectIssueApplicationService {
   static async getColumnCards({ kanbanId, columnId }): Promise<ProjectCard[]> {
@@ -31,12 +32,17 @@ export class ProjectIssueApplicationService {
     projectId,
     pageSize,
     pageNumber
-  }): Promise<ProjectCard[]> {
-    return await ProjectIssueRepository.getProjectIssues({
+  }): Promise<PagtiationList<ProjectCard>> {
+    const issues = await ProjectIssueRepository.getProjectIssues({
       projectId,
       pageSize,
       pageNumber
     });
-
+    return {
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+      total: await ProjectIssueRepository.getProjectIssueCount(projectId),
+      data: issues
+    }
   }
 }
