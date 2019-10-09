@@ -150,7 +150,7 @@ export class ProjectIssueRepository {
       .then(card => _.get(card, ['orderInKanban', 'order'], null));
   }
 
-  static async getCard(cardId: string): Promise<ProjectCard> {
+  static async getIssue(cardId: string): Promise<ProjectCard> {
     const cardEntity = await getRepository(ProjectIssueEntity)
       .createQueryBuilder('project_issue')
       .leftJoinAndSelect('project_issue.creator', 'user as creator')
@@ -174,6 +174,12 @@ export class ProjectIssueRepository {
         });
       })
       .sort((a, b) => a.orderInKanban - b.orderInKanban)[0];
+  }
+
+  static async getIssueWithDetail(issueId: string): Promise<ProjectCard> {
+    const issue = await ProjectIssueRepository.getIssue(issueId);
+
+    
   }
 
   static async getColumnCards(
@@ -238,7 +244,6 @@ export class ProjectIssueRepository {
 
     cardEntity.id = card.id;
     cardEntity.title = card.title;
-    cardEntity.content = card.content;
 
     await getConnection().transaction(
       async (transactionalEntityManager: EntityManager) => {

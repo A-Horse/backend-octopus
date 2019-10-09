@@ -4,11 +4,11 @@ import { ProjectCardType } from '../../typing/kanban-card.typing';
 import { ProjectIssueEntity } from '../../entity/project-issue.entity';
 import { JSONEntity } from '../interface/json';
 import * as _ from 'lodash';
+import { ProjectIssueDetail } from './project-issue-detail';
 
 export class ProjectCard implements JSONEntity {
   public id: string;
   public title: string;
-  public content: string;
   public type: ProjectCardType;
   public creatorId: number;
   public assigneeId: number;
@@ -18,11 +18,11 @@ export class ProjectCard implements JSONEntity {
   public orderInKanban: number;
   public createdAt: Date;
   public updatedAt: Date;
+  public detail?: ProjectIssueDetail;
 
   constructor({
     id,
     title,
-    content,
     type,
     creatorId,
     assigneeId,
@@ -35,7 +35,6 @@ export class ProjectCard implements JSONEntity {
   }: any) {
     this.id = id;
     this.title = title;
-    this.content = content;
     this.type = type || ProjectCardType.NORMAL;
     this.creatorId = creatorId;
     this.assigneeId = assigneeId;
@@ -51,7 +50,6 @@ export class ProjectCard implements JSONEntity {
     return new ProjectCard({
       id: dataEntity.id,
       title: dataEntity.title,
-      content: dataEntity.content,
       type: dataEntity.type,
       orderInKanban: dataEntity.orderInKanban,
       creatorId: _.get(dataEntity, ['creator', 'id'], null),
@@ -94,7 +92,6 @@ export class ProjectCard implements JSONEntity {
     return {
       id: this.id,
       title: this.title,
-      content: this.content,
       type: this.type,
       creatorId: this.creatorId,
       columnId: this.columnId,
