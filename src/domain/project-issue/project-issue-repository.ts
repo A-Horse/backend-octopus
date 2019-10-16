@@ -12,6 +12,7 @@ import {
   AdvancedConsoleLogger
 } from 'typeorm';
 import { ProjectCardOrderInKanbanEntity } from '../../entity/project-card-order-in-kanban.entity';
+import { ProjectIssueDetail } from './project-issue-detail';
 
 export class ProjectIssueRepository {
   static async getKanbanCardCount(kanbanId: string): Promise<number> {
@@ -176,10 +177,11 @@ export class ProjectIssueRepository {
       .sort((a, b) => a.orderInKanban - b.orderInKanban)[0];
   }
 
-  static async getIssueWithDetail(issueId: string): Promise<ProjectCard> {
+  static async getIssueWithDetail(issueId: string): Promise<ProjectIssueDetail> {
     const issue = await ProjectIssueRepository.getIssue(issueId);
 
     
+
   }
 
   static async getColumnCards(

@@ -23,8 +23,8 @@ export class kanbanApplicationService {
 
   // TODO move in to kanban
   static async rankCard({ cardId, targetCardId, isBefore }): Promise<number> {
-    const card = await ProjectIssueRepository.getCard(cardId);
-    const targetCard = await ProjectIssueRepository.getCard(targetCardId);
+    const card = await ProjectIssueRepository.getIssue(cardId);
+    const targetCard = await ProjectIssueRepository.getIssue(targetCardId);
 
     let targetOrderInKanban: number;
     if (isBefore) {

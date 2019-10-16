@@ -1,7 +1,7 @@
-import { JSONEntity } from "../interface/json";
+import { ProjectCard } from "./project-issue";
 
 
-export class ProjectIssueDetail implements JSONEntity {
+export class ProjectIssueDetail extends ProjectCard {
     public content: string;
 
 
