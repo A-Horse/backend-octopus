@@ -35,7 +35,7 @@ class Configure {
   private overrideConfigKeyFromEnv() {
     this.configMap = R.mapObjIndexed((value: string, key: string, config: any) => {
       if (process.env[key]) {
-        config[key] = process.env[key];
+        config[key] = process.env['OCTO_' + key];
       }
       return config[key];
     }, this.configMap);
