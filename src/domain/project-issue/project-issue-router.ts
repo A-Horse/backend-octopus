@@ -4,7 +4,7 @@ import { ProjectIssueRepository } from './project-issue-repository';
 
 import * as express from 'express';
 import { authJwt } from '../../route/middle/jwt';
-import { ProjectCard } from './project-issue';
+import { ProjectIssue } from './project-issue';
 import { check, query } from 'express-validator';
 
 const ProjectIssueRouter = express.Router();
@@ -17,7 +17,7 @@ ProjectIssueRouter.get(
     const { jw } = req;
 
     try {
-      const cards: ProjectCard[] = await ProjectIssueApplicationService.getColumnCards({
+      const cards: ProjectIssue[] = await ProjectIssueApplicationService.getColumnIssues({
         kanbanId: req.params.kanbanId,
         columnId: req.params.columnId
       });
@@ -33,7 +33,7 @@ ProjectIssueRouter.post('/project/:projectId/issue', authJwt, async (req, res, n
   const { jw } = req;
 
   try {
-    const cardId: string = await ProjectIssueApplicationService.createCard({
+    const cardId: string = await ProjectIssueApplicationService.createIssue({
       creatorId: jw.user.id,
       ...req.body
     });
@@ -62,5 +62,18 @@ ProjectIssueRouter.get(
     }
   }
 );
+
+// TODO 权限校验
+ProjectIssueRouter.get('/issue/:issueId', authJwt, async (req, res, next) => {
+  try {
+    const detailedIssue = await ProjectIssueApplicationService.getDetailedIssue(
+      req.params.issueId
+    );
+
+    res.status(201).json(detailedIssue);
+  } catch (error) {
+    next(error);
+  }
+});
 
 export { ProjectIssueRouter };

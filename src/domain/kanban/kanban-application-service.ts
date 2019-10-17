@@ -1,7 +1,7 @@
 import { KanbanColumnRepository } from '../kanban-column/kanban-column-repository';
 import { PROJECT_CARD_ORDER_INIT_INTERVAL } from '../project-issue/constant';
 import { ProjectIssueRepository } from '../project-issue/project-issue-repository';
-import { ProjectCard } from '../project-issue/project-issue';
+import { ProjectIssue } from '../project-issue/project-issue';
 import { Kanban } from './kanban';
 import { KanbanRepository } from './kanban-repository';
 

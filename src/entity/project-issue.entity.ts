@@ -9,11 +9,11 @@ import {
   PrimaryColumn
 } from 'typeorm';
 
-import { ProjectCardType } from '../typing/kanban-card.typing';
+import { ProjectIssueType } from '../typing/kanban-card.typing';
 import { KanbanColumnEntity } from './kanban-column.entity';
 import { KanbanEpicEntity } from './kanban-epic.entity';
 import { UserEntity } from './user.entity';
-import { ProjectCardOrderInKanbanEntity } from './project-card-order-in-kanban.entity';
+import { ProjectIssueOrderInKanbanEntity } from './project-card-order-in-kanban.entity';
 
 @Entity({
   name: 'project_issue'
@@ -34,9 +34,9 @@ export class ProjectIssueEntity {
 
   @Column({
     length: 10,
-    default: ProjectCardType.NORMAL
+    default: ProjectIssueType.NORMAL
   })
-  public type: ProjectCardType;
+  public type: ProjectIssueType;
 
   @ManyToOne(() => UserEntity)
   public creator: UserEntity;
@@ -68,5 +68,5 @@ export class ProjectIssueEntity {
   @UpdateDateColumn()
   public updatedAt: Date;
 
-  public orderInKanban: ProjectCardOrderInKanbanEntity;
+  public orderInKanban: ProjectIssueOrderInKanbanEntity;
 }

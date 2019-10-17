@@ -2,7 +2,7 @@ import { ProjectEntity } from '../../entity/project.entity';
 import { KanbanEntity } from '../../entity/kanban.entity';
 import { KanbanColumnEntity } from '../../entity/kanban-column.entity';
 import { UserEntity } from '../../entity/user.entity';
-import { ProjectCard } from './project-issue';
+import { ProjectIssue } from './project-issue';
 import * as _ from 'lodash';
 import { ProjectIssueEntity } from '../../entity/project-issue.entity';
 import {
@@ -11,8 +11,9 @@ import {
   EntityManager,
   AdvancedConsoleLogger
 } from 'typeorm';
-import { ProjectCardOrderInKanbanEntity } from '../../entity/project-card-order-in-kanban.entity';
+import { ProjectIssueOrderInKanbanEntity } from '../../entity/project-card-order-in-kanban.entity';
 import { ProjectIssueDetail } from './project-issue-detail';
+import { ProjectIssueDetailEntity } from '../../entity/project-issue-detail.entity';
 
 export class ProjectIssueRepository {
   static async getKanbanCardCount(kanbanId: string): Promise<number> {
@@ -33,7 +34,7 @@ export class ProjectIssueRepository {
     projectId,
     pageSize,
     pageNumber
-  }): Promise<ProjectCard[]> {
+  }): Promise<ProjectIssue[]> {
     const cardEntitys = await getRepository(ProjectIssueEntity)
       .createQueryBuilder('project_issue')
       .leftJoinAndSelect('project_issue.creator', 'user as creator')
@@ -41,7 +42,7 @@ export class ProjectIssueRepository {
       .leftJoinAndSelect('project_issue.column', 'column')
       .leftJoinAndMapOne(
         'project_issue.orderInKanban',
-        ProjectCardOrderInKanbanEntity,
+        ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
         'project_issue.id = project_issue_order_in_kanban.cardId'
       )
@@ -52,7 +53,7 @@ export class ProjectIssueRepository {
 
     return cardEntitys
       .map((cardEntity: ProjectIssueEntity) => {
-        return ProjectCard.fromDataEntity({
+        return ProjectIssue.fromDataEntity({
           ...cardEntity,
           orderInKanban: _.get(cardEntity, ['orderInKanban', 'order'], null)
         });
@@ -68,7 +69,7 @@ export class ProjectIssueRepository {
       .createQueryBuilder('project_issue')
       .leftJoinAndMapOne(
         'project_issue.orderInKanban',
-        ProjectCardOrderInKanbanEntity,
+        ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
         'project_issue.id = project_issue_order_in_kanban.cardId'
       )
@@ -92,7 +93,7 @@ export class ProjectIssueRepository {
       .createQueryBuilder('project_issue')
       .leftJoinAndMapOne(
         'project_issue.orderInKanban',
-        ProjectCardOrderInKanbanEntity,
+        ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
         'project_issue.id = project_issue_order_in_kanban.cardId'
       )
@@ -112,7 +113,7 @@ export class ProjectIssueRepository {
       .createQueryBuilder('project_issue')
       .leftJoinAndMapOne(
         'project_issue.orderInKanban',
-        ProjectCardOrderInKanbanEntity,
+        ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
         'project_issue.id = project_issue_order_in_kanban.cardId'
       )
@@ -135,7 +136,7 @@ export class ProjectIssueRepository {
       .createQueryBuilder('project_issue')
       .leftJoinAndMapOne(
         'project_issue.orderInKanban',
-        ProjectCardOrderInKanbanEntity,
+        ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
         'project_issue.id = project_issue_order_in_kanban.cardId'
       )
@@ -151,7 +152,7 @@ export class ProjectIssueRepository {
       .then(card => _.get(card, ['orderInKanban', 'order'], null));
   }
 
-  static async getIssue(cardId: string): Promise<ProjectCard> {
+  static async getIssue(cardId: string): Promise<ProjectIssue> {
     const cardEntity = await getRepository(ProjectIssueEntity)
       .createQueryBuilder('project_issue')
       .leftJoinAndSelect('project_issue.creator', 'user as creator')
@@ -160,7 +161,7 @@ export class ProjectIssueRepository {
       .leftJoinAndSelect('project_issue.kanban', 'kanban')
       .leftJoinAndMapOne(
         'project_issue.orderInKanban',
-        ProjectCardOrderInKanbanEntity,
+        ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
         'project_issue.id = project_issue_order_in_kanban.cardId'
       )
@@ -169,7 +170,7 @@ export class ProjectIssueRepository {
 
     return [cardEntity]
       .map((cardEntity: ProjectIssueEntity) => {
-        return ProjectCard.fromDataEntity({
+        return ProjectIssue.fromDataEntity({
           ...cardEntity,
           orderInKanban: _.get(cardEntity, ['orderInKanban', 'order'], null)
         });
@@ -177,17 +178,22 @@ export class ProjectIssueRepository {
       .sort((a, b) => a.orderInKanban - b.orderInKanban)[0];
   }
 
-  static async getIssueWithDetail(issueId: string): Promise<ProjectIssueDetail> {
-    const issue = await ProjectIssueRepository.getIssue(issueId);
+  static async getIssueDetail(cardId: string): Promise<ProjectIssueDetail> {
+    const issueDetailEntity = await getRepository(ProjectIssueDetailEntity)
+      .createQueryBuilder('project_issue_detail')
+      .where('project_issue_detail.cardId = :cardId', { cardId })
+      .getOne();
 
-    
+    const issueDetail: ProjectIssueDetail = new ProjectIssueDetail();
+    issueDetail.content = issueDetailEntity.content;
 
+    return issueDetail;
   }
 
   static async getColumnCards(
     kanbanId: string,
     columnId: string
-  ): Promise<ProjectCard[]> {
+  ): Promise<ProjectIssue[]> {
     const cardEntitys = await getRepository(ProjectIssueEntity)
       .createQueryBuilder('project_issue')
       .leftJoinAndSelect('project_issue.creator', 'user as creator')
@@ -195,7 +201,7 @@ export class ProjectIssueRepository {
       .leftJoinAndSelect('project_issue.column', 'column')
       .leftJoinAndMapOne(
         'project_issue.orderInKanban',
-        ProjectCardOrderInKanbanEntity,
+        ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
         'project_issue.id = project_issue_order_in_kanban.cardId'
       )
@@ -204,7 +210,7 @@ export class ProjectIssueRepository {
 
     return cardEntitys
       .map((cardEntity: ProjectIssueEntity) => {
-        return ProjectCard.fromDataEntity({
+        return ProjectIssue.fromDataEntity({
           ...cardEntity,
           orderInKanban: _.get(cardEntity, ['orderInKanban', 'order'], null)
         });
@@ -212,7 +218,7 @@ export class ProjectIssueRepository {
       .sort((a, b) => a.orderInKanban - b.orderInKanban);
   }
 
-  static async saveProjectCard(card: ProjectCard): Promise<string> {
+  static async saveProjectIssue(card: ProjectIssue): Promise<string> {
     const cardEntity = new ProjectIssueEntity();
 
     const creator = new UserEntity();
@@ -223,7 +229,7 @@ export class ProjectIssueRepository {
     projectEntity.id = card.projectId;
     cardEntity.project = projectEntity;
 
-    let orderInkanbanEntity: ProjectCardOrderInKanbanEntity;
+    let orderInkanbanEntity: ProjectIssueOrderInKanbanEntity;
 
     if (card.kanbanId) {
       const kanbanEntity = new KanbanEntity();
@@ -232,7 +238,7 @@ export class ProjectIssueRepository {
 
       await card.initOrderInKanban();
 
-      orderInkanbanEntity = new ProjectCardOrderInKanbanEntity();
+      orderInkanbanEntity = new ProjectIssueOrderInKanbanEntity();
       orderInkanbanEntity.card = cardEntity;
       orderInkanbanEntity.kanban = kanbanEntity;
       orderInkanbanEntity.order = card.orderInKanban;
@@ -247,9 +253,18 @@ export class ProjectIssueRepository {
     cardEntity.id = card.id;
     cardEntity.title = card.title;
 
+    const projectIssueDetailEntity: ProjectIssueDetailEntity = new ProjectIssueDetailEntity();
+
+    if (card.detail) {
+      projectIssueDetailEntity.content = card.detail.content;
+    }
+
     await getConnection().transaction(
       async (transactionalEntityManager: EntityManager) => {
         await transactionalEntityManager.save(cardEntity);
+        projectIssueDetailEntity.cardId = cardEntity.id;
+
+        await transactionalEntityManager.save(projectIssueDetailEntity);
 
         if (orderInkanbanEntity) {
           await transactionalEntityManager.save(orderInkanbanEntity);
@@ -260,10 +275,10 @@ export class ProjectIssueRepository {
     return cardEntity.id;
   }
 
-  static async updateCardOrderInKanban(card: ProjectCard): Promise<void> {
+  static async updateCardOrderInKanban(card: ProjectIssue): Promise<void> {
     await getConnection()
       .createQueryBuilder()
-      .update(ProjectCardOrderInKanbanEntity)
+      .update(ProjectIssueOrderInKanbanEntity)
       .set({
         order: card.orderInKanban
       })

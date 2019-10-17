@@ -1,13 +1,13 @@
-export enum ProjectCardType {
+export enum ProjectIssueType {
   NORMAL = 'NORMAL',
   STORY = 'STORY',
   TODO = 'TODO'
 }
 
-export interface CreateProjectCardInput {
+export interface CreateProjectIssueInput {
   title: string;
   content: string;
-  type: ProjectCardType | null;
+  type: ProjectIssueType | null;
   creatorId: number;
   kanbanId: string;
   projectId?: string;

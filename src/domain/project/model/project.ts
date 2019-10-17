@@ -1,5 +1,5 @@
 import { ProjectEntity } from '../../../entity/project.entity';
-import { ProjectCardType } from '../../../typing/kanban-card.typing';
+import { ProjectIssueType } from '../../../typing/kanban-card.typing';
 import { CreateKanbanInput } from '../../../typing/kanban.typing';
 import { ProjectStatus, ProjectType } from '../../../typing/project.typing';
 import { Kanban } from '../../kanban/kanban';
@@ -46,7 +46,7 @@ export class Project {
       id: null,
       name: createKanbanInput.name,
       desc: createKanbanInput.desc,
-      type: ProjectCardType.NORMAL,
+      type: ProjectIssueType.NORMAL,
       projectId: createKanbanInput.projectId,
       creatorId: createKanbanInput.creatorId,
       updatedAt: null,
@@ -58,7 +58,7 @@ export class Project {
     return kanban;
   }
 
-  public createProjectCard() {}
+  public createProjectIssue() {}
 
   public async setDefaultKanban(kanbanId: string): Promise<void> {
     this.setting.defaultKanbanId = kanbanId;

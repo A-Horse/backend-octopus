@@ -9,7 +9,7 @@ import { ProjectIssueEntity } from './project-issue.entity';
 @Entity({
   name: 'project_issue_order_in_kanban'
 })
-export class ProjectCardOrderInKanbanEntity {
+export class ProjectIssueOrderInKanbanEntity {
   @ManyToOne(type => KanbanEntity, {
     nullable: false,
     primary: true

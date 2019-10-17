@@ -1,15 +1,15 @@
 import { PROJECT_CARD_ORDER_INIT_INTERVAL } from './constant';
 import { ProjectIssueRepository } from './project-issue-repository';
-import { ProjectCardType } from '../../typing/kanban-card.typing';
+import { ProjectIssueType } from '../../typing/kanban-card.typing';
 import { ProjectIssueEntity } from '../../entity/project-issue.entity';
 import { JSONEntity } from '../interface/json';
 import * as _ from 'lodash';
 import { ProjectIssueDetail } from './project-issue-detail';
 
-export class ProjectCard implements JSONEntity {
+export class ProjectIssue implements JSONEntity {
   public id: string;
   public title: string;
-  public type: ProjectCardType;
+  public type: ProjectIssueType;
   public creatorId: number;
   public assigneeId: number;
   public columnId: string;
@@ -35,7 +35,7 @@ export class ProjectCard implements JSONEntity {
   }: any) {
     this.id = id;
     this.title = title;
-    this.type = type || ProjectCardType.NORMAL;
+    this.type = type || ProjectIssueType.NORMAL;
     this.creatorId = creatorId;
     this.assigneeId = assigneeId;
     this.columnId = columnId;
@@ -46,8 +46,8 @@ export class ProjectCard implements JSONEntity {
     this.updatedAt = updatedAt;
   }
 
-  static fromDataEntity(dataEntity: ProjectIssueEntity): ProjectCard {
-    return new ProjectCard({
+  static fromDataEntity(dataEntity: ProjectIssueEntity): ProjectIssue {
+    return new ProjectIssue({
       id: dataEntity.id,
       title: dataEntity.title,
       type: dataEntity.type,
@@ -71,7 +71,8 @@ export class ProjectCard implements JSONEntity {
 
   public async initOrderInKanban(): Promise<void> {
     this.orderInKanban =
-      (await ProjectIssueRepository.getKanbanCardCount(this.kanbanId)) * PROJECT_CARD_ORDER_INIT_INTERVAL;
+      (await ProjectIssueRepository.getKanbanCardCount(this.kanbanId)) *
+      PROJECT_CARD_ORDER_INIT_INTERVAL;
   }
 
   public async calcPreviousOrderInKanban(): Promise<number | null> {
@@ -86,6 +87,10 @@ export class ProjectCard implements JSONEntity {
       this.kanbanId,
       this.orderInKanban
     );
+  }
+
+  public async pullDetail(): Promise<void> {
+    this.detail = await ProjectIssueRepository.getIssueDetail(this.id);
   }
 
   public toJSON() {

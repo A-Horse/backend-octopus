@@ -1,14 +1,11 @@
-import { ProjectCard } from "./project-issue";
+import { ProjectIssue } from './project-issue';
 
+export class ProjectIssueDetail {
+  public content: string;
 
-export class ProjectIssueDetail extends ProjectCard {
-    public content: string;
-
-
-    public toJSON(): any {
-        return {
-            content: this.content
-        }
-    }
-
+  public toJSON(): any {
+    return {
+      content: this.content
+    };
+  }
 }
