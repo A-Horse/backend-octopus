@@ -70,7 +70,7 @@ ProjectIssueRouter.get('/issue/:issueId', authJwt, async (req, res, next) => {
       req.params.issueId
     );
 
-    res.status(201).json(detailedIssue);
+    res.status(201).json(detailedIssue.toJSON());
   } catch (error) {
     next(error);
   }

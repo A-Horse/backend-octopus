@@ -12,10 +12,9 @@ class Configure {
   };
 
   constructor() {
-    const configDoc = yaml.safeLoad(
+    this.configMap = yaml.safeLoad(
       fs.readFileSync(path.join(__dirname, '../config.yaml'), 'utf8')
     );
-    this.configMap = configDoc;
 
     this.overrideConfigKeyFromEnv();
   }

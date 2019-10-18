@@ -94,6 +94,7 @@ export class ProjectIssue implements JSONEntity {
   }
 
   public toJSON() {
+    const detailJSON = this.detail ? this.detail.toJSON() : null;
     return {
       id: this.id,
       title: this.title,
@@ -102,7 +103,8 @@ export class ProjectIssue implements JSONEntity {
       columnId: this.columnId,
       order: this.orderInKanban,
       createdAt: this.createdAt,
-      updatedAt: this.updatedAt
+      updatedAt: this.updatedAt,
+      ...detailJSON
     };
   }
 }
