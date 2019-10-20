@@ -5,6 +5,7 @@ import { ProjectIssueEntity } from '../../entity/project-issue.entity';
 import { JSONEntity } from '../interface/json';
 import * as _ from 'lodash';
 import { ProjectIssueDetail } from './project-issue-detail';
+import { setPartialIssueData } from './util/issue-util';
 
 export class ProjectIssue implements JSONEntity {
   public id: string;
@@ -91,6 +92,15 @@ export class ProjectIssue implements JSONEntity {
 
   public async pullDetail(): Promise<void> {
     this.detail = await ProjectIssueRepository.getIssueDetail(this.id);
+  }
+
+  public setPartialField(partialField: any): void {
+    setPartialIssueData(this, partialField);
+  }
+
+  public async save(): Promise<void> {
+    // udpate
+    await ProjectIssueRepository.udpateIssue(this);
   }
 
   public toJSON() {

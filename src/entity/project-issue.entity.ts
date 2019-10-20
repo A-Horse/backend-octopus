@@ -27,10 +27,6 @@ export class ProjectIssueEntity {
   })
   public title: string;
 
-  @Column({
-    nullable: true
-  })
-  public content: string;
 
   @Column({
     length: 10,

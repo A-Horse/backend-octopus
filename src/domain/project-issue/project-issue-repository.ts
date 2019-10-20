@@ -9,7 +9,6 @@ import {
   getRepository,
   getConnection,
   EntityManager,
-  AdvancedConsoleLogger
 } from 'typeorm';
 import { ProjectIssueOrderInKanbanEntity } from '../../entity/project-card-order-in-kanban.entity';
 import { ProjectIssueDetail } from './project-issue-detail';
@@ -28,6 +27,35 @@ export class ProjectIssueRepository {
       .createQueryBuilder('project_issue')
       .where('projectId = :projectId', { projectId })
       .getCount();
+  }
+
+  static async udpateIssue(issue: ProjectIssue): Promise<void> {
+    await getConnection()
+      .createQueryBuilder()
+      .update(ProjectIssueEntity)
+      .set({
+        title: issue.title
+      })
+      .where({ id: issue.id })
+      .execute();
+
+    if (issue.detail) {
+      await ProjectIssueRepository.updateIssueDetail(issue.id, issue.detail);
+    }
+  }
+
+  static async updateIssueDetail(
+    issueId: string,
+    issueDetail: ProjectIssueDetail
+  ): Promise<void> {
+    await getConnection()
+      .createQueryBuilder()
+      .update(ProjectIssueDetailEntity)
+      .set({
+        content: issueDetail.content
+      })
+      .where({ issueId: issueId })
+      .execute();
   }
 
   static async getProjectIssues({

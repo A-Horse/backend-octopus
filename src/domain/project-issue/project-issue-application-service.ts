@@ -28,6 +28,12 @@ export class ProjectIssueApplicationService {
     return ProjectIssueRepository.saveProjectIssue(card);
   }
 
+  static async udpateIssue(issueId: string, partialIssueData: any): Promise<void> {
+    const issue = await ProjectIssueApplicationService.getDetailedIssue(issueId);
+    issue.setPartialField(partialIssueData);
+    await issue.save();
+  }
+
   static async getDetailedIssue(issueId: string): Promise<ProjectIssue> {
     const issue = await ProjectIssueRepository.getIssue(issueId);
     await issue.pullDetail();

@@ -1,5 +1,5 @@
 import { validate } from './../../util/express-validate';
-import { ProjectIssueApplicationService } from './kanban-issue-application-service';
+import { ProjectIssueApplicationService } from './project-issue-application-service';
 import { ProjectIssueRepository } from './project-issue-repository';
 
 import * as express from 'express';
@@ -70,10 +70,24 @@ ProjectIssueRouter.get('/issue/:issueId', authJwt, async (req, res, next) => {
       req.params.issueId
     );
 
-    res.status(201).json(detailedIssue.toJSON());
+    res.json(detailedIssue.toJSON());
   } catch (error) {
     next(error);
   }
 });
+
+ProjectIssueRouter.patch('/issue/:issueId', authJwt, async (req, res, next) => {
+  try {
+    await ProjectIssueApplicationService.udpateIssue(
+      req.params.issueId,
+      req.body
+    );
+
+    res.status(201).send();
+  } catch (error) {
+    next(error);
+  }
+});
+
 
 export { ProjectIssueRouter };
