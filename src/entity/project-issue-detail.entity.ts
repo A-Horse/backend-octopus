@@ -1,17 +1,11 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  UpdateDateColumn,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({
   name: 'project_issue_detail'
 })
 export class ProjectIssueDetailEntity {
   @PrimaryColumn()
-  public cardId: string;
+  public issueId: string;
 
   @Column({
     nullable: true

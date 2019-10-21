@@ -206,10 +206,10 @@ export class ProjectIssueRepository {
       .sort((a, b) => a.orderInKanban - b.orderInKanban)[0];
   }
 
-  static async getIssueDetail(cardId: string): Promise<ProjectIssueDetail> {
+  static async getIssueDetail(issueId: string): Promise<ProjectIssueDetail> {
     const issueDetailEntity = await getRepository(ProjectIssueDetailEntity)
       .createQueryBuilder('project_issue_detail')
-      .where('project_issue_detail.cardId = :cardId', { cardId })
+      .where('project_issue_detail.issueId = :issueId', { issueId })
       .getOne();
 
     const issueDetail: ProjectIssueDetail = new ProjectIssueDetail();
@@ -290,7 +290,7 @@ export class ProjectIssueRepository {
     await getConnection().transaction(
       async (transactionalEntityManager: EntityManager) => {
         await transactionalEntityManager.save(cardEntity);
-        projectIssueDetailEntity.cardId = cardEntity.id;
+        projectIssueDetailEntity.issueId = cardEntity.id;
 
         await transactionalEntityManager.save(projectIssueDetailEntity);
 
@@ -303,16 +303,16 @@ export class ProjectIssueRepository {
     return cardEntity.id;
   }
 
-  static async updateCardOrderInKanban(card: ProjectIssue): Promise<void> {
+  static async updateCardOrderInKanban(issue: ProjectIssue): Promise<void> {
     await getConnection()
       .createQueryBuilder()
       .update(ProjectIssueOrderInKanbanEntity)
       .set({
-        order: card.orderInKanban
+        order: issue.orderInKanban
       })
-      .where('kanbanId = :kanbanId and cardId = :cardId', {
-        kanbanId: card.kanbanId,
-        cardId: card.id
+      .where('kanbanId = :kanbanId and issueId = :issueId', {
+        kanbanId: issue.kanbanId,
+        issueId: issue.id
       })
       .execute();
   }
