@@ -7,9 +7,9 @@ JWT_EXP_HOURS: 480
 
 SERCET_KEY: 'octopus'
 
-MYSQL_HOST: "localhost"
-MYSQL_USERNAME: "octopuese"
-MYSQL_PASSWORD: "my-secret-user-pw"
-MYSQL_DB: "octopuese"
+MYSQL_HOST: "172.23.248.9"
+MYSQL_USERNAME: "root"
+MYSQL_PASSWORD: "miniso@2019"
+MYSQL_DB: "octopus"
 
 TASK_COVER_STORAGE_PATH: 'storage/board-cover'
