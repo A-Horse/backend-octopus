@@ -20,7 +20,7 @@ export class ProjectIssueOrderInKanbanEntity {
     nullable: false,
     primary: true
   })
-  public card: ProjectIssueEntity;
+  public issue: ProjectIssueEntity;
 
   @Column({type: 'float'})
   public order: number;

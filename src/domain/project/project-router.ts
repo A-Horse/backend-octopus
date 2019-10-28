@@ -3,9 +3,9 @@ import * as express from 'express';
 import { authJwt } from '../../route/middle/jwt';
 import { Project } from './model/project';
 import { ProjectAppliactionService } from './project-application-service';
+const multipartMiddleware = require('connect-multiparty')();
 
 const ProjectRouter = express.Router();
-
 
 ProjectRouter.get('/projects', authJwt, async (req, res, next) => {
   try {
@@ -74,6 +74,22 @@ ProjectRouter.post(
         projectId,
         kanbanId
       });
+      res.status(200).send();
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+ProjectRouter.post(
+  '/project/:projectId/cover',
+  multipartMiddleware,
+  authJwt,
+  async (req, res, next) => {
+    const { projectId } = req.params;
+
+    try {
+      await ProjectAppliactionService.updateProjectCover(projectId, req.body.cover);
       res.status(200).send();
     } catch (error) {
       next(error);

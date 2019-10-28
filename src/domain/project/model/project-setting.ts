@@ -4,9 +4,12 @@ import * as _ from 'lodash';
 export class ProjectSetting {
   public id: string;
   public cover: string;
-  public coverUrl: string;
   public isStar: boolean;
   public defaultKanbanId: string;
+
+  public get coverUrl() {
+    return `/${this.cover}`
+  }  
 
   constructor({
     id,
@@ -21,7 +24,6 @@ export class ProjectSetting {
   }) {
     this.id = id;
     this.cover = cover;
-    this.coverUrl = `/${this.cover}`;
     this.isStar = isStar;
     this.defaultKanbanId = defaultKanbanId;
   }

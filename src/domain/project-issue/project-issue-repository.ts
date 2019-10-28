@@ -72,7 +72,7 @@ export class ProjectIssueRepository {
         'project_issue.orderInKanban',
         ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
-        'project_issue.id = project_issue_order_in_kanban.cardId'
+        'project_issue.id = project_issue_order_in_kanban.issueId'
       )
       .where('projectId = :projectId', { projectId })
       .limit(pageSize)
@@ -99,7 +99,7 @@ export class ProjectIssueRepository {
         'project_issue.orderInKanban',
         ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
-        'project_issue.id = project_issue_order_in_kanban.cardId'
+        'project_issue.id = project_issue_order_in_kanban.issueId'
       )
       .where(
         'project_issue.kanbanId = :kanbanId and project_issue_order_in_kanban.order < :order',
@@ -123,7 +123,7 @@ export class ProjectIssueRepository {
         'project_issue.orderInKanban',
         ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
-        'project_issue.id = project_issue_order_in_kanban.cardId'
+        'project_issue.id = project_issue_order_in_kanban.issueId'
       )
       .where('project_issue.kanbanId = :kanbanId', {
         kanbanId
@@ -143,7 +143,7 @@ export class ProjectIssueRepository {
         'project_issue.orderInKanban',
         ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
-        'project_issue.id = project_issue_order_in_kanban.cardId'
+        'project_issue.id = project_issue_order_in_kanban.issueId'
       )
       .where('project_issue.kanbanId = :kanbanId', {
         kanbanId
@@ -166,7 +166,7 @@ export class ProjectIssueRepository {
         'project_issue.orderInKanban',
         ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
-        'project_issue.id = project_issue_order_in_kanban.cardId'
+        'project_issue.id = project_issue_order_in_kanban.issueId'
       )
       .where(
         'project_issue.kanbanId = :kanbanId and project_issue_order_in_kanban.order > :order',
@@ -191,7 +191,7 @@ export class ProjectIssueRepository {
         'project_issue.orderInKanban',
         ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
-        'project_issue.id = project_issue_order_in_kanban.cardId'
+        'project_issue.id = project_issue_order_in_kanban.issueId'
       )
       .where('project_issue.id = :cardId', { cardId })
       .getOne();
@@ -231,7 +231,7 @@ export class ProjectIssueRepository {
         'project_issue.orderInKanban',
         ProjectIssueOrderInKanbanEntity,
         'project_issue_order_in_kanban',
-        'project_issue.id = project_issue_order_in_kanban.cardId'
+        'project_issue.id = project_issue_order_in_kanban.issueId'
       )
       .where('columnId = :columnId', { columnId })
       .getMany();
@@ -247,27 +247,27 @@ export class ProjectIssueRepository {
   }
 
   static async saveProjectIssue(card: ProjectIssue): Promise<string> {
-    const cardEntity = new ProjectIssueEntity();
+    const issueEntity = new ProjectIssueEntity();
 
     const creator = new UserEntity();
     creator.id = card.creatorId;
-    cardEntity.creator = creator;
+    issueEntity.creator = creator;
 
     const projectEntity = new ProjectEntity();
     projectEntity.id = card.projectId;
-    cardEntity.project = projectEntity;
+    issueEntity.project = projectEntity;
 
     let orderInkanbanEntity: ProjectIssueOrderInKanbanEntity;
 
     if (card.kanbanId) {
       const kanbanEntity = new KanbanEntity();
       kanbanEntity.id = card.kanbanId;
-      cardEntity.kanban = kanbanEntity;
+      issueEntity.kanban = kanbanEntity;
 
       await card.initOrderInKanban();
 
       orderInkanbanEntity = new ProjectIssueOrderInKanbanEntity();
-      orderInkanbanEntity.card = cardEntity;
+      orderInkanbanEntity.issue = issueEntity;
       orderInkanbanEntity.kanban = kanbanEntity;
       orderInkanbanEntity.order = card.orderInKanban;
     }
@@ -275,11 +275,11 @@ export class ProjectIssueRepository {
     if (card.columnId) {
       const kanbanColumnEntity = new KanbanColumnEntity();
       kanbanColumnEntity.id = card.columnId;
-      cardEntity.column = kanbanColumnEntity;
+      issueEntity.column = kanbanColumnEntity;
     }
 
-    cardEntity.id = card.id;
-    cardEntity.title = card.title;
+    issueEntity.id = card.id;
+    issueEntity.title = card.title;
 
     const projectIssueDetailEntity: ProjectIssueDetailEntity = new ProjectIssueDetailEntity();
 
@@ -289,8 +289,8 @@ export class ProjectIssueRepository {
 
     await getConnection().transaction(
       async (transactionalEntityManager: EntityManager) => {
-        await transactionalEntityManager.save(cardEntity);
-        projectIssueDetailEntity.issueId = cardEntity.id;
+        await transactionalEntityManager.save(issueEntity);
+        projectIssueDetailEntity.issueId = issueEntity.id;
 
         await transactionalEntityManager.save(projectIssueDetailEntity);
 
@@ -300,7 +300,7 @@ export class ProjectIssueRepository {
       }
     );
 
-    return cardEntity.id;
+    return issueEntity.id;
   }
 
   static async updateCardOrderInKanban(issue: ProjectIssue): Promise<void> {

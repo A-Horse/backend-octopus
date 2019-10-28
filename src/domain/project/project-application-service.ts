@@ -4,6 +4,7 @@ import { KanbanRepository } from '../kanban/kanban-repository';
 import { Project } from './model/project';
 import { ProjectSetting } from './model/project-setting';
 import { ProjectRepository } from './project-repository';
+import { FileService } from '../../service/file.service';
 
 export class ProjectAppliactionService {
   static getUserProjects(userId: number): Promise<Project[]> {
@@ -49,5 +50,14 @@ export class ProjectAppliactionService {
     const project: Project = await ProjectRepository.getProjectDetail(projectId);
 
     await project.setDefaultKanban(kanbanId);
+  }
+
+  static async updateProjectCover(projectId: string, coverBase64: string) {
+    const filename: string = await FileService.saveBase64Image(coverBase64);
+
+    const project: Project = await ProjectRepository.getProjectDetail(projectId);
+
+    await project.setCover(filename);
+    return filename;
   }
 }
