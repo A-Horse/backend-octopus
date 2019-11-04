@@ -23,34 +23,34 @@ export class kanbanApplicationService {
 
   // TODO move in to kanban
   static async rankCard({ cardId, targetCardId, isBefore }): Promise<number> {
-    const card = await ProjectIssueRepository.getIssue(cardId);
-    const targetCard = await ProjectIssueRepository.getIssue(targetCardId);
+    const issue = await ProjectIssueRepository.getIssue(cardId);
+    const targetIssue = await ProjectIssueRepository.getIssue(targetCardId);
 
-    let targetOrderInKanban: number;
     if (isBefore) {
-      targetOrderInKanban = await targetCard.calcPreviousOrderInKanban();
+      const previousOrderInKanban = await targetIssue.calcPreviousOrderInKanban();
 
-      if (targetOrderInKanban === null) {
-        card.orderInKanban =
-          (await ProjectIssueRepository.getMinOrderInKanban(card.kanbanId)) -
+      if (previousOrderInKanban === null) {
+        issue.orderInKanban =
+          (await ProjectIssueRepository.getMinOrderInKanban(issue.kanbanId)) -
           PROJECT_CARD_ORDER_INIT_INTERVAL;
       } else {
-        card.orderInKanban = targetCard.orderInKanban - Math.abs(card.orderInKanban - targetOrderInKanban) / 2;
+        issue.orderInKanban =
+          targetIssue.orderInKanban -
+          (targetIssue.orderInKanban - previousOrderInKanban) / 2;
       }
-
     } else {
-      targetOrderInKanban = await targetCard.calcNextOrderInKanban();
-      if (targetOrderInKanban === null) {
-        card.orderInKanban =
-          (await ProjectIssueRepository.getMaxOrderInKanban(card.kanbanId)) +
+      const nextOrderInKanban = await targetIssue.calcNextOrderInKanban();
+      if (nextOrderInKanban === null) {
+        issue.orderInKanban =
+          (await ProjectIssueRepository.getMaxOrderInKanban(issue.kanbanId)) +
           PROJECT_CARD_ORDER_INIT_INTERVAL;
       } else {
-        card.orderInKanban = targetCard.orderInKanban + Math.abs(card.orderInKanban - targetOrderInKanban) / 2;
+        issue.orderInKanban =
+          targetIssue.orderInKanban + (nextOrderInKanban - targetIssue.orderInKanban) / 2;
       }
-
     }
 
-    await ProjectIssueRepository.updateCardOrderInKanban(card);
-    return card.orderInKanban;
+    await ProjectIssueRepository.updateCardOrderInKanban(issue);
+    return issue.orderInKanban;
   }
 }

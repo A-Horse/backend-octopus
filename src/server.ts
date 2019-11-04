@@ -45,8 +45,6 @@ import { RootRouter } from './route/root';
 import { StatusErrorHandleMiddle } from './route/middle/error-handle';
 
 import { tApiPrefix } from './constant';
-import { TodoBoxRouter } from './route/todo/todo-box';
-import { TodoRouter } from './route/todo/todo.router';
 
 import { UserRouter } from './route/user.router';
 import { ProjectRouter } from './domain/project/project-router';
@@ -56,8 +54,6 @@ import { ProjectIssueRouter } from './domain/project-issue/project-issue-router'
 
 app.use(RootRouter);
 
-app.use(tApiPrefix, TodoBoxRouter);
-app.use(tApiPrefix, TodoRouter);
 app.use('/api/user', UserRouter);
 
 app.use(apiPrefix, ProjectRouter);
