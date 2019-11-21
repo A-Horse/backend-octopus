@@ -13,3 +13,6 @@ MYSQL_PASSWORD: "my-secret-user-pw"
 MYSQL_DB: "octopuese"
 
 TASK_COVER_STORAGE_PATH: 'storage/board-cover'
+
+MONGO_URL: "mongodb://localhost:27017"
+MONGO_DB: "octopus"

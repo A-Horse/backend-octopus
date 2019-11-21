@@ -27,7 +27,6 @@ export class ProjectIssueEntity {
   })
   public title: string;
 
-
   @Column({
     length: 10,
     default: ProjectIssueType.NORMAL

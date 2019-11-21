@@ -10,12 +10,17 @@ class Configure {
     JWT_EXP_HOURS: number;
     SERCET_KEY: string;
   };
+  private customConfigMap: any;
 
   constructor() {
     this.configMap = yaml.safeLoad(
       fs.readFileSync(path.join(__dirname, '../config.yaml'), 'utf8')
     );
+    this.customConfigMap = yaml.safeLoad(
+      fs.readFileSync(path.join(__dirname, '../custom.config.yaml'), 'utf8')
+    );
 
+    this.overrideConfigKeyFromCustomEnv();
     this.overrideConfigKeyFromEnv();
   }
 
@@ -29,6 +34,15 @@ class Configure {
 
   public get(key: string): any {
     return this.configMap[key];
+  }
+
+  private overrideConfigKeyFromCustomEnv() {
+    this.configMap = R.mapObjIndexed((value: string, key: string, config: any) => {
+      if (process.env[key]) {
+        config[key] = this.customConfigMap[key];
+      }
+      return config[key];
+    }, this.configMap);
   }
 
   private overrideConfigKeyFromEnv() {

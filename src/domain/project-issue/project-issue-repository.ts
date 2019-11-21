@@ -12,7 +12,6 @@ import {
 } from 'typeorm';
 import { ProjectIssueOrderInKanbanEntity } from '../../entity/project-card-order-in-kanban.entity';
 import { ProjectIssueDetail } from './project-issue-detail';
-import { ProjectIssueDetailEntity } from '../../entity/project-issue-detail.entity';
 
 export class ProjectIssueRepository {
   static async getKanbanCardCount(kanbanId: string): Promise<number> {
@@ -48,14 +47,14 @@ export class ProjectIssueRepository {
     issueId: string,
     issueDetail: ProjectIssueDetail
   ): Promise<void> {
-    await getConnection()
-      .createQueryBuilder()
-      .update(ProjectIssueDetailEntity)
-      .set({
-        content: issueDetail.content
-      })
-      .where({ issueId: issueId })
-      .execute();
+    // await getConnection()
+    //   .createQueryBuilder()
+    //   .update(ProjectIssueDetailEntity)
+    //   .set({
+    //     content: issueDetail.content
+    //   })
+    //   .where({ issueId: issueId })
+    //   .execute();
   }
 
   static async getProjectIssues({
@@ -207,15 +206,17 @@ export class ProjectIssueRepository {
   }
 
   static async getIssueDetail(issueId: string): Promise<ProjectIssueDetail> {
-    const issueDetailEntity = await getRepository(ProjectIssueDetailEntity)
-      .createQueryBuilder('project_issue_detail')
-      .where('project_issue_detail.issueId = :issueId', { issueId })
-      .getOne();
-
     const issueDetail: ProjectIssueDetail = new ProjectIssueDetail();
-    issueDetail.content = issueDetailEntity.content;
-
     return issueDetail;
+    // const issueDetailEntity = await getRepository(ProjectIssueDetailEntity)
+    //   .createQueryBuilder('project_issue_detail')
+    //   .where('project_issue_detail.issueId = :issueId', { issueId })
+    //   .getOne();
+
+    // const issueDetail: ProjectIssueDetail = new ProjectIssueDetail();
+    // issueDetail.content = issueDetailEntity.content;
+
+    // return issueDetail;
   }
 
   static async getColumnCards(
@@ -281,19 +282,12 @@ export class ProjectIssueRepository {
     issueEntity.id = card.id;
     issueEntity.title = card.title;
 
-    const projectIssueDetailEntity: ProjectIssueDetailEntity = new ProjectIssueDetailEntity();
 
-    if (card.detail) {
-      projectIssueDetailEntity.content = card.detail.content;
-    }
-
+  
     await getConnection().transaction(
       async (transactionalEntityManager: EntityManager) => {
         await transactionalEntityManager.save(issueEntity);
-        projectIssueDetailEntity.issueId = issueEntity.id;
-
-        await transactionalEntityManager.save(projectIssueDetailEntity);
-
+        
         if (orderInkanbanEntity) {
           await transactionalEntityManager.save(orderInkanbanEntity);
         }
