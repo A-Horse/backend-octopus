@@ -4,7 +4,7 @@ import { AccessLimitError } from '../service/error';
 import { authJwt } from '../route/middle/jwt';
 import { validate } from '../route/middle/check';
 import { JWT_KEY } from '../constant';
-import { configure } from '../configure';
+import { configure } from '../config/configure';
 import { authServive, AuthedData } from '../service/auth.service';
 
 const UserRouter = express.Router();

@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import * as md5 from 'blueimp-md5';
 import * as fs from 'fs';
 import * as path from 'path';
-import { configure } from '../configure';
+import { configure } from '../config/configure';
 
 export class FileService {
   static async saveBase64Image(base64: string): Promise<string> {

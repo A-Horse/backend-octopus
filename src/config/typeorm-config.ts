@@ -1,4 +1,4 @@
-import { configure } from '../configure';
+import { configure } from './configure';
 import { ConnectionOptions } from 'typeorm';
 
 export function getPostgresConfig(): ConnectionOptions {

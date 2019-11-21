@@ -1,4 +1,4 @@
-import { configure } from '../configure';
+import { configure } from '../config/configure';
 
 // const MongoClient = require('mongodb').MongoClient;
 

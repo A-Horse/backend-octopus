@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as http from 'http';
 import * as colors from 'colors';
 
-import { configure } from './configure';
+import { configure } from './config/configure';
 import { hashPasswd } from './domain/auth/createUser';
 
 export function startToolServer() {
