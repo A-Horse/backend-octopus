@@ -2,6 +2,7 @@ import { ProjectIssueRepository } from './project-issue-repository';
 import { ProjectIssue } from './project-issue';
 import { CreateProjectIssueInput } from '../../typing/kanban-card.typing';
 import { PagtiationList } from 'src/typing/pagtiation.typing';
+import { ProjectIssueDetail } from './project-issue-detail';
 
 export class ProjectIssueApplicationService {
   static async getColumnIssues({ kanbanId, columnId }): Promise<ProjectIssue[]> {
@@ -11,7 +12,7 @@ export class ProjectIssueApplicationService {
   static async createIssue(
     createProjectIssueInput: CreateProjectIssueInput
   ): Promise<string> {
-    const card = new ProjectIssue({
+    const issue = new ProjectIssue({
       id: null,
       title: createProjectIssueInput.title,
       content: createProjectIssueInput.content,
@@ -24,8 +25,11 @@ export class ProjectIssueApplicationService {
       createdAt: undefined,
       updatedAt: undefined
     });
-    await card.initCardId();
-    return ProjectIssueRepository.saveProjectIssue(card);
+    issue.setDetail(new ProjectIssueDetail({
+      issueId: null
+    }))
+    await issue.initCardId();
+    return ProjectIssueRepository.saveProjectIssue(issue);
   }
 
   static async udpateIssue(issueId: string, partialIssueData: any): Promise<void> {

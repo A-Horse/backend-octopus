@@ -19,7 +19,15 @@ export class ProjectIssue implements JSONEntity {
   public orderInKanban: number;
   public createdAt: Date;
   public updatedAt: Date;
-  public detail?: ProjectIssueDetail;
+  private  detail?: ProjectIssueDetail;
+
+  public getDetail() {
+    return this.detail;
+  }
+
+  public setDetail(detail: ProjectIssueDetail) {
+    this.detail = detail;
+  }
 
   constructor({
     id,

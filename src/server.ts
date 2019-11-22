@@ -7,7 +7,6 @@ import * as fs from 'fs';
 import rfs from 'rotating-file-stream';
 
 import { apiPrefix } from './constant';
-import config from './service/config';
 
 const helmet = require('helmet');
 
@@ -44,13 +43,13 @@ app.use(require('cookie-parser')());
 import { RootRouter } from './route/root';
 import { StatusErrorHandleMiddle } from './route/middle/error-handle';
 
-import { tApiPrefix } from './constant';
 
 import { UserRouter } from './route/user.router';
 import { ProjectRouter } from './domain/project/project-router';
 import { KanbanRouter } from './domain/kanban/kanban-router';
 import { KanbanColumnRouter } from './domain/kanban-column/kanban-column-router';
 import { ProjectIssueRouter } from './domain/project-issue/project-issue-router';
+import { configure } from './config/configure';
 
 app.use(RootRouter);
 
@@ -65,7 +64,7 @@ app.use(StatusErrorHandleMiddle);
 
 export function startServer() {
   const server = http.createServer(app);
-  server.listen(config['SERVE_PORT'], '0.0.0.0');
+  server.listen(configure.get('SERVE_PORT'), '0.0.0.0');
 
   console.log(colors.green(`Octopus serve on http://0.0.0.0:5500`));
 }

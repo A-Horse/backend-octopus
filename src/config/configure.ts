@@ -14,13 +14,13 @@ class Configure {
 
   constructor() {
     this.configMap = yaml.safeLoad(
-      fs.readFileSync(path.join(__dirname, '../config.yaml'), 'utf8')
+      fs.readFileSync(path.join(__dirname, '../../config.yaml'), 'utf8')
     );
     this.customConfigMap = yaml.safeLoad(
-      fs.readFileSync(path.join(__dirname, '../custom.config.yaml'), 'utf8')
+      fs.readFileSync(path.join(__dirname, '../../custom-config.yaml'), 'utf8')
     );
 
-    this.overrideConfigKeyFromCustomEnv();
+    this.overrideConfigKeyFromCustomConfig();
     this.overrideConfigKeyFromEnv();
   }
 
@@ -36,9 +36,9 @@ class Configure {
     return this.configMap[key];
   }
 
-  private overrideConfigKeyFromCustomEnv() {
+  private overrideConfigKeyFromCustomConfig() {
     this.configMap = R.mapObjIndexed((value: string, key: string, config: any) => {
-      if (process.env[key]) {
+      if (this.customConfigMap[key]) {
         config[key] = this.customConfigMap[key];
       }
       return config[key];
@@ -47,7 +47,7 @@ class Configure {
 
   private overrideConfigKeyFromEnv() {
     this.configMap = R.mapObjIndexed((value: string, key: string, config: any) => {
-      if (process.env[key]) {
+      if (process.env['OCTO_' + key]) {
         config[key] = process.env['OCTO_' + key];
       }
       return config[key];

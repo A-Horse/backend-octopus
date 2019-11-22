@@ -12,12 +12,12 @@ export function setPartialIssueData(
     return key === 'content';
   });
 
-  if (detailFields.length && !projectIssue.detail) {
-    projectIssue.detail = new ProjectIssueDetail();
+  if (detailFields.length && !projectIssue.getDetail()) {
+    projectIssue.setDetail(new ProjectIssueDetail({issueId: projectIssue.id}))
   }
 
   detailFields.forEach((key: string) => {
-    projectIssue.detail[key] = partialIssueData[key];
+    projectIssue.getDetail()[key] = partialIssueData[key];
   });
 
   issueFields.forEach((key: string) => {

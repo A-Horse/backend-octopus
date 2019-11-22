@@ -1,28 +1,17 @@
 import { configure } from '../config/configure';
 
-// const MongoClient = require('mongodb').MongoClient;
+import { MongoClient } from 'mongodb';
 
-import { MongoClient, MongoCallback } from 'mongodb';
-
-const assert = require('assert');
-
-// Connection URL
 const mongoUrl = configure.get('MONGO_URL');
-const mondoDbName = configure.get('MONGO_DB')
+export const mongoDbName = configure.get('MONGO_DB')
 
-// Database Name
-
-// Use connect method to connect to the server
-MongoClient.connect(mongoUrl, function(err, client) {
-  assert.equal(null, err);
-  console.log('Connected successfully to server');
-
-  const db = client.db(mondoDbName);
-
-  client.close();
-});
-
-
-export function getMongoDB(callback: MongoCallback<MongoClient>) {
-    return MongoClient.connect(mongoUrl, callback);
+export function getMongoClient(): Promise<MongoClient> {
+    return new Promise((resolve, reject) => {
+        MongoClient.connect(mongoUrl, (err, client) => {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(client);
+        }); 
+    })
 }

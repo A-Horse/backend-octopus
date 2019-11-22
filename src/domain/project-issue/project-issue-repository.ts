@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { ProjectIssueOrderInKanbanEntity } from '../../entity/project-card-order-in-kanban.entity';
 import { ProjectIssueDetail } from './project-issue-detail';
+import { getMongoClient, mongoDbName } from '../../database/mongo-client';
 
 export class ProjectIssueRepository {
   static async getKanbanCardCount(kanbanId: string): Promise<number> {
@@ -38,8 +39,8 @@ export class ProjectIssueRepository {
       .where({ id: issue.id })
       .execute();
 
-    if (issue.detail) {
-      await ProjectIssueRepository.updateIssueDetail(issue.id, issue.detail);
+    if (issue.getDetail()) {
+      await ProjectIssueRepository.updateIssueDetail(issue.id, issue.getDetail());
     }
   }
 
@@ -206,7 +207,7 @@ export class ProjectIssueRepository {
   }
 
   static async getIssueDetail(issueId: string): Promise<ProjectIssueDetail> {
-    const issueDetail: ProjectIssueDetail = new ProjectIssueDetail();
+    const issueDetail: ProjectIssueDetail = new ProjectIssueDetail({issueId});
     return issueDetail;
     // const issueDetailEntity = await getRepository(ProjectIssueDetailEntity)
     //   .createQueryBuilder('project_issue_detail')
@@ -247,43 +248,41 @@ export class ProjectIssueRepository {
       .sort((a, b) => a.orderInKanban - b.orderInKanban);
   }
 
-  static async saveProjectIssue(card: ProjectIssue): Promise<string> {
+  static async saveProjectIssue(issue: ProjectIssue): Promise<string> {
     const issueEntity = new ProjectIssueEntity();
 
     const creator = new UserEntity();
-    creator.id = card.creatorId;
+    creator.id = issue.creatorId;
     issueEntity.creator = creator;
 
     const projectEntity = new ProjectEntity();
-    projectEntity.id = card.projectId;
+    projectEntity.id = issue.projectId;
     issueEntity.project = projectEntity;
 
     let orderInkanbanEntity: ProjectIssueOrderInKanbanEntity;
 
-    if (card.kanbanId) {
+    if (issue.kanbanId) {
       const kanbanEntity = new KanbanEntity();
-      kanbanEntity.id = card.kanbanId;
+      kanbanEntity.id = issue.kanbanId;
       issueEntity.kanban = kanbanEntity;
 
-      await card.initOrderInKanban();
+      await issue.initOrderInKanban();
 
       orderInkanbanEntity = new ProjectIssueOrderInKanbanEntity();
       orderInkanbanEntity.issue = issueEntity;
       orderInkanbanEntity.kanban = kanbanEntity;
-      orderInkanbanEntity.order = card.orderInKanban;
+      orderInkanbanEntity.order = issue.orderInKanban;
     }
 
-    if (card.columnId) {
+    if (issue.columnId) {
       const kanbanColumnEntity = new KanbanColumnEntity();
-      kanbanColumnEntity.id = card.columnId;
+      kanbanColumnEntity.id = issue.columnId;
       issueEntity.column = kanbanColumnEntity;
     }
 
-    issueEntity.id = card.id;
-    issueEntity.title = card.title;
+    issueEntity.id = issue.id;
+    issueEntity.title = issue.title;
 
-
-  
     await getConnection().transaction(
       async (transactionalEntityManager: EntityManager) => {
         await transactionalEntityManager.save(issueEntity);
@@ -291,6 +290,21 @@ export class ProjectIssueRepository {
         if (orderInkanbanEntity) {
           await transactionalEntityManager.save(orderInkanbanEntity);
         }
+
+        const mgClient = await getMongoClient();
+        
+        await new Promise((resolve, reject) => {
+          mgClient.db(mongoDbName).collection('issue_detail').insertOne(issue.getDetail().toJSON(), (err, result) => {
+            if (err) {
+              return reject(err);
+
+            }
+            issue.getDetail().issueId = result.insertedId.toHexString();
+            return resolve(result);
+          });
+        });
+        
+        mgClient.close();
       }
     );
 
