@@ -10,8 +10,6 @@ import { apiPrefix } from './constant';
 
 const helmet = require('helmet');
 
-
-
 const app = express();
 
 const logDirectory = path.join(__dirname, '../log/access');

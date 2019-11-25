@@ -107,7 +107,7 @@ export class ProjectIssue implements JSONEntity {
   }
 
   public async save(): Promise<void> {
-    // udpate
+    // TODO: udpate and save 
     await ProjectIssueRepository.udpateIssue(this);
   }
 

@@ -4,8 +4,9 @@ export class ProjectIssueDetail {
   public issueId: string;
   public content: string;
 
-  constructor({issueId}) {
-    this.issueId = issueId;
+  constructor(detailData: any) {
+    this.issueId = detailData.issueId;
+    this.content = detailData.content;
   }
 
   public toJSON(): any {

@@ -5,11 +5,7 @@ import { UserEntity } from '../../entity/user.entity';
 import { ProjectIssue } from './project-issue';
 import * as _ from 'lodash';
 import { ProjectIssueEntity } from '../../entity/project-issue.entity';
-import {
-  getRepository,
-  getConnection,
-  EntityManager,
-} from 'typeorm';
+import { getRepository, getConnection, EntityManager, MongoError } from 'typeorm';
 import { ProjectIssueOrderInKanbanEntity } from '../../entity/project-card-order-in-kanban.entity';
 import { ProjectIssueDetail } from './project-issue-detail';
 import { getMongoClient, mongoDbName } from '../../database/mongo-client';
@@ -48,14 +44,26 @@ export class ProjectIssueRepository {
     issueId: string,
     issueDetail: ProjectIssueDetail
   ): Promise<void> {
-    // await getConnection()
-    //   .createQueryBuilder()
-    //   .update(ProjectIssueDetailEntity)
-    //   .set({
-    //     content: issueDetail.content
-    //   })
-    //   .where({ issueId: issueId })
-    //   .execute();
+    const mgClient = await getMongoClient();
+    return new Promise<void>((resolve, reject) => {
+      mgClient
+        .db(mongoDbName)
+        .collection('issue_detail')
+        .update(
+          {
+            issueId
+          },
+          issueDetail.toJSON(),
+          (error: MongoError, result: any) => {
+            
+            if (error) {
+              return reject(error);
+            }
+            mgClient.close();
+            return resolve();
+          }
+        );
+    });
   }
 
   static async getProjectIssues({
@@ -196,28 +204,48 @@ export class ProjectIssueRepository {
       .where('project_issue.id = :cardId', { cardId })
       .getOne();
 
-    return [cardEntity]
-      .map((cardEntity: ProjectIssueEntity) => {
-        return ProjectIssue.fromDataEntity({
-          ...cardEntity,
-          orderInKanban: _.get(cardEntity, ['orderInKanban', 'order'], null)
-        });
-      })
-      .sort((a, b) => a.orderInKanban - b.orderInKanban)[0];
+    return [cardEntity].map((cardEntity: ProjectIssueEntity) => {
+      return ProjectIssue.fromDataEntity({
+        ...cardEntity,
+        orderInKanban: _.get(cardEntity, ['orderInKanban', 'order'], null)
+      });
+    })[0];
   }
 
   static async getIssueDetail(issueId: string): Promise<ProjectIssueDetail> {
-    const issueDetail: ProjectIssueDetail = new ProjectIssueDetail({issueId});
+    const mgClient = await getMongoClient();
+    const detailData = await new Promise((resolve, reject) => {
+      mgClient.db(mongoDbName).collection('issue_detail').findOne({
+        issueId
+      }, (error: MongoError, result: any) => {
+        if (error) {
+          return reject(error)
+        }
+        return resolve(result)
+      })
+    });
+
+    let issueDetail: ProjectIssueDetail;
+
+    if (!detailData) {
+      await new Promise((resolve, reject) => {
+        mgClient
+        .db(mongoDbName)
+        .collection('issue_detail')
+        .insertOne({issueId}, (err, result) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(result);
+        });
+      })
+      issueDetail = new ProjectIssueDetail({ issueId });
+    } else {
+      issueDetail = new ProjectIssueDetail({ ...detailData });
+    }
+
+    mgClient.close();
     return issueDetail;
-    // const issueDetailEntity = await getRepository(ProjectIssueDetailEntity)
-    //   .createQueryBuilder('project_issue_detail')
-    //   .where('project_issue_detail.issueId = :issueId', { issueId })
-    //   .getOne();
-
-    // const issueDetail: ProjectIssueDetail = new ProjectIssueDetail();
-    // issueDetail.content = issueDetailEntity.content;
-
-    // return issueDetail;
   }
 
   static async getColumnCards(
@@ -286,24 +314,26 @@ export class ProjectIssueRepository {
     await getConnection().transaction(
       async (transactionalEntityManager: EntityManager) => {
         await transactionalEntityManager.save(issueEntity);
-        
+
         if (orderInkanbanEntity) {
           await transactionalEntityManager.save(orderInkanbanEntity);
         }
 
         const mgClient = await getMongoClient();
-        
-        await new Promise((resolve, reject) => {
-          mgClient.db(mongoDbName).collection('issue_detail').insertOne(issue.getDetail().toJSON(), (err, result) => {
-            if (err) {
-              return reject(err);
 
-            }
-            issue.getDetail().issueId = result.insertedId.toHexString();
-            return resolve(result);
-          });
+        await new Promise((resolve, reject) => {
+          mgClient
+            .db(mongoDbName)
+            .collection('issue_detail')
+            .insertOne(issue.getDetail().toJSON(), (err, result) => {
+              if (err) {
+                return reject(err);
+              }
+              issue.getDetail().issueId = result.insertedId.toHexString();
+              return resolve(result);
+            });
         });
-        
+
         mgClient.close();
       }
     );

@@ -1,9 +1,0 @@
-diff a/src/domain/project-issue/project-issue-repository.ts b/src/domain/project-issue/project-issue-repository.ts	(rejected hunks)
-@@ -282,7 +282,6 @@
-     issueEntity.id = card.id;
-     issueEntity.title = card.title;
- 
--    const projectIssueDetailEntity: ProjectIssueDetailEntity = new ProjectIssueDetailEntity();
- 
-   
-     await getConnection().transaction(
