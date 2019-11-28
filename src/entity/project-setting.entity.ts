@@ -1,13 +1,9 @@
-import { KanbanEntity } from './kanban.entity';
 import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-  JoinColumn,
-  ManyToOne
+    Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn,
+    UpdateDateColumn
 } from 'typeorm';
+
+import { KanbanEntity } from './kanban.entity';
 
 @Entity({
   name: 'project_setting'

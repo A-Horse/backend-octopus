@@ -1,11 +1,11 @@
 import { EntityManager, getConnection, getRepository } from 'typeorm';
 
+import { KanbanEntity } from '../../entity/kanban.entity';
 import { ProjectSettingEntity } from '../../entity/project-setting.entity';
 import { ProjectEntity } from '../../entity/project.entity';
 import { UserEntity } from '../../entity/user.entity';
 import { Project } from './model/project';
 import { ProjectSetting } from './model/project-setting';
-import { KanbanEntity } from '../../entity/kanban.entity';
 
 export class ProjectRepository {
   static async getAllProjectCount(): Promise<number> {

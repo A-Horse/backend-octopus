@@ -4,8 +4,8 @@ import {
 } from 'typeorm';
 
 import { KanbanTrackerStatus } from '../typing/kanban-tracker.typing';
-import { ProjectIssueEntity } from './project-issue.entity';
 import { KanbanEntity } from './kanban.entity';
+import { ProjectIssueEntity } from './project-issue.entity';
 import { UserEntity } from './user.entity';
 
   @Entity({

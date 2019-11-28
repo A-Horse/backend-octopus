@@ -1,5 +1,6 @@
-import { getRepository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { getRepository } from 'typeorm';
+
 import { UserEntity } from '../../entity/user.entity';
 
 export async function authUser(email: string, password: string) {

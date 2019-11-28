@@ -1,6 +1,7 @@
 import * as bluebird from 'bluebird';
 import * as fs from 'fs';
 import * as path from 'path';
+
 import { STORAGE_PATH } from '../constant.js';
 
 const writeFile: (...args: any[]) => bluebird<void> = bluebird.promisify(fs.writeFile);

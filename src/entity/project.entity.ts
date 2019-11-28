@@ -1,18 +1,10 @@
-import { ProjectIssueEntity } from './project-issue.entity';
 import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-  UpdateDateColumn,
-  OneToMany,
-  PrimaryColumn,
-  Unique
+    Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn,
+    Unique, UpdateDateColumn
 } from 'typeorm';
 
 import { ProjectStatus, ProjectType } from '../typing/project.typing';
+import { ProjectIssueEntity } from './project-issue.entity';
 import { ProjectSettingEntity } from './project-setting.entity';
 import { UserEntity } from './user.entity';
 

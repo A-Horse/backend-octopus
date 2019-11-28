@@ -1,6 +1,6 @@
-import { configure } from '../config/configure';
-
 import { MongoClient } from 'mongodb';
+
+import { configure } from '../config/configure';
 
 const mongoUrl = configure.get('MONGO_URL');
 export const mongoDbName = configure.get('MONGO_DB')

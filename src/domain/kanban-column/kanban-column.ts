@@ -1,7 +1,7 @@
-import { JSONEntity } from './../interface/json';
+import { KanbanColumnEntity } from '../../entity/kanban-column.entity';
+import { KanbanColumnStatus } from '../../typing/kanban-column.typing';
+import { JSONEntity } from '../interface/json';
 import { KanbanColumnRepository } from './kanban-column-repository';
-import { KanbanColumnStatus } from './../../typing/kanban-column.typing';
-import { KanbanColumnEntity } from './../../entity/kanban-column.entity';
 
 export class KanbanColumn implements JSONEntity {
   public id: string;

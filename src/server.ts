@@ -1,12 +1,20 @@
-import * as express from 'express';
-import * as morgan from 'morgan';
-import * as http from 'http';
 import * as colors from 'colors';
-import * as path from 'path';
+import * as express from 'express';
 import * as fs from 'fs';
+import * as http from 'http';
+import * as morgan from 'morgan';
+import * as path from 'path';
 import rfs from 'rotating-file-stream';
 
+import { configure } from './config/configure';
 import { apiPrefix } from './constant';
+import { KanbanColumnRouter } from './domain/kanban-column/kanban-column-router';
+import { KanbanRouter } from './domain/kanban/kanban-router';
+import { ProjectIssueRouter } from './domain/project-issue/project-issue-router';
+import { ProjectRouter } from './domain/project/project-router';
+import { StatusErrorHandleMiddle } from './route/middle/error-handle';
+import { RootRouter } from './route/root';
+import { UserRouter } from './route/user.router';
 
 const helmet = require('helmet');
 
@@ -37,17 +45,6 @@ app.use(morgan('combined', { stream: accessLogStream }));
 app.use(require('body-parser').json());
 app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('cookie-parser')());
-
-import { RootRouter } from './route/root';
-import { StatusErrorHandleMiddle } from './route/middle/error-handle';
-
-
-import { UserRouter } from './route/user.router';
-import { ProjectRouter } from './domain/project/project-router';
-import { KanbanRouter } from './domain/kanban/kanban-router';
-import { KanbanColumnRouter } from './domain/kanban-column/kanban-column-router';
-import { ProjectIssueRouter } from './domain/project-issue/project-issue-router';
-import { configure } from './config/configure';
 
 app.use(RootRouter);
 

@@ -1,7 +1,7 @@
-import { KanbanColumnApplicationService } from './kanban-column-application-service';
-
 import * as express from 'express';
+
 import { authJwt } from '../../route/middle/jwt';
+import { KanbanColumnApplicationService } from './kanban-column-application-service';
 
 const KanbanColumnRouter = express.Router();
 

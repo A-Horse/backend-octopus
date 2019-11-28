@@ -1,5 +1,6 @@
-import { ProjectRepository } from './../project-repository';
 import * as _ from 'lodash';
+
+import { ProjectRepository } from '../project-repository';
 
 const idNumberLenght = 4;
 

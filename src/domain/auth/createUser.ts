@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcryptjs';
-import { UserEntity } from '../../entity/user.entity';
 import { getRepository } from 'typeorm';
+
+import { UserEntity } from '../../entity/user.entity';
 
 export function hashPasswd(password: string): string {
   const salt = bcrypt.genSaltSync(10);

@@ -4,8 +4,8 @@ import { CreateKanbanInput } from '../../../typing/kanban.typing';
 import { ProjectStatus, ProjectType } from '../../../typing/project.typing';
 import { Kanban } from '../../kanban/kanban';
 import { KanbanSetting } from '../../kanban/kanban-setting';
-import { ProjectSetting } from './project-setting';
 import { ProjectRepository } from '../project-repository';
+import { ProjectSetting } from './project-setting';
 
 export class Project {
   public id: string;

@@ -1,5 +1,5 @@
-import { NoAuthError } from '../../service/error';
 import { authServive } from '../../service/auth.service';
+import { NoAuthError } from '../../service/error';
 
 // TODO move to auth
 export function authJwt(req, res, next) {

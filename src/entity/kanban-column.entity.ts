@@ -3,8 +3,8 @@ import {
 } from 'typeorm';
 
 import { KanbanColumnStatus } from '../typing/kanban-column.typing';
-import { ProjectIssueEntity } from './project-issue.entity';
 import { KanbanEntity } from './kanban.entity';
+import { ProjectIssueEntity } from './project-issue.entity';
 import { UserEntity } from './user.entity';
 
   @Entity({

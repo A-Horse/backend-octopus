@@ -1,5 +1,6 @@
-import { ProjectSettingEntity } from '../../../entity/project-setting.entity';
 import * as _ from 'lodash';
+
+import { ProjectSettingEntity } from '../../../entity/project-setting.entity';
 
 export class ProjectSetting {
   public id: string;

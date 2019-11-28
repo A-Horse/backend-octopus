@@ -1,11 +1,11 @@
-import { validate } from './../../util/express-validate';
+import * as express from 'express';
+import { check, query } from 'express-validator';
+
+import { authJwt } from '../../route/middle/jwt';
+import { validate } from '../../util/express-validate';
+import { ProjectIssue } from './project-issue';
 import { ProjectIssueApplicationService } from './project-issue-application-service';
 import { ProjectIssueRepository } from './project-issue-repository';
-
-import * as express from 'express';
-import { authJwt } from '../../route/middle/jwt';
-import { ProjectIssue } from './project-issue';
-import { check, query } from 'express-validator';
 
 const ProjectIssueRouter = express.Router();
 

@@ -1,11 +1,12 @@
 import * as express from 'express';
 import * as R from 'ramda';
-import { AccessLimitError } from '../service/error';
-import { authJwt } from '../route/middle/jwt';
-import { validate } from '../route/middle/check';
-import { JWT_KEY } from '../constant';
+
 import { configure } from '../config/configure';
-import { authServive, AuthedData } from '../service/auth.service';
+import { JWT_KEY } from '../constant';
+import { validate } from '../route/middle/check';
+import { authJwt } from '../route/middle/jwt';
+import { AuthedData, authServive } from '../service/auth.service';
+import { AccessLimitError } from '../service/error';
 
 const UserRouter = express.Router();
 

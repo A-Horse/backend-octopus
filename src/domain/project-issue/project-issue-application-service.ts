@@ -1,8 +1,9 @@
-import { ProjectIssueRepository } from './project-issue-repository';
-import { ProjectIssue } from './project-issue';
-import { CreateProjectIssueInput } from '../../typing/kanban-card.typing';
 import { PagtiationList } from 'src/typing/pagtiation.typing';
+
+import { CreateProjectIssueInput } from '../../typing/kanban-card.typing';
+import { ProjectIssue } from './project-issue';
 import { ProjectIssueDetail } from './project-issue-detail';
+import { ProjectIssueRepository } from './project-issue-repository';
 
 export class ProjectIssueApplicationService {
   static async getColumnIssues({ kanbanId, columnId }): Promise<ProjectIssue[]> {

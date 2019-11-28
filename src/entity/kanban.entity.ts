@@ -1,21 +1,14 @@
-import { ProjectIssueEntity } from './project-issue.entity';
-import { ProjectEntity } from './project.entity';
 import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn
+    Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne,
+    PrimaryGeneratedColumn, UpdateDateColumn
 } from 'typeorm';
 
 import { ProjectStatus } from '../typing/project.typing';
 import { KanbanColumnEntity } from './kanban-column.entity';
-import { KanbanSettingEntity } from './kanban-setting.entity';
 import { KanbanEpicEntity } from './kanban-epic.entity';
+import { KanbanSettingEntity } from './kanban-setting.entity';
+import { ProjectIssueEntity } from './project-issue.entity';
+import { ProjectEntity } from './project.entity';
 import { UserEntity } from './user.entity';
 
 @Entity({

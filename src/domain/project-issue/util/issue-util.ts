@@ -1,5 +1,6 @@
-import { ProjectIssue } from '../project-issue';
 import * as _ from 'lodash';
+
+import { ProjectIssue } from '../project-issue';
 import { ProjectIssueDetail } from '../project-issue-detail';
 
 export function setPartialIssueData(

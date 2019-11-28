@@ -1,9 +1,6 @@
-import { KanbanColumnRepository } from './kanban-column-repository';
+import { CreateKanbanColumnInput, KanbanColumnId } from '../../typing/kanban-column.typing';
 import { KanbanColumn } from './kanban-column';
-import {
-  CreateKanbanColumnInput,
-  KanbanColumnId
-} from './../../typing/kanban-column.typing';
+import { KanbanColumnRepository } from './kanban-column-repository';
 
 export class KanbanColumnApplicationService {
   constructor() {}

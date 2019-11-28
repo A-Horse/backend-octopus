@@ -1,7 +1,8 @@
-import { KanbanEntity } from './../../entity/kanban.entity';
-import { UserEntity } from './../../entity/user.entity';
-import { KanbanColumnEntity } from './../../entity/kanban-column.entity';
-import { getRepository, getConnection } from 'typeorm';
+import { getConnection, getRepository } from 'typeorm';
+
+import { KanbanColumnEntity } from '../../entity/kanban-column.entity';
+import { KanbanEntity } from '../../entity/kanban.entity';
+import { UserEntity } from '../../entity/user.entity';
 import { KanbanColumn } from './kanban-column';
 
 export class KanbanColumnRepository {

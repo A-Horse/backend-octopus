@@ -1,9 +1,6 @@
+import { Column, Entity, ManyToOne } from 'typeorm';
+
 import { KanbanEntity } from './kanban.entity';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-} from 'typeorm';
 import { ProjectIssueEntity } from './project-issue.entity';
 
 @Entity({

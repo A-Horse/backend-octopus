@@ -1,7 +1,9 @@
 import 'reflect-metadata';
+
 import { createConnection } from 'typeorm';
-import { startServer } from './server';
+
 import { getPostgresConfig } from './config/typeorm-config';
+import { startServer } from './server';
 import { startToolServer } from './tool-server';
 
 declare global {

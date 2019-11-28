@@ -1,7 +1,8 @@
-import * as R from 'ramda';
 import * as md5 from 'blueimp-md5';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as R from 'ramda';
+
 import { configure } from '../config/configure';
 
 export class FileService {

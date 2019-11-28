@@ -1,8 +1,9 @@
-import * as validator from 'validator';
-import validatorPatch from '../../service/validate-patch';
-import * as R from 'ramda';
-import { ErrorParamsError } from '../../service/error';
 import * as _ from 'lodash';
+import * as R from 'ramda';
+import * as validator from 'validator';
+
+import { ErrorParamsError } from '../../service/error';
+import validatorPatch from '../../service/validate-patch';
 
 export function validate(validatedRule) {
   return (req, res, next) => {

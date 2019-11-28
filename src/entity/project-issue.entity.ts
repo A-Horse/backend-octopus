@@ -1,19 +1,14 @@
-import { KanbanEntity } from './kanban.entity';
-import { ProjectEntity } from './project.entity';
 import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  UpdateDateColumn,
-  PrimaryColumn
+    Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn, UpdateDateColumn
 } from 'typeorm';
 
 import { ProjectIssueType } from '../typing/kanban-card.typing';
 import { KanbanColumnEntity } from './kanban-column.entity';
 import { KanbanEpicEntity } from './kanban-epic.entity';
-import { UserEntity } from './user.entity';
+import { KanbanEntity } from './kanban.entity';
 import { ProjectIssueOrderInKanbanEntity } from './project-card-order-in-kanban.entity';
+import { ProjectEntity } from './project.entity';
+import { UserEntity } from './user.entity';
 
 @Entity({
   name: 'project_issue'

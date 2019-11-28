@@ -1,10 +1,11 @@
-import { PROJECT_CARD_ORDER_INIT_INTERVAL } from './constant';
-import { ProjectIssueRepository } from './project-issue-repository';
-import { ProjectIssueType } from '../../typing/kanban-card.typing';
-import { ProjectIssueEntity } from '../../entity/project-issue.entity';
-import { JSONEntity } from '../interface/json';
 import * as _ from 'lodash';
+
+import { ProjectIssueEntity } from '../../entity/project-issue.entity';
+import { ProjectIssueType } from '../../typing/kanban-card.typing';
+import { JSONEntity } from '../interface/json';
+import { PROJECT_CARD_ORDER_INIT_INTERVAL } from './constant';
 import { ProjectIssueDetail } from './project-issue-detail';
+import { ProjectIssueRepository } from './project-issue-repository';
 import { setPartialIssueData } from './util/issue-util';
 
 export class ProjectIssue implements JSONEntity {

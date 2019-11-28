@@ -1,14 +1,15 @@
-import { ProjectEntity } from '../../entity/project.entity';
-import { KanbanEntity } from '../../entity/kanban.entity';
+import * as _ from 'lodash';
+import { EntityManager, getConnection, getRepository, MongoError } from 'typeorm';
+
+import { getMongoClient, mongoDbName } from '../../database/mongo-client';
 import { KanbanColumnEntity } from '../../entity/kanban-column.entity';
+import { KanbanEntity } from '../../entity/kanban.entity';
+import { ProjectIssueOrderInKanbanEntity } from '../../entity/project-card-order-in-kanban.entity';
+import { ProjectIssueEntity } from '../../entity/project-issue.entity';
+import { ProjectEntity } from '../../entity/project.entity';
 import { UserEntity } from '../../entity/user.entity';
 import { ProjectIssue } from './project-issue';
-import * as _ from 'lodash';
-import { ProjectIssueEntity } from '../../entity/project-issue.entity';
-import { getRepository, getConnection, EntityManager, MongoError } from 'typeorm';
-import { ProjectIssueOrderInKanbanEntity } from '../../entity/project-card-order-in-kanban.entity';
 import { ProjectIssueDetail } from './project-issue-detail';
-import { getMongoClient, mongoDbName } from '../../database/mongo-client';
 
 export class ProjectIssueRepository {
   static async getKanbanCardCount(kanbanId: string): Promise<number> {
