@@ -1,7 +1,7 @@
 export class NoAuthError extends Error {
-  constructor(message = 'NO AUTH') {
+  constructor(message = 'unauthority') {
     super(message);
-    
+    Object.setPrototypeOf(this, NoAuthError.prototype);
   }
 }
 
