@@ -6,7 +6,8 @@
     "start": "ts-node src/main.ts",
     "build": "tsc",
     "create-all-table": "babel-node db/table.js create",
-    "proxy": "mitmproxy -R http://127.0.0.1:6000 -p 8888 --anticache"
+    "proxy": "mitmproxy -R http://127.0.0.1:6000 -p 8888 --anticache",
+    "test": "jest"
   },
   "author": "fwchen",
   "license": "ISC",
@@ -55,7 +56,10 @@
   },
   "devDependencies": {
     "@types/express": "^4.11.1",
+    "@types/jest": "^24.0.23",
     "@types/node": "^9.3.0",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
     "ts-node": "^8.1.0",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.6.0",

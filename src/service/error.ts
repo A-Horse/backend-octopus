@@ -12,13 +12,6 @@ export class AccessLimitError extends Error {
   }
 }
 
-export class NoAuthError extends Error {
-  constructor(message = 'NO AUTH') {
-    super(message);
-    // Object.setPrototypeOf(this, new.target.prototype);
-  }
-}
-
 export class NotFoundError extends Error {
   constructor(message = 'resource not found') {
     super(message);

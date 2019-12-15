@@ -1,11 +1,11 @@
 import { authServive } from '../../service/auth.service';
-import { NoAuthError } from '../../service/error';
+import { NoAuthError } from "../../error/no-auth.error";
 
 // TODO move to auth
 export function authJwt(req, res, next) {
   // TODO rename app-authxxx
   const jwtdata = req.header('jwt-token');
-
+  
   if (!jwtdata) {
     throw new NoAuthError();
   }

@@ -1,6 +1,7 @@
 import {
-    AccessLimitError, ErrorParamsError, NoAuthError, NotFoundError
+    AccessLimitError, ErrorParamsError, NotFoundError
 } from '../../service/error';
+import { NoAuthError } from "../../error/no-auth.error";
 
 export function StatusErrorHandleMiddle(error, req, res, next) {
   console.error(error);
@@ -11,6 +12,7 @@ export function StatusErrorHandleMiddle(error, req, res, next) {
     return res.status(422).send({ message: error.message });
   }
   if (error instanceof NoAuthError) {
+    console.log('hihis')
     return res.status(401).send({ message: error.message });
   }
   if (error instanceof NotFoundError) {
