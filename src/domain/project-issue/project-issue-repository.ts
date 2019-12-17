@@ -31,7 +31,8 @@ export class ProjectIssueRepository {
       .createQueryBuilder()
       .update(ProjectIssueEntity)
       .set({
-        title: issue.title
+        title: issue.title,
+        deadline: issue.deadline
       })
       .where({ id: issue.id })
       .execute();
@@ -56,7 +57,6 @@ export class ProjectIssueRepository {
           },
           issueDetail.toJSON(),
           (error: MongoError, result: any) => {
-            
             if (error) {
               return reject(error);
             }
@@ -215,7 +215,7 @@ export class ProjectIssueRepository {
 
   static async getIssueDetail(issueId: string): Promise<ProjectIssueDetail> {
     const mgClient = await getMongoClient();
-    const detailData = await new Promise((resolve, reject) => {
+    const detailData: any = await new Promise((resolve, reject) => {
       mgClient.db(mongoDbName).collection('issue_detail').findOne({
         issueId
       }, (error: MongoError, result: any) => {
