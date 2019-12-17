@@ -52,6 +52,11 @@ export class ProjectIssueEntity {
   })
   public kanban: KanbanEntity;
 
+  @Column({
+    nullable: true
+  })
+  public deadline: Date;
+
   @CreateDateColumn()
   public createdAt: Date;
 
