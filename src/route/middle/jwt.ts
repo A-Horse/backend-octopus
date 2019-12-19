@@ -1,5 +1,5 @@
 import { authServive } from '../../service/auth.service';
-import { NoAuthError } from "../../exception/no-auth.error";
+import { UnAuthority } from "../../exception/un-authority";
 
 // TODO move to auth
 export function authJwt(req, res, next) {
@@ -7,16 +7,16 @@ export function authJwt(req, res, next) {
   const jwtdata = req.header('jwt-token');
   
   if (!jwtdata) {
-    throw new NoAuthError();
+    throw new UnAuthority();
   }
   try {
     req.jw = authServive.unsignJwt(jwtdata);
   } catch (error) {
-    throw new NoAuthError();
+    throw new UnAuthority();
   }
 
   if (!!req.params.userId && req.jw.user.id !== +req.params.userId) {
-    throw new NoAuthError();
+    throw new UnAuthority();
   }
   return next();
 }
