@@ -1,7 +1,7 @@
 import {
     AccessLimitError, ErrorParamsError, NotFoundError
 } from '../../service/error';
-import { NoAuthError } from "../../error/no-auth.error";
+import { NoAuthError } from "../../exception/no-auth.error";
 
 export function StatusErrorHandleMiddle(error, req, res, next) {
   console.error(error);

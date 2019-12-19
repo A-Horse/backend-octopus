@@ -57,6 +57,11 @@ export class ProjectIssueEntity {
   })
   public deadline: Date;
 
+  @Column({
+    nullable: true
+  })
+  public deadlineDone: boolean;
+
   @CreateDateColumn()
   public createdAt: Date;
 

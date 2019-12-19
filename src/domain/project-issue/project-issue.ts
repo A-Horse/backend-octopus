@@ -15,6 +15,7 @@ export class ProjectIssue implements JSONEntity {
   public creatorId: number;
   public assigneeId: number;
   public deadline?: Date;
+  public deadlineDone?: boolean;
   public columnId: string;
   public kanbanId: string;
   public projectId: string;
@@ -42,6 +43,7 @@ export class ProjectIssue implements JSONEntity {
     orderInKanban,
     projectId,
     deadline,
+    deadlineDone,
     createdAt,
     updatedAt
   }: any) {
@@ -55,6 +57,7 @@ export class ProjectIssue implements JSONEntity {
     this.orderInKanban = orderInKanban;
     this.projectId = projectId;
     this.deadline = deadline;
+    this.deadlineDone = deadlineDone;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }
@@ -126,6 +129,7 @@ export class ProjectIssue implements JSONEntity {
       columnId: this.columnId,
       order: this.orderInKanban,
       deadline: this.deadline,
+      deadlineDone: this.deadlineDone,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       ...detailJSON
