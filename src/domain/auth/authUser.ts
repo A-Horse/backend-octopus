@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcryptjs';
 import { getRepository } from 'typeorm';
 
-import { UserEntity } from '../../entity/user.entity';
+import { UserEntity } from '../../orm/user.entity';
 
 export async function authUser(email: string, password: string) {
   const user: UserEntity = await getRepository(UserEntity).findOne({

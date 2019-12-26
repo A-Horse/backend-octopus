@@ -9,15 +9,14 @@ export function getPostgresConfig(): ConnectionOptions {
     username: configure.getConfigByKey('MYSQL_USERNAME'),
     password: configure.getConfigByKey('MYSQL_PASSWORD'),
     database: configure.getConfigByKey('MYSQL_DB'),
-    synchronize: true,
+    synchronize: true, // unsafe in production
     charset: 'utf8mb4',
-    // logging: true,
-    timezone: 'Asia/Shanghai',
-    entities: ['src/entity/**/*.ts'],
+    timezone: configure.getConfigByKey('TIMEZONE'),
+    entities: ['src/orm/**/*.ts'],
     migrations: ['src/migration/**/*.ts'],
     subscribers: ['src/subscriber/**/*.ts'],
     cli: {
-      entitiesDir: 'src/entity',
+      entitiesDir: 'src/orm',
       migrationsDir: 'src/migration',
       subscribersDir: 'src/subscriber'
     }

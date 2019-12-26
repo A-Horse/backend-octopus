@@ -1,7 +1,7 @@
 import { createTodo } from '../domain/todo/createTodo';
 import { getUserDefaultTodos } from '../domain/todo/getTodos';
 import { ITodoDetail, TodoDetailDomain } from '../domain/todo/todo-detail';
-import { Todo } from '../entity/todo.entity';
+import { Todo } from '../orm/todo.entity';
 
 class TodoService {
   constructor() {}

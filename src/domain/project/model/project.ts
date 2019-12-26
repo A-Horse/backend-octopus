@@ -1,4 +1,4 @@
-import { ProjectEntity } from '../../../entity/project.entity';
+import { ProjectEntity } from '../../../orm/project.entity';
 import { ProjectIssueType } from '../../../typing/kanban-card.typing';
 import { CreateKanbanInput } from '../../../typing/kanban.typing';
 import { ProjectStatus, ProjectType } from '../../../typing/project.typing';

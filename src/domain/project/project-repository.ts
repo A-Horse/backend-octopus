@@ -1,9 +1,9 @@
 import { EntityManager, getConnection, getRepository } from 'typeorm';
 
-import { KanbanEntity } from '../../entity/kanban.entity';
-import { ProjectSettingEntity } from '../../entity/project-setting.entity';
-import { ProjectEntity } from '../../entity/project.entity';
-import { UserEntity } from '../../entity/user.entity';
+import { KanbanEntity } from '../../orm/kanban.entity';
+import { ProjectSettingEntity } from '../../orm/project-setting.entity';
+import { ProjectEntity } from '../../orm/project.entity';
+import { UserEntity } from '../../orm/user.entity';
 import { Project } from './model/project';
 import { ProjectSetting } from './model/project-setting';
 

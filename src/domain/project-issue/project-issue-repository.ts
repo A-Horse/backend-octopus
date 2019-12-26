@@ -2,12 +2,12 @@ import * as _ from 'lodash';
 import { EntityManager, getConnection, getRepository, MongoError } from 'typeorm';
 
 import { getMongoClient, mongoDbName } from '../../database/mongo-client';
-import { KanbanColumnEntity } from '../../entity/kanban-column.entity';
-import { KanbanEntity } from '../../entity/kanban.entity';
-import { ProjectIssueOrderInKanbanEntity } from '../../entity/project-card-order-in-kanban.entity';
-import { ProjectIssueEntity } from '../../entity/project-issue.entity';
-import { ProjectEntity } from '../../entity/project.entity';
-import { UserEntity } from '../../entity/user.entity';
+import { KanbanColumnEntity } from '../../orm/kanban-column.entity';
+import { KanbanEntity } from '../../orm/kanban.entity';
+import { ProjectIssueOrderInKanbanEntity } from '../../orm/project-card-order-in-kanban.entity';
+import { ProjectIssueEntity } from '../../orm/project-issue.entity';
+import { ProjectEntity } from '../../orm/project.entity';
+import { UserEntity } from '../../orm/user.entity';
 import { ProjectIssue } from './project-issue';
 import { ProjectIssueDetail } from './project-issue-detail';
 

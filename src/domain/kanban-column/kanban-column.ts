@@ -1,4 +1,4 @@
-import { KanbanColumnEntity } from '../../entity/kanban-column.entity';
+import { KanbanColumnEntity } from '../../orm/kanban-column.entity';
 import { KanbanColumnStatus } from '../../typing/kanban-column.typing';
 import { JSONEntity } from '../interface/json';
 import { KanbanColumnRepository } from './kanban-column-repository';

@@ -1,4 +1,4 @@
-import { KanbanEntity } from '../../entity/kanban.entity';
+import { KanbanEntity } from '../../orm/kanban.entity';
 import { JSONEntity } from '../interface/json';
 import { KanbanSetting } from './kanban-setting';
 

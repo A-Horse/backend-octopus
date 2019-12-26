@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import { configure } from '../config/configure';
 import { authUser } from '../domain/auth/authUser';
 import { crerateUser } from '../domain/auth/createUser';
-import { UserEntity } from '../entity/user.entity';
+import { UserEntity } from '../orm/user.entity';
 
 export interface AuthedData {
   token: string;

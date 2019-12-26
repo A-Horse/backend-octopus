@@ -16,3 +16,6 @@ TASK_COVER_STORAGE_PATH: 'storage/board-cover'
 
 MONGO_URL: "mongodb://localhost:27017"
 MONGO_DB: "octopus"
+
+
+TIMEZONE: "Asia/Shanghai"
