@@ -1,12 +1,7 @@
 node_modules
-.tern-port
 .DS_Store
 built
 storage
 package-lock.json
 /log/*
-/yarn-error.log
-/yarn.lock
-/db/db.sqlite*
-/db.sqlite*
-/built/db/table.js
+.idea

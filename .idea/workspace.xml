@@ -2,11 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fe902907-198a-4baa-af53-2beb66b7c45b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/chenfangwei.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/watcherTasks.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../web-octopus/src/typings/user/user.typing.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend-octopus.iml" beforeDir="false" afterPath="$PROJECT_DIR$/backend-octopus.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../web-octopus/src/actions/user/user.action.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../web-octopus/src/actions/user/user.action.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../web-octopus/src/components/AssigneeSelector/AssigneeSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../web-octopus/src/components/AssigneeSelector/AssigneeSelector.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../web-octopus/src/components/DateTimeSelectDialog/DateTimeSeletDialog.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../web-octopus/src/components/DateTimeSelectDialog/DateTimeSeletDialog.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../web-octopus/src/components/Project/Issue/IssueDetail/IssueDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../web-octopus/src/components/Project/Issue/IssueDetail/IssueDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../web-octopus/src/components/Project/Issue/IssueDetail/IssueDetailLeft/IssueDetailLeft.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../web-octopus/src/components/Project/Issue/IssueDetail/IssueDetailLeft/IssueDetailLeft.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../web-octopus/src/epic/user.epic.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../web-octopus/src/epic/user.epic.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +32,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="watcher.settings" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
   </component>
   <component name="ServiceViewManager">
@@ -51,7 +57,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1557763112583</updated>
-      <workItem from="1577203130098" duration="358000" />
+      <workItem from="1577203130098" duration="1339000" />
     </task>
     <servers />
   </component>
@@ -63,13 +69,21 @@
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
     <state x="588" y="147" key="CommitChangelistDialog2/0.1103.1536.879/0.23.1920.1057@0.23.1920.1057" timestamp="1577203487744" />
+    <state x="660" y="337" width="698" height="441" key="EditFileWatcherDialog" timestamp="1577204479064">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="660" y="337" width="698" height="441" key="EditFileWatcherDialog/0.1103.1536.879/0.23.1920.1057@0.23.1920.1057" timestamp="1577204479064" />
+    <state x="511" y="181" key="SettingsEditor" timestamp="1577204480097">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="511" y="181" key="SettingsEditor/0.1103.1536.879/0.23.1920.1057@0.23.1920.1057" timestamp="1577204480097" />
     <state x="665" y="188" width="689" height="708" key="find.popup" timestamp="1577203440096">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
     <state x="665" y="188" width="689" height="708" key="find.popup/0.1103.1536.879/0.23.1920.1057@0.23.1920.1057" timestamp="1577203440096" />
-    <state x="675" y="263" width="670" height="676" key="search.everywhere.popup" timestamp="1577203228815">
+    <state x="675" y="263" width="670" height="676" key="search.everywhere.popup" timestamp="1577204142472">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state x="675" y="263" width="670" height="676" key="search.everywhere.popup/0.1103.1536.879/0.23.1920.1057@0.23.1920.1057" timestamp="1577203228815" />
+    <state x="675" y="263" width="670" height="676" key="search.everywhere.popup/0.1103.1536.879/0.23.1920.1057@0.23.1920.1057" timestamp="1577204142472" />
   </component>
 </project>
