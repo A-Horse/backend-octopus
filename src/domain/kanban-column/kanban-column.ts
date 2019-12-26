@@ -1,6 +1,6 @@
 import { KanbanColumnEntity } from '../../orm/kanban-column.entity';
 import { KanbanColumnStatus } from '../../typing/kanban-column.typing';
-import { JSONEntity } from '../interface/json';
+import { JSONEntity } from '../../shared/interface/json';
 import { KanbanColumnRepository } from './kanban-column-repository';
 
 export class KanbanColumn implements JSONEntity {

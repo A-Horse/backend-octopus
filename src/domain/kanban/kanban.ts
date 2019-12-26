@@ -1,5 +1,5 @@
 import { KanbanEntity } from '../../orm/kanban.entity';
-import { JSONEntity } from '../interface/json';
+import { JSONEntity } from '../../shared/interface/json';
 import { KanbanSetting } from './kanban-setting';
 
 export class Kanban implements JSONEntity {

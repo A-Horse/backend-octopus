@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 
 import { ProjectIssueEntity } from '../../orm/project-issue.entity';
 import { ProjectIssueType } from '../../typing/kanban-card.typing';
-import { JSONEntity } from '../interface/json';
+import { JSONEntity } from '../../shared/interface/json';
 import { PROJECT_CARD_ORDER_INIT_INTERVAL } from './constant';
 import { ProjectIssueDetail } from './project-issue-detail';
 import { ProjectIssueRepository } from './project-issue-repository';

@@ -32,15 +32,17 @@ function initExpressApp(): express.Application {
     path: logDirectory
   });
   
-  app.use(helmet());
-  app.use(
-    '/storage',
-    express.static('storage', {
-      maxAge: 1000 * 60 * 60 * 24 * 365
-    })
-  );
+  app.use(helmet()); // secure
+
+  // app.use(
+  //   '/storage',
+  //   express.static('storage', {
+  //     maxAge: 1000 * 60 * 60 * 24 * 365
+  //   })
+  // );
   
-  app.use(morgan('combined'));
+  // app.use(morgan('combined')); // Standard Apache combined log output.
+  app.use(morgan('dev'));
   app.use(morgan('combined', { stream: accessLogStream }));
   
   app.use(require('body-parser').json());
