@@ -105,7 +105,7 @@ export class ProjectIssue implements JSONEntity {
       this.orderInKanban
     );
   }
-
+  
   public async pullDetail(): Promise<void> {
     this.detail = await ProjectIssueRepository.getIssueDetail(this.id);
   }

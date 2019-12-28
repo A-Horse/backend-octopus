@@ -1,5 +1,3 @@
-import { ProjectIssue } from './project-issue';
-
 export class ProjectIssueDetail {
   public issueId: string;
   public content: string;
