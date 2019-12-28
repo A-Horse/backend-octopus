@@ -15,5 +15,4 @@ UserRouter.get('/users', authorizedRequestMiddle, async (req, res, next) => {
 
 });
 
-
 export { UserRouter };

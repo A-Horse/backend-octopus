@@ -10,7 +10,7 @@ const ImageRouter = express.Router();
 /**
  * @route GET /image/:id
  * @group image - Operations about image
- * @param {int} id.query.required - image id
+ * @param {int} id.param.required - image id
  * @returns {object} 200 - An array of user info
  */
 ImageRouter.get(

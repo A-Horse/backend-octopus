@@ -25,7 +25,7 @@ UserRouter.post('/signin', async (req, res) => {
 
 UserRouter.post('/signup', async (req, res, next) => {
   const { username, password, email } = req.body;
-  if (configure.getConfig().DISABLE_SIGNUP) {
+  if (configure.get('DISABLE_SIGNUP')) {
     return res.status(403).send();
   }
 

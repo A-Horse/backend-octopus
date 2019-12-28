@@ -69,6 +69,6 @@ export function startServer() {
   generateSwagger(app);
 
   const server = http.createServer(app);
-  server.listen(configure.get('SERVE_PORT'), '0.0.0.0');
+  server.listen(configure.get('SERVE_PORT') as number, '0.0.0.0');
   console.log(colors.green(`Octopus serve on http://0.0.0.0:${configure.get('SERVE_PORT')}`));
 }

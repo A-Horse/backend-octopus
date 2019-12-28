@@ -24,7 +24,7 @@ export function generateSwagger(app: Application) {
       }
     },
     basedir: __dirname, //app absolute path
-    files: ['../**/*-router.ts'] //Path to the API handle folder
+    files: ['../**/*router.ts'] //Path to the API handle folder
   };
   expressSwagger(options);
 }

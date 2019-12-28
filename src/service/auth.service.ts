@@ -34,7 +34,7 @@ class AuthService {
   }
 
   public unsignJwt(token: string) {
-    return jwt.verify(token, configure.getConfig().SERCET_KEY);
+    return jwt.verify(token, configure.get('SECRET_KEY'));
   }
 
   private signJwt(user: UserEntity): string {
@@ -44,9 +44,11 @@ class AuthService {
           id: user.id,
           email: user.email
         },
-        exp: Math.floor(Date.now() / 1000) + configure.getConfig().JWT_EXP_HOURS * 60 * 60
+        exp:
+          Math.floor(Date.now() / 1000) +
+          (configure.get('JWT_EXP_HOURS') as number) * 60 * 60
       },
-      configure.getConfig().SERCET_KEY
+      configure.get('SECRET_KEY')
     );
   }
 }

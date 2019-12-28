@@ -1,6 +1,5 @@
 import * as express from 'express';
-import { check, validationResult } from 'express-validator';
-
+import { check } from 'express-validator';
 import { authorizedRequestMiddle } from '../../route/middle/auth-handle.middle';
 import { validate } from '../../util/express-validate';
 import { Kanban } from './kanban';

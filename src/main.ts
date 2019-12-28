@@ -5,21 +5,12 @@ import { getPostgresConfig } from './config/typeorm-config';
 import { startServer } from './server';
 import { startToolServer } from './tool-server';
 import { catFile } from './util/file-cater';
+import { configure } from './config/configure';
 
-declare global {
-  namespace Express {
-    interface Request {
-      jw?: {
-        user: {
-          id: number;
-          username: string;
-        };
-      };
-    }
-  }
-}
+import './typing/global';
 
 function main() {
+  configure.loadConfigureFromFile();
   catFile('./.art/ban.ascii');
 
   createConnection(getPostgresConfig())

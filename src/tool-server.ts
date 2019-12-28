@@ -14,8 +14,8 @@ export function startToolServer() {
   });
 
   const server = http.createServer(app);
-  const port = configure.getConfigByKey('TOOL_SERVE_PORT');
-  server.listen(port, '0.0.0.0');
+  const port = configure.get('TOOL_SERVE_PORT');
+  server.listen(port as number, '0.0.0.0');
 
   // tslint:disable-next-line
   console.log(colors.green(`Octopus tool serve on http://0.0.0.0:${port}`));

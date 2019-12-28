@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
 import { EntityManager, getConnection, getRepository, MongoError } from 'typeorm';
-
-import { getMongoClient, mongoDbName } from '../../database/mongo-client';
+import { getMongoDB } from '../../database/mongo';
 import { KanbanColumnEntity } from '../../orm/kanban-column.entity';
 import { KanbanEntity } from '../../orm/kanban.entity';
 import { ProjectIssueOrderInKanbanEntity } from '../../orm/project-card-order-in-kanban.entity';
@@ -46,10 +45,9 @@ export class ProjectIssueRepository {
     issueId: string,
     issueDetail: ProjectIssueDetail
   ): Promise<void> {
-    const mgClient = await getMongoClient();
+    const mongoDB = await getMongoDB();
     return new Promise<void>((resolve, reject) => {
-      mgClient
-        .db(mongoDbName)
+      mongoDB
         .collection('issue_detail')
         .update(
           {
@@ -60,7 +58,6 @@ export class ProjectIssueRepository {
             if (error) {
               return reject(error);
             }
-            mgClient.close();
             return resolve();
           }
         );
@@ -214,9 +211,9 @@ export class ProjectIssueRepository {
   }
 
   static async getIssueDetail(issueId: string): Promise<ProjectIssueDetail> {
-    const mgClient = await getMongoClient();
+    const mongoDB = await getMongoDB();
     const detailData: any = await new Promise((resolve, reject) => {
-      mgClient.db(mongoDbName).collection('issue_detail').findOne({
+      mongoDB.collection('issue_detail').findOne({
         issueId
       }, (error: MongoError, result: any) => {
         if (error) {
@@ -230,8 +227,7 @@ export class ProjectIssueRepository {
 
     if (!detailData) {
       await new Promise((resolve, reject) => {
-        mgClient
-        .db(mongoDbName)
+        mongoDB
         .collection('issue_detail')
         .insertOne({issueId}, (err, result) => {
           if (err) {
@@ -244,8 +240,6 @@ export class ProjectIssueRepository {
     } else {
       issueDetail = new ProjectIssueDetail({ ...detailData });
     }
-
-    mgClient.close();
     return issueDetail;
   }
 
@@ -320,11 +314,10 @@ export class ProjectIssueRepository {
           await transactionalEntityManager.save(orderInkanbanEntity);
         }
 
-        const mgClient = await getMongoClient();
+        const mongoDB = await getMongoDB();
 
         await new Promise((resolve, reject) => {
-          mgClient
-            .db(mongoDbName)
+          mongoDB
             .collection('issue_detail')
             .insertOne(issue.getDetail().toJSON(), (err, result) => {
               if (err) {
@@ -334,8 +327,6 @@ export class ProjectIssueRepository {
               return resolve(result);
             });
         });
-
-        mgClient.close();
       }
     );
 
