@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { authJwt } from '../../route/middle/jwt';
+import { authorizedRequestMiddle } from '../../route/middle/auth-handle.middle';
 
 const UserRouter = express.Router();
 
@@ -11,7 +11,7 @@ const UserRouter = express.Router();
  * @returns {object} 200 - An array of user info
  * @returns {Error}  default - Unexpected error
  */
-UserRouter.get('/projects', authJwt, async (req, res, next) => {
+UserRouter.get('/users', authorizedRequestMiddle, async (req, res, next) => {
 
 });
 

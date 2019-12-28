@@ -65,8 +65,8 @@ export class Project {
     await ProjectRepository.updateProjectSetting(this.setting);
   }
 
-  public async setCover(coverFilename: string): Promise<void> {
-    this.setting.cover = coverFilename;
+  public async setCoverBase64ID(id: number): Promise<void> {
+    this.setting.coverBase64Id = id;
     await ProjectRepository.updateProjectSetting(this.setting);
   }
 

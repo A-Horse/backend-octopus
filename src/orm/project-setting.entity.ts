@@ -15,7 +15,7 @@ export class ProjectSettingEntity {
   @Column({
     nullable: true
   })
-  public cover: string;
+  public coverBase64Id: number;
 
   @Column({
     default: false

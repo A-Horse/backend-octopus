@@ -1,14 +1,14 @@
 import * as express from 'express';
 import { check, validationResult } from 'express-validator';
 
-import { authJwt } from '../../route/middle/jwt';
+import { authorizedRequestMiddle } from '../../route/middle/auth-handle.middle';
 import { validate } from '../../util/express-validate';
 import { Kanban } from './kanban';
 import { kanbanApplicationService } from './kanban-application-service';
 
 const KanbanRouter = express.Router();
 
-KanbanRouter.get('/project/:projectId/kanbans', authJwt, async (req, res, next) => {
+KanbanRouter.get('/project/:projectId/kanbans', authorizedRequestMiddle, async (req, res, next) => {
   try {
     const kanbans: Kanban[] = await kanbanApplicationService.getProjectKanbans(
       req.params.projectId
@@ -19,7 +19,7 @@ KanbanRouter.get('/project/:projectId/kanbans', authJwt, async (req, res, next) 
   }
 });
 
-KanbanRouter.get('/kanban/:kanbanId/detail', authJwt, async (req, res, next) => {
+KanbanRouter.get('/kanban/:kanbanId/detail', authorizedRequestMiddle, async (req, res, next) => {
   try {
     const kanbanDetailData = await kanbanApplicationService.getKanbanDetail(
       req.params.kanbanId
@@ -32,7 +32,7 @@ KanbanRouter.get('/kanban/:kanbanId/detail', authJwt, async (req, res, next) => 
 
 KanbanRouter.post(
   '/kanban/:kanbanId/card-rank',
-  authJwt,
+  authorizedRequestMiddle,
   validate([
     check('cardId').isString(),
     check('targetCardId').isString(),

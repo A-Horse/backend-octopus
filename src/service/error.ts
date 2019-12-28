@@ -5,12 +5,6 @@ export class ErrorParamsError extends Error {
   }
 }
 
-export class AccessLimitError extends Error {
-  constructor(message = 'access limit error') {
-    super(message);
-    // Object.setPrototypeOf(this, new.target.prototype);
-  }
-}
 
 export class NotFoundError extends Error {
   constructor(message = 'resource not found') {

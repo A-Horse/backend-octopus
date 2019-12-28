@@ -4,27 +4,23 @@ import { ProjectSettingEntity } from '../../../orm/project-setting.entity';
 
 export class ProjectSetting {
   public id: string;
-  public cover: string;
+  public coverBase64Id: number;
   public isStar: boolean;
   public defaultKanbanId: string;
 
-  public get coverUrl() {
-    return `/${this.cover}`
-  }  
-
   constructor({
     id,
-    cover,
+    coverBase64Id,
     defaultKanbanId,
     isStar
   }: {
     id?: string;
-    cover?: string;
+    coverBase64Id?: number;
     defaultKanbanId?: string;
     isStar?: boolean;
   }) {
     this.id = id;
-    this.cover = cover;
+    this.coverBase64Id = coverBase64Id;
     this.isStar = isStar;
     this.defaultKanbanId = defaultKanbanId;
   }
@@ -32,7 +28,7 @@ export class ProjectSetting {
   static fromDataEntity(dataEntity: ProjectSettingEntity): ProjectSetting {
     return new ProjectSetting({
       id: dataEntity.id,
-      cover: dataEntity.cover,
+      coverBase64Id: dataEntity.coverBase64Id,
       defaultKanbanId: _.get(dataEntity, ['defaultKanban', 'id'], null),
       isStar: dataEntity.isStar
     });
@@ -41,7 +37,7 @@ export class ProjectSetting {
   public toJSON(): any {
     return {
       id: this.id,
-      coverUrl: this.coverUrl,
+      coverBase64Id: this.coverBase64Id,
       defaultKanbanId: this.defaultKanbanId
     };
   }

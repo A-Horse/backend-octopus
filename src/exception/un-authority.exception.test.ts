@@ -1,4 +1,4 @@
-import { UnAuthority, instanceofNoAuthError } from "./un-authority"
+import { UnAuthority, instanceofNoAuthError } from "./un-authority.exception"
 
 test('instanceofNoAuthError', () => {
     const error = new UnAuthority();

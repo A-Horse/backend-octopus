@@ -5,8 +5,15 @@ import { Project } from './model/project';
 import { ProjectIdFactory } from './model/project-id-factory';
 import { ProjectSetting } from './model/project-setting';
 import { ProjectRepository } from './project-repository';
+import { ImageService } from '../../service/image.service';
 
-export class ProjectAppliactionService {
+export class ProjectApplicationService {
+  private base64Service: ImageService;
+
+  constructor() {
+    this.base64Service = new ImageService();
+  }
+
   static getUserProjects(userId: number): Promise<Project[]> {
     return ProjectRepository.getUserProjects(userId);
   }
@@ -43,7 +50,7 @@ export class ProjectAppliactionService {
     );
 
     const kanban = await project.createKanban(createKanbanInput);
-    return await KanbanRepository.savekanban(kanban);
+    return await KanbanRepository.saveKanban(kanban);
   }
 
   static async setProjectDefaultKanban({ projectId, kanbanId }): Promise<void> {
@@ -52,12 +59,11 @@ export class ProjectAppliactionService {
     await project.setDefaultKanban(kanbanId);
   }
 
-  static async updateProjectCover(projectId: string, coverBase64: string) {
-    const filename: string = await FileService.saveBase64Image(coverBase64);
-
+  async updateProjectCover(projectId: string, coverBase64: string) {
+    const id: number = await this.base64Service.saveBase64Image(coverBase64);
     const project: Project = await ProjectRepository.getProjectDetail(projectId);
 
-    await project.setCover(filename);
-    return filename;
+    await project.setCoverBase64ID(id);
+    return id;
   }
 }

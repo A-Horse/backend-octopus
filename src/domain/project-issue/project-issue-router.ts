@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { check, query } from 'express-validator';
 
-import { authJwt } from '../../route/middle/jwt';
+import { authorizedRequestMiddle } from '../../route/middle/auth-handle.middle';
 import { validate } from '../../util/express-validate';
 import { ProjectIssue } from './project-issue';
 import { ProjectIssueApplicationService } from './project-issue-application-service';
@@ -11,7 +11,7 @@ const ProjectIssueRouter = express.Router();
 
 ProjectIssueRouter.get(
   '/kanban/:kanbanId/column/:columnId/cards',
-  authJwt,
+  authorizedRequestMiddle,
   async (req, res, next) => {
     const { name } = req.body;
     const { jw } = req;
@@ -29,7 +29,7 @@ ProjectIssueRouter.get(
   }
 );
 
-ProjectIssueRouter.post('/project/:projectId/issue', authJwt, async (req, res, next) => {
+ProjectIssueRouter.post('/project/:projectId/issue', authorizedRequestMiddle, async (req, res, next) => {
   const { jw } = req;
 
   try {
@@ -47,7 +47,7 @@ ProjectIssueRouter.post('/project/:projectId/issue', authJwt, async (req, res, n
 ProjectIssueRouter.get(
   '/project/:projectId/issues',
   validate([query('pageSize').isInt(), query('pageNumber').isInt()]),
-  authJwt,
+  authorizedRequestMiddle,
   async (req, res, next) => {
     try {
       const issuesPagtiation = await ProjectIssueApplicationService.getProjectIssues({
@@ -64,7 +64,7 @@ ProjectIssueRouter.get(
 );
 
 // TODO 权限校验
-ProjectIssueRouter.get('/issue/:issueId', authJwt, async (req, res, next) => {
+ProjectIssueRouter.get('/issue/:issueId', authorizedRequestMiddle, async (req, res, next) => {
   try {
     const detailedIssue = await ProjectIssueApplicationService.getDetailedIssue(
       req.params.issueId
@@ -76,7 +76,7 @@ ProjectIssueRouter.get('/issue/:issueId', authJwt, async (req, res, next) => {
   }
 });
 
-ProjectIssueRouter.patch('/issue/:issueId', authJwt, async (req, res, next) => {
+ProjectIssueRouter.patch('/issue/:issueId', authorizedRequestMiddle, async (req, res, next) => {
   try {
     await ProjectIssueApplicationService.udpateIssue(
       req.params.issueId,

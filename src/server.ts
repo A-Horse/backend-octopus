@@ -12,15 +12,16 @@ import { KanbanColumnRouter } from './domain/kanban-column/kanban-column-router'
 import { KanbanRouter } from './domain/kanban/kanban-router';
 import { ProjectIssueRouter } from './domain/project-issue/project-issue-router';
 import { ProjectRouter } from './domain/project/project-router';
-import { StatusErrorHandleMiddle } from './route/middle/error-handle';
+import { StatusErrorHandleMiddle } from './route/middle/status-error-handle.middle';
 import { RootRouter } from './route/root';
 import { UserRouter } from './route/user.router';
 import { generateSwagger } from './util/swagger-helper';
+import { ImageRouter } from './route/image.router';
 
 
 function initExpressApp(): express.Application {
   const app = express();
-
+  // TODO configure.get('LOG_PATH')
   const logDirectory = path.join(__dirname, '../log/access');
   
   if (!fs.existsSync(logDirectory)) {
@@ -41,7 +42,6 @@ function initExpressApp(): express.Application {
   //   })
   // );
   
-  // app.use(morgan('combined')); // Standard Apache combined log output.
   app.use(morgan('dev'));
   app.use(morgan('combined', { stream: accessLogStream }));
   
@@ -50,6 +50,7 @@ function initExpressApp(): express.Application {
   app.use(require('cookie-parser')());
   
   app.use(RootRouter);
+  app.use(ImageRouter);
   
   app.use('/api/user', UserRouter);
   

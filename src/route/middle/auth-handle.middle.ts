@@ -1,8 +1,8 @@
 import { authServive } from '../../service/auth.service';
-import { UnAuthority } from "../../exception/un-authority";
+import { UnAuthority } from "../../exception/un-authority.exception";
 
 // TODO move to auth
-export function authJwt(req, res, next) {
+export function authorizedRequestMiddle(req, res, next) {
   // TODO rename app-authxxx
   const jwtdata = req.header('jwt-token');
   

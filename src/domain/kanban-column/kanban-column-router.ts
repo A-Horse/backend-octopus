@@ -1,11 +1,11 @@
 import * as express from 'express';
 
-import { authJwt } from '../../route/middle/jwt';
+import { authorizedRequestMiddle } from '../../route/middle/auth-handle.middle';
 import { KanbanColumnApplicationService } from './kanban-column-application-service';
 
 const KanbanColumnRouter = express.Router();
 
-KanbanColumnRouter.post('/kanban/:kanbanId/column', authJwt, async (req, res, next) => {
+KanbanColumnRouter.post('/kanban/:kanbanId/column', authorizedRequestMiddle, async (req, res, next) => {
   const { name } = req.body;
   const { jw } = req;
 
