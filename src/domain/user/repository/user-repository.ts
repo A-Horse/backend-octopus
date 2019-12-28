@@ -1,4 +1,4 @@
-import {AppUser } from '../model/user';
+import { AppUser } from '../model/user';
 
 export interface UserRepository {
     findAllUser(): Promise<AppUser[]>
