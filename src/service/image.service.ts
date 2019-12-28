@@ -1,4 +1,4 @@
-import { Base64Entity } from 'src/orm/base64.entity';
+import { Base64Entity } from '../orm/base64.entity';
 import { getRepository } from 'typeorm';
 
 export class ImageService {

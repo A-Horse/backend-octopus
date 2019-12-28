@@ -5,14 +5,14 @@ import {
 } from 'typeorm';
 
 @Entity({
-  name: 'base64_items'
+  name: 'base64_item'
 })
 export class Base64Entity {
   @PrimaryGeneratedColumn()
   public id: number;
 
   @Column({
-    type: 'clob'
+    type: 'text'
   })
   public value: string;
 }

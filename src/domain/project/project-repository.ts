@@ -50,7 +50,7 @@ export class ProjectRepository {
     creator.id = project.creatorId;
 
     const projectSettingEntity = new ProjectSettingEntity();
-    projectSettingEntity.cover = project.setting.cover;
+    projectSettingEntity.coverBase64Id = project.setting.coverBase64Id;
 
     const projectEntity = new ProjectEntity();
     projectEntity.id = project.id;
@@ -86,7 +86,7 @@ export class ProjectRepository {
       .set({
         defaultKanban: defaultKanbanEntity,
         isStar: setting.isStar,
-        cover: setting.cover
+        coverBase64Id: setting.coverBase64Id
       })
       .where({ id: setting.id })
       .execute();
