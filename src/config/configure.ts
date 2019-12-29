@@ -50,6 +50,9 @@ class Configure {
     const customConfigMap = yaml.safeLoad(
       fs.readFileSync(path.join(__dirname, `../../config/${specConfigFileName}`), 'utf8')
     );
+    if (!customConfigMap) {
+      return;
+    }
     this.configMap = R.mapObjIndexed((value: string, key: string, config: Config) => {
       if (customConfigMap[key]) {
         config[key] = customConfigMap[key];
