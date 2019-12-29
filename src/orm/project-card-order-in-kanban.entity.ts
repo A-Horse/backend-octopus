@@ -19,6 +19,6 @@ export class ProjectIssueOrderInKanbanEntity {
   })
   public issue: ProjectIssueEntity;
 
-  @Column({type: 'float'})
+  @Column({ type: 'float' })
   public order: number;
 }

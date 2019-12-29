@@ -9,7 +9,7 @@ function main() {
     bcrypt.hash(input, salt, (error, hash) => {
       console.log(hash);
     });
-  }); 
+  });
 }
 
 main();

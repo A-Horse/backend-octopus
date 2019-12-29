@@ -1,3 +1,3 @@
 export interface JSONEntity {
-    toJSON: () => any;
+  toJSON: () => any;
 }

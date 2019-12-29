@@ -42,6 +42,10 @@ class Configure {
     return this.configMap[key];
   }
 
+  public set(key: ConfigKey, value: string): void {
+    this.configMap[key as string] = value;
+  }
+
   private overrideConfigKeyFromCustomConfig(specConfigFileName: string) {
     const customConfigMap = yaml.safeLoad(
       fs.readFileSync(path.join(__dirname, `../../config/${specConfigFileName}`), 'utf8')

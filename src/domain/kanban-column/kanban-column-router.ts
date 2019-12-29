@@ -5,21 +5,25 @@ import { KanbanColumnApplicationService } from './kanban-column-application-serv
 
 const KanbanColumnRouter = express.Router();
 
-KanbanColumnRouter.post('/kanban/:kanbanId/column', authorizedRequestMiddle, async (req, res, next) => {
-  const { name } = req.body;
-  const { jw } = req;
+KanbanColumnRouter.post(
+  '/kanban/:kanbanId/column',
+  authorizedRequestMiddle,
+  async (req, res, next) => {
+    const { name } = req.body;
+    const { jw } = req;
 
-  try {
-    const id = await KanbanColumnApplicationService.createKanbanColumn({
-      name,
-      kanbanId: req.params.kanbanId,
-      creatorId: jw.user.id
-    });
+    try {
+      const id = await KanbanColumnApplicationService.createKanbanColumn({
+        name,
+        kanbanId: req.params.kanbanId,
+        creatorId: jw.user.id
+      });
 
-    res.status(200).send(id);
-  } catch (error) {
-    next(error);
+      res.status(200).send(id);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 export { KanbanColumnRouter };

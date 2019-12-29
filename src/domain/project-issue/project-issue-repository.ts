@@ -47,20 +47,18 @@ export class ProjectIssueRepository {
   ): Promise<void> {
     const mongoDB = await getMongoDB();
     return new Promise<void>((resolve, reject) => {
-      mongoDB
-        .collection('issue_detail')
-        .update(
-          {
-            issueId
-          },
-          issueDetail.toJSON(),
-          (error: MongoError, result: any) => {
-            if (error) {
-              return reject(error);
-            }
-            return resolve();
+      mongoDB.collection('issue_detail').update(
+        {
+          issueId
+        },
+        issueDetail.toJSON(),
+        (error: MongoError, result: any) => {
+          if (error) {
+            return reject(error);
           }
-        );
+          return resolve();
+        }
+      );
     });
   }
 
@@ -213,29 +211,30 @@ export class ProjectIssueRepository {
   static async getIssueDetail(issueId: string): Promise<ProjectIssueDetail> {
     const mongoDB = await getMongoDB();
     const detailData: any = await new Promise((resolve, reject) => {
-      mongoDB.collection('issue_detail').findOne({
-        issueId
-      }, (error: MongoError, result: any) => {
-        if (error) {
-          return reject(error)
+      mongoDB.collection('issue_detail').findOne(
+        {
+          issueId
+        },
+        (error: MongoError, result: any) => {
+          if (error) {
+            return reject(error);
+          }
+          return resolve(result);
         }
-        return resolve(result)
-      })
+      );
     });
 
     let issueDetail: ProjectIssueDetail;
 
     if (!detailData) {
       await new Promise((resolve, reject) => {
-        mongoDB
-        .collection('issue_detail')
-        .insertOne({issueId}, (err, result) => {
+        mongoDB.collection('issue_detail').insertOne({ issueId }, (err, result) => {
           if (err) {
             return reject(err);
           }
           return resolve(result);
         });
-      })
+      });
       issueDetail = new ProjectIssueDetail({ issueId });
     } else {
       issueDetail = new ProjectIssueDetail({ ...detailData });

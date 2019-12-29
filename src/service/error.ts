@@ -5,7 +5,6 @@ export class ErrorParamsError extends Error {
   }
 }
 
-
 export class NotFoundError extends Error {
   constructor(message = 'resource not found') {
     super(message);

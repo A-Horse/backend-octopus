@@ -18,10 +18,12 @@ ImageRouter.get(
   validate([param('id').isInt()]),
   authorizedRequestMiddle,
   async (req, res) => {
-    const base64Entity: Base64Entity = await getRepository(Base64Entity).findOne(req.params.id);
+    const base64Entity: Base64Entity = await getRepository(Base64Entity).findOne(
+      req.params.id
+    );
     return res.status(200).json({
       result: base64Entity.value
-    })
+    });
   }
 );
 

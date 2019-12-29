@@ -37,32 +37,40 @@ ProjectRouter.post('/project', authorizedRequestMiddle, async (req, res, next) =
   }
 });
 
-ProjectRouter.get('/project/:projectId', authorizedRequestMiddle, async (req, res, next) => {
-  try {
-    const project = await ProjectApplicationService.getProjectDetail(
-      req.params.projectId
-    );
-    res.status(200).send(project.toJSON());
-  } catch (error) {
-    next(error);
+ProjectRouter.get(
+  '/project/:projectId',
+  authorizedRequestMiddle,
+  async (req, res, next) => {
+    try {
+      const project = await ProjectApplicationService.getProjectDetail(
+        req.params.projectId
+      );
+      res.status(200).send(project.toJSON());
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
-ProjectRouter.post('/project/:projectId/kanban', authorizedRequestMiddle, async (req, res, next) => {
-  const { name } = req.body;
-  const { jw } = req;
+ProjectRouter.post(
+  '/project/:projectId/kanban',
+  authorizedRequestMiddle,
+  async (req, res, next) => {
+    const { name } = req.body;
+    const { jw } = req;
 
-  try {
-    const id = await ProjectApplicationService.createProjectKanban({
-      name,
-      creatorId: jw.user.id,
-      projectId: req.params.projectId
-    });
-    res.status(200).send(id);
-  } catch (error) {
-    next(error);
+    try {
+      const id = await ProjectApplicationService.createProjectKanban({
+        name,
+        creatorId: jw.user.id,
+        projectId: req.params.projectId
+      });
+      res.status(200).send(id);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 ProjectRouter.post(
   '/project/:projectId/setting/default-kanban/:kanbanId',

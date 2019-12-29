@@ -1,6 +1,14 @@
 import {
-    Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn,
-    Unique, UpdateDateColumn
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+  Unique,
+  UpdateDateColumn
 } from 'typeorm';
 
 import { ProjectStatus, ProjectType } from '../typing/project.typing';
@@ -49,7 +57,10 @@ export class ProjectEntity {
   @ManyToOne(() => UserEntity)
   public owner: UserEntity;
 
-  @OneToMany(() => ProjectIssueEntity, card => card.kanban)
+  @OneToMany(
+    () => ProjectIssueEntity,
+    card => card.kanban
+  )
   public cards: ProjectIssueEntity[];
 
   @CreateDateColumn()

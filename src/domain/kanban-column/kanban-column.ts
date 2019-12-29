@@ -37,7 +37,6 @@ export class KanbanColumn implements JSONEntity {
     });
   }
 
-
   public async initOrder(): Promise<void> {
     this.order = (await KanbanColumnRepository.getKanbanColumnCount(this.kanbanId)) * 100;
   }

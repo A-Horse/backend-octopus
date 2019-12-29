@@ -36,5 +36,4 @@ UserRouter.post('/signup', async (req, res, next) => {
   });
 });
 
-
 export { UserRouter };

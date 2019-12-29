@@ -7,5 +7,3 @@ supervisorctl reload
 
 supervisorctl update
 ```
-
-

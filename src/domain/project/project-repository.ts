@@ -75,7 +75,6 @@ export class ProjectRepository {
   static async updateProjectSetting(setting: ProjectSetting): Promise<void> {
     let defaultKanbanEntity: KanbanEntity;
     if (setting.defaultKanbanId) {
-      
       defaultKanbanEntity = new KanbanEntity();
       defaultKanbanEntity.id = setting.defaultKanbanId;
     }
@@ -91,6 +90,4 @@ export class ProjectRepository {
       .where({ id: setting.id })
       .execute();
   }
-
-  
 }

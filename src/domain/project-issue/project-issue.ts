@@ -22,7 +22,7 @@ export class ProjectIssue implements JSONEntity {
   public orderInKanban: number;
   public createdAt: Date;
   public updatedAt: Date;
-  private  detail?: ProjectIssueDetail;
+  private detail?: ProjectIssueDetail;
 
   public getDetail() {
     return this.detail;
@@ -105,7 +105,7 @@ export class ProjectIssue implements JSONEntity {
       this.orderInKanban
     );
   }
-  
+
   public async pullDetail(): Promise<void> {
     this.detail = await ProjectIssueRepository.getIssueDetail(this.id);
   }
@@ -115,7 +115,7 @@ export class ProjectIssue implements JSONEntity {
   }
 
   public async save(): Promise<void> {
-    // TODO: udpate and save 
+    // TODO: udpate and save
     await ProjectIssueRepository.udpateIssue(this);
   }
 

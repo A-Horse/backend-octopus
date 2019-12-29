@@ -1,5 +1,1 @@
-
-
-export class UserApplicationService {
-    
-}
+export class UserApplicationService {}

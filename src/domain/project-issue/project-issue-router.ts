@@ -29,20 +29,24 @@ ProjectIssueRouter.get(
   }
 );
 
-ProjectIssueRouter.post('/project/:projectId/issue', authorizedRequestMiddle, async (req, res, next) => {
-  const { jw } = req;
+ProjectIssueRouter.post(
+  '/project/:projectId/issue',
+  authorizedRequestMiddle,
+  async (req, res, next) => {
+    const { jw } = req;
 
-  try {
-    const cardId: string = await ProjectIssueApplicationService.createIssue({
-      creatorId: jw.user.id,
-      ...req.body
-    });
+    try {
+      const cardId: string = await ProjectIssueApplicationService.createIssue({
+        creatorId: jw.user.id,
+        ...req.body
+      });
 
-    res.status(201).send(cardId);
-  } catch (error) {
-    next(error);
+      res.status(201).send(cardId);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 ProjectIssueRouter.get(
   '/project/:projectId/issues',
@@ -64,30 +68,34 @@ ProjectIssueRouter.get(
 );
 
 // TODO 权限校验
-ProjectIssueRouter.get('/issue/:issueId', authorizedRequestMiddle, async (req, res, next) => {
-  try {
-    const detailedIssue = await ProjectIssueApplicationService.getDetailedIssue(
-      req.params.issueId
-    );
+ProjectIssueRouter.get(
+  '/issue/:issueId',
+  authorizedRequestMiddle,
+  async (req, res, next) => {
+    try {
+      const detailedIssue = await ProjectIssueApplicationService.getDetailedIssue(
+        req.params.issueId
+      );
 
-    res.json(detailedIssue.toJSON());
-  } catch (error) {
-    next(error);
+      res.json(detailedIssue.toJSON());
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
-ProjectIssueRouter.patch('/issue/:issueId', authorizedRequestMiddle, async (req, res, next) => {
-  try {
-    await ProjectIssueApplicationService.udpateIssue(
-      req.params.issueId,
-      req.body
-    );
+ProjectIssueRouter.patch(
+  '/issue/:issueId',
+  authorizedRequestMiddle,
+  async (req, res, next) => {
+    try {
+      await ProjectIssueApplicationService.udpateIssue(req.params.issueId, req.body);
 
-    res.status(201).send();
-  } catch (error) {
-    next(error);
+      res.status(201).send();
+    } catch (error) {
+      next(error);
+    }
   }
-});
-
+);
 
 export { ProjectIssueRouter };

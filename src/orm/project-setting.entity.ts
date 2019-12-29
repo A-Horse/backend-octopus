@@ -1,6 +1,11 @@
 import {
-    Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn,
-    UpdateDateColumn
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
 import { KanbanEntity } from './kanban.entity';
@@ -26,7 +31,7 @@ export class ProjectSettingEntity {
     nullable: true,
     eager: true
   })
-  @JoinColumn({ name: "defaultKanbanId" })
+  @JoinColumn({ name: 'defaultKanbanId' })
   public defaultKanban: KanbanEntity;
 
   @CreateDateColumn()

@@ -1,6 +1,13 @@
 import {
-    Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne,
-    PrimaryGeneratedColumn, UpdateDateColumn
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
 import { ProjectStatus } from '../typing/project.typing';
@@ -54,13 +61,22 @@ export class KanbanEntity {
   })
   public project: ProjectEntity;
 
-  @OneToMany(() => KanbanEpicEntity, epic => epic.kanban)
+  @OneToMany(
+    () => KanbanEpicEntity,
+    epic => epic.kanban
+  )
   public epics: KanbanEpicEntity[];
 
-  @OneToMany(() => KanbanColumnEntity, column => column.kanban)
+  @OneToMany(
+    () => KanbanColumnEntity,
+    column => column.kanban
+  )
   public columns: KanbanColumnEntity[];
 
-  @OneToMany(() => ProjectIssueEntity, card => card.kanban)
+  @OneToMany(
+    () => ProjectIssueEntity,
+    card => card.kanban
+  )
   public cards: ProjectIssueEntity[];
 
   @CreateDateColumn()

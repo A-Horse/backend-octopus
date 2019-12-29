@@ -70,7 +70,6 @@ export class Project {
     await ProjectRepository.updateProjectSetting(this.setting);
   }
 
-
   static fromDataEntity(dataEntity: ProjectEntity): Project {
     const setting = ProjectSetting.fromDataEntity(dataEntity.setting);
 

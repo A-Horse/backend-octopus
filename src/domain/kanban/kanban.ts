@@ -13,12 +13,22 @@ export class Kanban implements JSONEntity {
   public updatedAt: Date;
   public setting: KanbanSetting;
 
-  constructor({ id, name, desc, type, creatorId, createdAt, updatedAt, setting, projectId }) {
+  constructor({
+    id,
+    name,
+    desc,
+    type,
+    creatorId,
+    createdAt,
+    updatedAt,
+    setting,
+    projectId
+  }) {
     this.id = id;
     this.name = name;
     this.desc = desc;
     this.type = type;
-    this.creatorId= creatorId;
+    this.creatorId = creatorId;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.setting = setting;
@@ -37,7 +47,7 @@ export class Kanban implements JSONEntity {
       creatorId: dataEntity.creator.id,
       createdAt: dataEntity.createdAt,
       updatedAt: dataEntity.updatedAt,
-      setting: setting,
+      setting: setting
     });
   }
 
@@ -51,6 +61,6 @@ export class Kanban implements JSONEntity {
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       setting: this.setting.toJSON()
-    }
+    };
   }
 }

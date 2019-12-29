@@ -1,5 +1,10 @@
 import {
-    Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn, UpdateDateColumn
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
 import { ProjectIssueType } from '../typing/kanban-card.typing';
@@ -34,22 +39,37 @@ export class ProjectIssueEntity {
   @ManyToOne(() => UserEntity)
   public assignee: UserEntity;
 
-  @ManyToOne(() => KanbanColumnEntity, column => column.cards, {
-    nullable: true
-  })
+  @ManyToOne(
+    () => KanbanColumnEntity,
+    column => column.cards,
+    {
+      nullable: true
+    }
+  )
   public column: KanbanColumnEntity;
 
-  @ManyToOne(type => KanbanEpicEntity, epic => epic.cards, {
-    nullable: true
-  })
+  @ManyToOne(
+    type => KanbanEpicEntity,
+    epic => epic.cards,
+    {
+      nullable: true
+    }
+  )
   public epic: KanbanEpicEntity;
 
-  @ManyToOne(type => ProjectEntity, project => project.cards)
+  @ManyToOne(
+    type => ProjectEntity,
+    project => project.cards
+  )
   public project: ProjectEntity;
 
-  @ManyToOne(type => KanbanEntity, kanban => kanban.cards, {
-    nullable: true
-  })
+  @ManyToOne(
+    type => KanbanEntity,
+    kanban => kanban.cards,
+    {
+      nullable: true
+    }
+  )
   public kanban: KanbanEntity;
 
   @Column({
