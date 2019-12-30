@@ -16,3 +16,5 @@ MONGO_URL: "mongodb://localhost:27017"
 MONGO_DB: "octopus"
 
 TIMEZONE: "Asia/Shanghai"
+
+SWAGGER: true

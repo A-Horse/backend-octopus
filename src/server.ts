@@ -65,7 +65,8 @@ function initExpressApp(): express.Application {
 
 export function startServer() {
   const app = initExpressApp();
-  generateSwagger(app);
+
+  configure.get('SWAGGER') && generateSwagger(app);
 
   const server = http.createServer(app);
   server.listen(configure.get('SERVE_PORT') as number, '0.0.0.0');

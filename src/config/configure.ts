@@ -16,6 +16,7 @@ interface Config {
   MONGO_URL: string;
   MONGO_DB: string;
   TIMEZONE: string;
+  SWAGGER: boolean;
 }
 
 type ConfigKey =
@@ -31,7 +32,8 @@ type ConfigKey =
   | 'MYSQL_DB'
   | 'MONGO_URL'
   | 'MONGO_DB'
-  | 'TIMEZONE';
+  | 'TIMEZONE'
+  | 'SWAGGER';
 
 class Configure {
   private configMap: Config;
