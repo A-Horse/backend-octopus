@@ -7,16 +7,16 @@ import * as path from 'path';
 import * as helmet from 'helmet';
 import rfs from 'rotating-file-stream';
 import { configure } from './config/configure';
-import { apiPrefix } from './constant';
 import { KanbanColumnRouter } from './domain/kanban-column/kanban-column-router';
 import { KanbanRouter } from './domain/kanban/kanban-router';
 import { ProjectIssueRouter } from './domain/project-issue/project-issue-router';
 import { ProjectRouter } from './domain/project/project-router';
 import { StatusErrorHandleMiddle } from './route/middle/status-error-handle.middle';
 import { RootRouter } from './route/root';
-import { UserRouter } from './route/user.router';
+import { AuthRouter } from './route/user.router';
 import { generateSwagger } from './util/swagger-helper';
 import { ImageRouter } from './route/image.router';
+import { UserRouter } from './domain/user/user-router';
 
 function initExpressApp(): express.Application {
   const app = express();
@@ -32,15 +32,7 @@ function initExpressApp(): express.Application {
     path: logDirectory
   });
 
-  app.use(helmet()); // secure
-
-  // app.use(
-  //   '/storage',
-  //   express.static('storage', {
-  //     maxAge: 1000 * 60 * 60 * 24 * 365
-  //   })
-  // );
-
+  app.use(helmet()); // for secure
   app.use(morgan('dev'));
   app.use(morgan('combined', { stream: accessLogStream }));
 
@@ -50,20 +42,19 @@ function initExpressApp(): express.Application {
 
   app.use(RootRouter);
   app.use(ImageRouter);
-
-  app.use('/api/user', UserRouter);
-
-  app.use(apiPrefix, ProjectRouter);
-  app.use(apiPrefix, KanbanRouter);
-  app.use(apiPrefix, KanbanColumnRouter);
-  app.use(apiPrefix, ProjectIssueRouter);
+  app.use(UserRouter);
+  app.use('/user', AuthRouter);
+  app.use(ProjectRouter);
+  app.use(KanbanRouter);
+  app.use(KanbanColumnRouter);
+  app.use(ProjectIssueRouter);
 
   app.use(StatusErrorHandleMiddle);
 
   return app;
 }
 
-export function startServer() {
+export function startServer(): http.Server {
   const app = initExpressApp();
 
   configure.get('SWAGGER') && generateSwagger(app);
@@ -73,4 +64,5 @@ export function startServer() {
   console.log(
     colors.green(`Octopus serve on http://0.0.0.0:${configure.get('SERVE_PORT')}`)
   );
+  return server;
 }

@@ -1,4 +1,4 @@
-import { authServive } from '../../service/auth.service';
+import { authService } from '../../service/auth.service';
 import { UnAuthority } from '../../exception/un-authority.exception';
 
 // TODO move to auth
@@ -10,7 +10,7 @@ export function authorizedRequestMiddle(req, res, next) {
     throw new UnAuthority();
   }
   try {
-    req.jw = authServive.unsignJwt(jwtdata);
+    req.jw = authService.unsignJwt(jwtdata);
   } catch (error) {
     throw new UnAuthority();
   }
