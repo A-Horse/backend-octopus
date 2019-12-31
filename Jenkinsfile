@@ -25,11 +25,6 @@ pipeline {
                 sh 'npm run test' 
             }
         }
-        stage('Build') { 
-            steps {
-                sh 'npm run build' 
-            }
-        }
     }
     post {
         always {

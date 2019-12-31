@@ -10,12 +10,12 @@ describe('UserRepositoryImpl', () => {
 
   beforeAll(async () => {
     jest.setTimeout(10000);
-    setupResult  = await setupTestDependency();
+    setupResult = await setupTestDependency();
   });
 
   afterAll(async () => {
-    await setupResult.tearDown()
-  })
+    await setupResult.tearDown();
+  });
 
   test('findAllUser', async () => {
     const u1 = new UserEntity();

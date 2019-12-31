@@ -17,9 +17,9 @@ const UserRouter = express.Router();
  * @returns {Array.<User>} 200 - An array of user
  */
 UserRouter.get('/users', authorizedRequestMiddle, async (req, res, next) => {
-    const userRepo: UserRepository = new UserRepositoryImpl();
-    const users = await userRepo.findAllUser();
-    res.json(users);
+  const userRepo: UserRepository = new UserRepositoryImpl();
+  const users = await userRepo.findAllUser();
+  res.json(users);
 });
 
 export { UserRouter };
