@@ -13,8 +13,11 @@ function main() {
   configure.loadConfigureFromFile();
   catFile('./.art/ban.ascii');
 
-  createConnection(getPostgresConfig())
+  const dbConfig = getPostgresConfig()
+
+  createConnection(dbConfig)
     .then(() => {
+      console.log(`connect mysql ${dbConfig.host}/${dbConfig.database}`)
       console.log('database connection successful.');
       startServer();
       startToolServer();

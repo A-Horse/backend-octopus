@@ -2,7 +2,7 @@ import { ConnectionOptions } from 'typeorm';
 
 import { configure } from './configure';
 
-export function getPostgresConfig(): ConnectionOptions {
+export function getPostgresConfig(): any {
   return {
     type: 'mysql',
     host: configure.get('MYSQL_HOST') as string,
