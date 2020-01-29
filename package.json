@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "description": "octopus backend",
   "scripts": {
-    "start": "ts-node src/main.ts",
+    "start": "TZ=\"utc\" ts-node src/main.ts",
     "create-all-table": "babel-node db/table.js create",
     "proxy": "mitmproxy -R http://127.0.0.1:6000 -p 8888 --anticache",
     "test": "jest"
