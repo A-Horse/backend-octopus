@@ -26,12 +26,16 @@ export class ProjectIssueRepository {
   }
 
   static async udpateIssue(issue: ProjectIssue): Promise<void> {
+    const column = new KanbanColumnEntity();
+    column.id = issue.columnId;
     await getConnection()
       .createQueryBuilder()
       .update(ProjectIssueEntity)
       .set({
         title: issue.title,
-        deadline: issue.deadline
+        deadline: issue.deadline,
+        deadlineDone: issue.deadlineDone,
+        column: column
       })
       .where({ id: issue.id })
       .execute();

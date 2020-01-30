@@ -17,8 +17,11 @@ import { AuthRouter } from './route/user.router';
 import { generateSwagger } from './util/swagger-helper';
 import { ImageRouter } from './route/image.router';
 import { UserRouter } from './domain/user/user-router';
+import { DIContainer } from './container/di-container';
+require('express-async-errors');
 
-function initExpressApp(): express.Application {
+
+function initExpressApp(container: DIContainer): express.Application {
   const app = express();
   // TODO configure.get('LOG_PATH')
   const logDirectory = path.join(__dirname, '../log/access');
@@ -44,7 +47,10 @@ function initExpressApp(): express.Application {
   app.use(ImageRouter);
   app.use(UserRouter);
   app.use('/user', AuthRouter);
-  app.use(ProjectRouter);
+
+  const projectRouter = new ProjectRouter(container);
+  projectRouter.setupRouter(app);
+
   app.use(KanbanRouter);
   app.use(KanbanColumnRouter);
   app.use(ProjectIssueRouter);
@@ -54,15 +60,15 @@ function initExpressApp(): express.Application {
   return app;
 }
 
-export function startServer(): http.Server {
-  const app = initExpressApp();
+export function startServer(container: DIContainer): http.Server {
+  const app = initExpressApp(container);
 
   configure.get('SWAGGER') && generateSwagger(app);
 
   const server = http.createServer(app);
-  server.listen(configure.get('SERVE_PORT') as number, '0.0.0.0');
+  server.listen(configure.getConfig().SERVE_PORT, '0.0.0.0');
   console.log(
-    colors.green(`Octopus serve on http://0.0.0.0:${configure.get('SERVE_PORT')}`)
+    colors.green(`Octopus serve on http://0.0.0.0:${configure.getConfig().SERVE_PORT}`)
   );
   return server;
 }

@@ -4,7 +4,7 @@ import { ProjectSettingEntity } from '../../../orm/project-setting.entity';
 
 export class ProjectSetting {
   public id: string;
-  public coverBase64Id: number;
+  public coverBase64Id: string;
   public isStar: boolean;
   public defaultKanbanId: string;
 
@@ -15,7 +15,7 @@ export class ProjectSetting {
     isStar
   }: {
     id?: string;
-    coverBase64Id?: number;
+    coverBase64Id?: string;
     defaultKanbanId?: string;
     isStar?: boolean;
   }) {

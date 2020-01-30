@@ -1,61 +1,62 @@
 import * as express from 'express';
-
 import { authorizedRequestMiddle } from '../../route/middle/auth-handle.middle';
 import { Project } from './model/project';
 import { ProjectApplicationService } from './project-application-service';
+import { DIContainer } from 'src/container/di-container';
 
 const multipartMiddleware = require('connect-multiparty')();
 
-const ProjectRouter = express.Router();
+export class ProjectRouter {
+  private projectApplicationService: ProjectApplicationService;
 
-ProjectRouter.get('/projects', authorizedRequestMiddle, async (req, res, next) => {
-  try {
-    const { jw } = req;
-    const projects: Project[] = await ProjectApplicationService.getUserProjects(
-      jw.user.id
-    );
-
-    res.json(projects.map(p => p.toJSON()));
-  } catch (error) {
-    next(error);
+  constructor(private container: DIContainer) {
+    this.projectApplicationService = new ProjectApplicationService(container);
   }
-});
 
-ProjectRouter.post('/project', authorizedRequestMiddle, async (req, res, next) => {
-  const { name } = req.body;
-  const { jw } = req;
+  public setupRouter(app: express.Application) {
+    const router = express.Router();
 
-  try {
-    await ProjectApplicationService.createProject({
-      name,
-      creatorId: jw.user.id
+    router.get('/projects', authorizedRequestMiddle, this.getProjects);
+    router.post('/project', authorizedRequestMiddle, this.postProject);
+    router.get('/project/:projectId', authorizedRequestMiddle, this.getProject);
+    router.post('/project/:projectId/kanban', authorizedRequestMiddle, this.postProjectKanban);
+    router.post('/project/:projectId/setting/default-kanban/:kanbanId', authorizedRequestMiddle, this.postProjectDefaultKanban);
+
+    router.post('/project/:projectId/cover', multipartMiddleware, authorizedRequestMiddle, async (req, res, next) => {
+      const { projectId } = req.params;
+      await this.projectApplicationService.updateProjectCover(projectId, req.body.cover);
+      res.status(200).send();
     });
 
-    res.status(200).send();
-  } catch (error) {
-    next(error);
+    app.use(router);
   }
-});
 
-ProjectRouter.get(
-  '/project/:projectId',
-  authorizedRequestMiddle,
-  async (req, res, next) => {
+  private async getProjects(req, res, next) {
     try {
-      const project = await ProjectApplicationService.getProjectDetail(
-        req.params.projectId
-      );
-      res.status(200).send(project.toJSON());
+      const { jw } = req;
+      const projects: Project[] = await ProjectApplicationService.getUserProjects(jw.user.id);
+      res.json(projects.map(p => p.toJSON()));
     } catch (error) {
       next(error);
     }
   }
-);
 
-ProjectRouter.post(
-  '/project/:projectId/kanban',
-  authorizedRequestMiddle,
-  async (req, res, next) => {
+  private async postProject(req, res, next) {
+    const { name } = req.body;
+    const { jw } = req;
+    await ProjectApplicationService.createProject({
+      name,
+      creatorId: jw.user.id
+    });
+    res.status(200).send();
+  }
+
+  private async getProject(req, res, next) {
+    const project = await ProjectApplicationService.getProjectDetail(req.params.projectId);
+    res.status(200).send(project.toJSON());
+  }
+
+  private async postProjectKanban(req, res, next) {
     const { name } = req.body;
     const { jw } = req;
 
@@ -70,12 +71,8 @@ ProjectRouter.post(
       next(error);
     }
   }
-);
 
-ProjectRouter.post(
-  '/project/:projectId/setting/default-kanban/:kanbanId',
-  authorizedRequestMiddle,
-  async (req, res, next) => {
+  private async postProjectDefaultKanban(req, res, next) {
     const { projectId, kanbanId } = req.params;
 
     try {
@@ -88,22 +85,4 @@ ProjectRouter.post(
       next(error);
     }
   }
-);
-
-ProjectRouter.post(
-  '/project/:projectId/cover',
-  multipartMiddleware,
-  authorizedRequestMiddle,
-  async (req, res, next) => {
-    const { projectId } = req.params;
-    const projectApplicationService = new ProjectApplicationService();
-    try {
-      await projectApplicationService.updateProjectCover(projectId, req.body.cover);
-      res.status(200).send();
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
-export { ProjectRouter };
+}

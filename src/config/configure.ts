@@ -17,6 +17,10 @@ interface Config {
   MONGO_DB: string;
   TIMEZONE: string;
   SWAGGER: boolean;
+  MinIOEndPoint: string;
+  MinIOAccessKey: string;
+  MinIOSecretKey: string;
+  MinIOProjectCoverBucketName: string;
 }
 
 type ConfigKey =
@@ -33,17 +37,26 @@ type ConfigKey =
   | 'MONGO_URL'
   | 'MONGO_DB'
   | 'TIMEZONE'
-  | 'SWAGGER';
+  | 'SWAGGER'
+  | 'MinIOEndPoint'
+  | 'MinIOAccessKey'
+  | 'MinIOSecretKey';
 
 class Configure {
-  private configMap: Config;
+  private configMap: Config; // TODO: remove
 
   constructor() {}
 
+  public getConfig(): Config {
+    return this.configMap;
+  }
+
+  // TODO: Deprecated
   public get(key: ConfigKey): ReturnType<() => Config[ConfigKey]> {
     return this.configMap[key];
   }
 
+  // TODO: Deprecated
   public set(key: ConfigKey, value: string): void {
     this.configMap[key as string] = value;
   }
@@ -63,7 +76,7 @@ class Configure {
     }, this.configMap);
   }
 
-  public loadConfigureFromFile(specConfigFileName = 'custom-config.yaml') {
+  public loadConfigureFromFile(specConfigFileName = 'custom.config.yaml') {
     this.configMap = yaml.safeLoad(
       fs.readFileSync(path.join(__dirname, '../../config/config.yaml'), 'utf8')
     );

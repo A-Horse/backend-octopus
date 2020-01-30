@@ -1,7 +1,7 @@
 node_modules
 .DS_Store
 built
-storage
+/storage
 /log/*
 .idea
 backend-octopus.iml

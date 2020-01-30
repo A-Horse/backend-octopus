@@ -18,3 +18,8 @@ MONGO_DB: "octopus"
 TIMEZONE: "Asia/Shanghai"
 
 SWAGGER: true
+
+MinIOEndPoint: ""
+MinIOAccessKey: ""
+MinIOSecretKey: ""
+MinIOProjectCoverBucketName: "octopus-project-cover"

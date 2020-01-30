@@ -19,7 +19,7 @@ export function setPartialIssueData(
 
   detailFields.forEach((key: string) => {
     projectIssue.getDetail()[key] = partialIssueData[key];
-  });
+  }); 
 
   issueFields.forEach((key: string) => {
     projectIssue[key] = partialIssueData[key];

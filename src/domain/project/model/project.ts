@@ -65,9 +65,8 @@ export class Project {
     await ProjectRepository.updateProjectSetting(this.setting);
   }
 
-  public async setCoverBase64ID(id: number): Promise<void> {
+  public async setCoverBase64ID(id: string): Promise<void> {
     this.setting.coverBase64Id = id;
-    await ProjectRepository.updateProjectSetting(this.setting);
   }
 
   static fromDataEntity(dataEntity: ProjectEntity): Project {

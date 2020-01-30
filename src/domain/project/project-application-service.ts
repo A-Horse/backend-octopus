@@ -1,4 +1,3 @@
-import { FileService } from '../../service/file.service';
 import { CreateKanbanInput, KanbanId } from '../../typing/kanban.typing';
 import { KanbanRepository } from '../kanban/kanban-repository';
 import { Project } from './model/project';
@@ -6,13 +5,12 @@ import { ProjectIdFactory } from './model/project-id-factory';
 import { ProjectSetting } from './model/project-setting';
 import { ProjectRepository } from './project-repository';
 import { ImageService } from '../../service/image.service';
+import { DIContainer } from '../../container/di-container';
 
 export class ProjectApplicationService {
   private base64Service: ImageService;
 
-  constructor() {
-    this.base64Service = new ImageService();
-  }
+  constructor(private container: DIContainer) {}
 
   static getUserProjects(userId: number): Promise<Project[]> {
     return ProjectRepository.getUserProjects(userId);
@@ -42,12 +40,8 @@ export class ProjectApplicationService {
     return ProjectRepository.saveProject(project);
   }
 
-  static async createProjectKanban(
-    createKanbanInput: CreateKanbanInput
-  ): Promise<KanbanId> {
-    const project: Project = await ProjectRepository.getProjectDetail(
-      createKanbanInput.projectId
-    );
+  static async createProjectKanban(createKanbanInput: CreateKanbanInput): Promise<KanbanId> {
+    const project: Project = await ProjectRepository.getProjectDetail(createKanbanInput.projectId);
 
     const kanban = await project.createKanban(createKanbanInput);
     return await KanbanRepository.saveKanban(kanban);
@@ -60,10 +54,13 @@ export class ProjectApplicationService {
   }
 
   async updateProjectCover(projectId: string, coverBase64: string) {
-    const id: number = await this.base64Service.saveBase64Image(coverBase64);
-    const project: Project = await ProjectRepository.getProjectDetail(projectId);
+    const id: string = await this.container.imageService.saveBase64Image(coverBase64.replace(/^data:image\/png;base64,/, ''));
 
+    this.container.minioStorage.saveObject;
+
+    const project: Project = await ProjectRepository.getProjectDetail(projectId);
     await project.setCoverBase64ID(id);
+    // await ProjectRepository.updateProjectSetting(this.setting);
     return id;
   }
 }

@@ -74,6 +74,7 @@ export class ProjectIssue implements JSONEntity {
       kanbanId: _.get(dataEntity, ['kanban', 'id'], null),
       projectId: _.get(dataEntity, ['project', 'id'], null),
       deadline: _.get(dataEntity, ['deadline'], null),
+      deadlineDone: _.get(dataEntity, ['deadlineDone'], null),
       createdAt: dataEntity.createdAt,
       updatedAt: dataEntity.updatedAt
     });
@@ -114,6 +115,7 @@ export class ProjectIssue implements JSONEntity {
     setPartialIssueData(this, partialField);
   }
 
+  // TODO move it out
   public async save(): Promise<void> {
     // TODO: udpate and save
     await ProjectIssueRepository.udpateIssue(this);
