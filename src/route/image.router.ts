@@ -1,9 +1,6 @@
 import * as express from 'express';
-import { getRepository } from 'typeorm';
-
 import { validate } from '../util/express-validate';
-import { query, param } from 'express-validator';
-import { authorizedRequestMiddle } from './middle/auth-handle.middle';
+import { param } from 'express-validator';
 import { DIContainer } from 'src/container/di-container';
 
 export class ImageRouter {
