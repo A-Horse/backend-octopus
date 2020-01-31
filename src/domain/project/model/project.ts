@@ -66,7 +66,7 @@ export class Project {
   }
 
   public async setCoverBase64ID(id: string): Promise<void> {
-    this.setting.coverBase64Id = id;
+    this.setting.coverFileName = id;
   }
 
   static fromDataEntity(dataEntity: ProjectEntity): Project {

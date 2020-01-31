@@ -1,5 +1,5 @@
-import { getRepository } from 'typeorm';
-import { MinioStorage } from 'src/storage/minio-storage';
+import { MinioStorage } from '../storage/minio-storage';
+import { configure } from '../config/configure';
 import { Stream } from 'stream';
 const uuidv4 = require('uuid/v4');
 
@@ -12,10 +12,14 @@ export class ImageService {
     var s = new Readable();
     s.push(imgBuffer);
     s.push(null);
-    const fileUuid = uuidv4();
-    await this.minioStorage.saveObject(fileUuid, s, {
-      'Content-Type': 'image/png',
+    const fileUuid = uuidv4() + '.png';
+    await this.minioStorage.saveObject(configure.getConfig().MinIOImageBucketName, fileUuid, s, {
+      'Content-Type': 'image/png'
     });
     return fileUuid;
+  }
+
+  public getImage(fileName: string): Promise<Stream> {
+    return this.minioStorage.getObject(configure.getConfig().MinIOImageBucketName, fileName);
   }
 }

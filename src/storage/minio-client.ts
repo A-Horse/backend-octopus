@@ -2,7 +2,7 @@ import { configure } from '../config/configure';
 import * as Minio from 'minio';
 
 export class MinioClient {
-  public instance;
+  private instance;
 
   constructor() {}
 

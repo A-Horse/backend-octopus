@@ -1,12 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 import { KanbanEntity } from './kanban.entity';
 
@@ -18,9 +10,11 @@ export class ProjectSettingEntity {
   public id: string;
 
   @Column({
-    nullable: true
+    nullable: true,
+    type: 'char',
+    length: 40
   })
-  public coverBase64Id: string;
+  public coverFileName: string;
 
   @Column({
     default: false

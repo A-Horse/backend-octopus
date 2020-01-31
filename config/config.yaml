@@ -22,4 +22,4 @@ SWAGGER: true
 MinIOEndPoint: ""
 MinIOAccessKey: ""
 MinIOSecretKey: ""
-MinIOProjectCoverBucketName: "octopus-project-cover"
+MinIOImageBucketName: "octopus-image"

@@ -20,7 +20,6 @@ import { UserRouter } from './domain/user/user-router';
 import { DIContainer } from './container/di-container';
 require('express-async-errors');
 
-
 function initExpressApp(container: DIContainer): express.Application {
   const app = express();
   // TODO configure.get('LOG_PATH')
@@ -44,7 +43,10 @@ function initExpressApp(container: DIContainer): express.Application {
   app.use(require('cookie-parser')());
 
   app.use(RootRouter);
-  app.use(ImageRouter);
+
+  const imageRouter = new ImageRouter(container);
+  imageRouter.setupRouter(app);
+
   app.use(UserRouter);
   app.use('/user', AuthRouter);
 
@@ -63,12 +65,13 @@ function initExpressApp(container: DIContainer): express.Application {
 export function startServer(container: DIContainer): http.Server {
   const app = initExpressApp(container);
 
-  configure.get('SWAGGER') && generateSwagger(app);
+  if (configure.getConfig().SWAGGER) {
+    generateSwagger(app);
+    console.log(colors.yellow(`Swagger serve on http://0.0.0.0:${configure.getConfig().SERVE_PORT}/api-docs`));
+  }
 
   const server = http.createServer(app);
   server.listen(configure.getConfig().SERVE_PORT, '0.0.0.0');
-  console.log(
-    colors.green(`Octopus serve on http://0.0.0.0:${configure.getConfig().SERVE_PORT}`)
-  );
+  console.log(colors.green(`Octopus serve on http://0.0.0.0:${configure.getConfig().SERVE_PORT}`));
   return server;
 }

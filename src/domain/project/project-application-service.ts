@@ -57,10 +57,9 @@ export class ProjectApplicationService {
     const id: string = await this.container.imageService.saveBase64Image(coverBase64.replace(/^data:image\/png;base64,/, ''));
 
     this.container.minioStorage.saveObject;
-
     const project: Project = await ProjectRepository.getProjectDetail(projectId);
     await project.setCoverBase64ID(id);
-    // await ProjectRepository.updateProjectSetting(this.setting);
+    await ProjectRepository.updateProjectSetting(project.setting);
     return id;
   }
 }

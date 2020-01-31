@@ -13,7 +13,7 @@ import { MinioClient } from './storage/minio-client';
 import { MinioStorage } from './storage/minio-storage';
 import { ImageService } from './service/image.service';
 
-function main() {
+async function main() {
   configure.loadConfigureFromFile();
   catFile('./.art/ban.ascii');
 
@@ -22,6 +22,7 @@ function main() {
   const minioClient = new MinioClient();
   minioClient.init();
   const minioStorage = new MinioStorage(minioClient);
+  await minioStorage.createBucketsIfNotExist();
   const diContainer = new DIContainer();
   const imageService = new ImageService(minioStorage);
   diContainer.minioStorage = minioStorage;

@@ -20,7 +20,7 @@ interface Config {
   MinIOEndPoint: string;
   MinIOAccessKey: string;
   MinIOSecretKey: string;
-  MinIOProjectCoverBucketName: string;
+  MinIOImageBucketName: string;
 }
 
 type ConfigKey =
