@@ -19,17 +19,7 @@ export class Project {
   public createdAt: Date;
   public updatedAt: Date;
 
-  constructor({
-    id,
-    name,
-    desc,
-    type,
-    status,
-    creatorId,
-    createdAt,
-    updatedAt,
-    setting
-  }) {
+  constructor({ id, name, desc, type, status, creatorId, createdAt, updatedAt, setting }) {
     this.id = id;
     this.name = name;
     this.desc = desc;

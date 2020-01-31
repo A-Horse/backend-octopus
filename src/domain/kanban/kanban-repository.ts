@@ -51,12 +51,10 @@ export class KanbanRepository {
     kanbanEntity.creator = creator;
     kanbanEntity.setting = kanbanSettingEntity;
 
-    await getConnection().transaction(
-      async (transactionalEntityManager: EntityManager) => {
-        await transactionalEntityManager.save(kanbanSettingEntity);
-        await transactionalEntityManager.save(kanbanEntity);
-      }
-    );
+    await getConnection().transaction(async (transactionalEntityManager: EntityManager) => {
+      await transactionalEntityManager.save(kanbanSettingEntity);
+      await transactionalEntityManager.save(kanbanEntity);
+    });
     return kanbanEntity.id;
   }
 }

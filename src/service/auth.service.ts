@@ -44,9 +44,7 @@ class AuthService {
           id: user.id,
           email: user.email
         },
-        exp:
-          Math.floor(Date.now() / 1000) +
-          (configure.get('JWT_EXP_HOURS') as number) * 60 * 60
+        exp: Math.floor(Date.now() / 1000) + (configure.get('JWT_EXP_HOURS') as number) * 60 * 60
       },
       configure.get('SECRET_KEY')
     );

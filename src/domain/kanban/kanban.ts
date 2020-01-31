@@ -13,17 +13,7 @@ export class Kanban implements JSONEntity {
   public updatedAt: Date;
   public setting: KanbanSetting;
 
-  constructor({
-    id,
-    name,
-    desc,
-    type,
-    creatorId,
-    createdAt,
-    updatedAt,
-    setting,
-    projectId
-  }) {
+  constructor({ id, name, desc, type, creatorId, createdAt, updatedAt, setting, projectId }) {
     this.id = id;
     this.name = name;
     this.desc = desc;

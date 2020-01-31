@@ -32,21 +32,7 @@ export class ProjectIssue implements JSONEntity {
     this.detail = detail;
   }
 
-  constructor({
-    id,
-    title,
-    type,
-    creatorId,
-    assigneeId,
-    columnId,
-    kanbanId,
-    orderInKanban,
-    projectId,
-    deadline,
-    deadlineDone,
-    createdAt,
-    updatedAt
-  }: any) {
+  constructor({ id, title, type, creatorId, assigneeId, columnId, kanbanId, orderInKanban, projectId, deadline, deadlineDone, createdAt, updatedAt }: any) {
     this.id = id;
     this.title = title;
     this.type = type || ProjectIssueType.NORMAL;
@@ -81,30 +67,20 @@ export class ProjectIssue implements JSONEntity {
   }
 
   public async initCardId(): Promise<void> {
-    const cardCountInProject = await ProjectIssueRepository.getProjectIssueCount(
-      this.projectId
-    );
+    const cardCountInProject = await ProjectIssueRepository.getProjectIssueCount(this.projectId);
     this.id = `${this.projectId}-${cardCountInProject.toString()}`;
   }
 
   public async initOrderInKanban(): Promise<void> {
-    this.orderInKanban =
-      (await ProjectIssueRepository.getKanbanCardCount(this.kanbanId)) *
-      PROJECT_CARD_ORDER_INIT_INTERVAL;
+    this.orderInKanban = (await ProjectIssueRepository.getKanbanCardCount(this.kanbanId)) * PROJECT_CARD_ORDER_INIT_INTERVAL;
   }
 
   public async calcPreviousOrderInKanban(): Promise<number | null> {
-    return await ProjectIssueRepository.getPreviousOrderInKanban(
-      this.kanbanId,
-      this.orderInKanban
-    );
+    return await ProjectIssueRepository.getPreviousOrderInKanban(this.kanbanId, this.orderInKanban);
   }
 
   public async calcNextOrderInKanban(): Promise<number | null> {
-    return await ProjectIssueRepository.getNextOrderInKanban(
-      this.kanbanId,
-      this.orderInKanban
-    );
+    return await ProjectIssueRepository.getNextOrderInKanban(this.kanbanId, this.orderInKanban);
   }
 
   public async pullDetail(): Promise<void> {

@@ -14,20 +14,14 @@ function getKnex(connectionOption: ConnectionOptions | any) {
   });
 }
 
-async function createDatabase(
-  connectionOption: ConnectionOptions | any,
-  dbName: string
-): Promise<void> {
+async function createDatabase(connectionOption: ConnectionOptions | any, dbName: string): Promise<void> {
   const knex = getKnex(connectionOption);
 
   await knex.raw(`CREATE DATABASE ${dbName}`);
   knex.destroy();
 }
 
-async function dropDatabase(
-  connectionOption: ConnectionOptions | any,
-  dbName: string
-): Promise<void> {
+async function dropDatabase(connectionOption: ConnectionOptions | any, dbName: string): Promise<void> {
   const knex = getKnex(connectionOption);
 
   await knex.raw(`DROP DATABASE ${dbName}`);

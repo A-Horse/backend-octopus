@@ -34,6 +34,6 @@ describe('UserRepositoryImpl', () => {
     const users = await repo.findAllUser();
     expect(users.length).toEqual(2);
     expect(users[0] instanceof AppUser);
-    expect(users[0].username).toEqual('u1')
+    expect(users[0].username).toEqual('u1');
   });
 });

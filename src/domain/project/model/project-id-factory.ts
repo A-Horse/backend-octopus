@@ -14,13 +14,6 @@ export class ProjectIdFactory {
     if (baseNumber > Math.pow(10, idNumberLenght) - 1) {
       return;
     }
-    return (
-      prefix +
-      _.padStart(
-        baseNumber.toString(),
-        idNumberLenght - baseNumber.toString().length,
-        '0'
-      )
-    );
+    return prefix + _.padStart(baseNumber.toString(), idNumberLenght - baseNumber.toString().length, '0');
   }
 }

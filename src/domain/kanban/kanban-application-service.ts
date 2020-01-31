@@ -30,23 +30,16 @@ export class kanbanApplicationService {
       const previousOrderInKanban = await targetIssue.calcPreviousOrderInKanban();
 
       if (previousOrderInKanban === null) {
-        issue.orderInKanban =
-          (await ProjectIssueRepository.getMinOrderInKanban(issue.kanbanId)) -
-          PROJECT_CARD_ORDER_INIT_INTERVAL;
+        issue.orderInKanban = (await ProjectIssueRepository.getMinOrderInKanban(issue.kanbanId)) - PROJECT_CARD_ORDER_INIT_INTERVAL;
       } else {
-        issue.orderInKanban =
-          targetIssue.orderInKanban -
-          (targetIssue.orderInKanban - previousOrderInKanban) / 2;
+        issue.orderInKanban = targetIssue.orderInKanban - (targetIssue.orderInKanban - previousOrderInKanban) / 2;
       }
     } else {
       const nextOrderInKanban = await targetIssue.calcNextOrderInKanban();
       if (nextOrderInKanban === null) {
-        issue.orderInKanban =
-          (await ProjectIssueRepository.getMaxOrderInKanban(issue.kanbanId)) +
-          PROJECT_CARD_ORDER_INIT_INTERVAL;
+        issue.orderInKanban = (await ProjectIssueRepository.getMaxOrderInKanban(issue.kanbanId)) + PROJECT_CARD_ORDER_INIT_INTERVAL;
       } else {
-        issue.orderInKanban =
-          targetIssue.orderInKanban + (nextOrderInKanban - targetIssue.orderInKanban) / 2;
+        issue.orderInKanban = targetIssue.orderInKanban + (nextOrderInKanban - targetIssue.orderInKanban) / 2;
       }
     }
 

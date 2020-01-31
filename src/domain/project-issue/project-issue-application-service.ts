@@ -10,9 +10,7 @@ export class ProjectIssueApplicationService {
     return ProjectIssueRepository.getColumnCards(kanbanId, columnId);
   }
 
-  static async createIssue(
-    createProjectIssueInput: CreateProjectIssueInput
-  ): Promise<string> {
+  static async createIssue(createProjectIssueInput: CreateProjectIssueInput): Promise<string> {
     const issue = new ProjectIssue({
       id: null,
       title: createProjectIssueInput.title,
@@ -26,9 +24,11 @@ export class ProjectIssueApplicationService {
       createdAt: undefined,
       updatedAt: undefined
     });
-    issue.setDetail(new ProjectIssueDetail({
-      issueId: null
-    }))
+    issue.setDetail(
+      new ProjectIssueDetail({
+        issueId: null
+      })
+    );
     await issue.initCardId();
     return ProjectIssueRepository.saveProjectIssue(issue);
   }
@@ -45,11 +45,7 @@ export class ProjectIssueApplicationService {
     return issue;
   }
 
-  static async getProjectIssues({
-    projectId,
-    pageSize,
-    pageNumber
-  }): Promise<PagtiationList<ProjectIssue>> {
+  static async getProjectIssues({ projectId, pageSize, pageNumber }): Promise<PagtiationList<ProjectIssue>> {
     const issues = await ProjectIssueRepository.getProjectIssues({
       projectId,
       pageSize,

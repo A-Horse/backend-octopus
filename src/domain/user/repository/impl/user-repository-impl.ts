@@ -6,6 +6,6 @@ import { UserEntity } from '../../../../orm/user.entity';
 export class UserRepositoryImpl implements UserRepository {
   async findAllUser(): Promise<AppUser[]> {
     const users: UserEntity[] = await getRepository(UserEntity).find();
-    return users.map((u) => new AppUser(u));
+    return users.map(u => new AppUser(u));
   }
 }

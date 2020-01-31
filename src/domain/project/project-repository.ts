@@ -18,10 +18,7 @@ export class ProjectRepository {
     const projectEntitys = await getRepository(ProjectEntity)
       .createQueryBuilder('project')
       .leftJoinAndSelect('project.setting', 'project_setting')
-      .leftJoinAndSelect(
-        'project_setting.defaultKanban',
-        'kanban as project_default_kanban'
-      )
+      .leftJoinAndSelect('project_setting.defaultKanban', 'kanban as project_default_kanban')
       .leftJoinAndSelect('project.creator', 'user as creator')
       .leftJoinAndSelect('project.owner', 'user as owner')
       .where('project.creatorId = :userId', { userId })
@@ -62,12 +59,10 @@ export class ProjectRepository {
     projectEntity.owner = creator;
     projectEntity.setting = projectSettingEntity;
 
-    await getConnection().transaction(
-      async (transactionalEntityManager: EntityManager) => {
-        await transactionalEntityManager.save(projectSettingEntity);
-        await transactionalEntityManager.save(projectEntity);
-      }
-    );
+    await getConnection().transaction(async (transactionalEntityManager: EntityManager) => {
+      await transactionalEntityManager.save(projectSettingEntity);
+      await transactionalEntityManager.save(projectEntity);
+    });
 
     return projectEntity.id;
   }

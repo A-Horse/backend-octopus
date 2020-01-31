@@ -8,17 +8,7 @@ export class ProjectSetting {
   public isStar: boolean;
   public defaultKanbanId: string;
 
-  constructor({
-    id,
-    coverFileName,
-    defaultKanbanId,
-    isStar
-  }: {
-    id?: string;
-    coverFileName?: string;
-    defaultKanbanId?: string;
-    isStar?: boolean;
-  }) {
+  constructor({ id, coverFileName, defaultKanbanId, isStar }: { id?: string; coverFileName?: string; defaultKanbanId?: string; isStar?: boolean }) {
     this.id = id;
     this.coverFileName = coverFileName;
     this.isStar = isStar;

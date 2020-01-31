@@ -5,9 +5,7 @@ import { KanbanColumnRepository } from './kanban-column-repository';
 export class KanbanColumnApplicationService {
   constructor() {}
 
-  static createKanbanColumn(
-    createKanbanColumnInput: CreateKanbanColumnInput
-  ): Promise<KanbanColumnId> {
+  static createKanbanColumn(createKanbanColumnInput: CreateKanbanColumnInput): Promise<KanbanColumnId> {
     const column = new KanbanColumn({
       id: null,
       name: createKanbanColumnInput.name,

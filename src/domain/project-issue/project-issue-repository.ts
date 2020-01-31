@@ -45,10 +45,7 @@ export class ProjectIssueRepository {
     }
   }
 
-  static async updateIssueDetail(
-    issueId: string,
-    issueDetail: ProjectIssueDetail
-  ): Promise<void> {
+  static async updateIssueDetail(issueId: string, issueDetail: ProjectIssueDetail): Promise<void> {
     const mongoDB = await getMongoDB();
     return new Promise<void>((resolve, reject) => {
       mongoDB.collection('issue_detail').update(
@@ -66,11 +63,7 @@ export class ProjectIssueRepository {
     });
   }
 
-  static async getProjectIssues({
-    projectId,
-    pageSize,
-    pageNumber
-  }): Promise<ProjectIssue[]> {
+  static async getProjectIssues({ projectId, pageSize, pageNumber }): Promise<ProjectIssue[]> {
     const cardEntitys = await getRepository(ProjectIssueEntity)
       .createQueryBuilder('project_issue')
       .leftJoinAndSelect('project_issue.creator', 'user as creator')
@@ -97,10 +90,7 @@ export class ProjectIssueRepository {
       .sort((a, b) => a.orderInKanban - b.orderInKanban);
   }
 
-  static async getPreviousOrderInKanban(
-    kanbanId: string,
-    order: number
-  ): Promise<number | null> {
+  static async getPreviousOrderInKanban(kanbanId: string, order: number): Promise<number | null> {
     return await getRepository(ProjectIssueEntity)
       .createQueryBuilder('project_issue')
       .leftJoinAndMapOne(
@@ -109,13 +99,10 @@ export class ProjectIssueRepository {
         'project_issue_order_in_kanban',
         'project_issue.id = project_issue_order_in_kanban.issueId'
       )
-      .where(
-        'project_issue.kanbanId = :kanbanId and project_issue_order_in_kanban.order < :order',
-        {
-          kanbanId,
-          order
-        }
-      )
+      .where('project_issue.kanbanId = :kanbanId and project_issue_order_in_kanban.order < :order', {
+        kanbanId,
+        order
+      })
       .orderBy('project_issue_order_in_kanban.order', 'DESC')
       .limit(1)
       .getOne()
@@ -164,10 +151,7 @@ export class ProjectIssueRepository {
       });
   }
 
-  static async getNextOrderInKanban(
-    kanbanId: string,
-    order: number
-  ): Promise<number | null> {
+  static async getNextOrderInKanban(kanbanId: string, order: number): Promise<number | null> {
     return await getRepository(ProjectIssueEntity)
       .createQueryBuilder('project_issue')
       .leftJoinAndMapOne(
@@ -176,13 +160,10 @@ export class ProjectIssueRepository {
         'project_issue_order_in_kanban',
         'project_issue.id = project_issue_order_in_kanban.issueId'
       )
-      .where(
-        'project_issue.kanbanId = :kanbanId and project_issue_order_in_kanban.order > :order',
-        {
-          kanbanId,
-          order
-        }
-      )
+      .where('project_issue.kanbanId = :kanbanId and project_issue_order_in_kanban.order > :order', {
+        kanbanId,
+        order
+      })
       .limit(1)
       .getOne()
       .then(card => _.get(card, ['orderInKanban', 'order'], null));
@@ -246,10 +227,7 @@ export class ProjectIssueRepository {
     return issueDetail;
   }
 
-  static async getColumnCards(
-    kanbanId: string,
-    columnId: string
-  ): Promise<ProjectIssue[]> {
+  static async getColumnCards(kanbanId: string, columnId: string): Promise<ProjectIssue[]> {
     const cardEntitys = await getRepository(ProjectIssueEntity)
       .createQueryBuilder('project_issue')
       .leftJoinAndSelect('project_issue.creator', 'user as creator')
@@ -309,29 +287,25 @@ export class ProjectIssueRepository {
     issueEntity.id = issue.id;
     issueEntity.title = issue.title;
 
-    await getConnection().transaction(
-      async (transactionalEntityManager: EntityManager) => {
-        await transactionalEntityManager.save(issueEntity);
+    await getConnection().transaction(async (transactionalEntityManager: EntityManager) => {
+      await transactionalEntityManager.save(issueEntity);
 
-        if (orderInkanbanEntity) {
-          await transactionalEntityManager.save(orderInkanbanEntity);
-        }
-
-        const mongoDB = await getMongoDB();
-
-        await new Promise((resolve, reject) => {
-          mongoDB
-            .collection('issue_detail')
-            .insertOne(issue.getDetail().toJSON(), (err, result) => {
-              if (err) {
-                return reject(err);
-              }
-              issue.getDetail().issueId = result.insertedId.toHexString();
-              return resolve(result);
-            });
-        });
+      if (orderInkanbanEntity) {
+        await transactionalEntityManager.save(orderInkanbanEntity);
       }
-    );
+
+      const mongoDB = await getMongoDB();
+
+      await new Promise((resolve, reject) => {
+        mongoDB.collection('issue_detail').insertOne(issue.getDetail().toJSON(), (err, result) => {
+          if (err) {
+            return reject(err);
+          }
+          issue.getDetail().issueId = result.insertedId.toHexString();
+          return resolve(result);
+        });
+      });
+    });
 
     return issueEntity.id;
   }

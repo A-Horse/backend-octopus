@@ -62,9 +62,7 @@ class Configure {
   }
 
   private overrideConfigKeyFromCustomConfig(specConfigFileName: string) {
-    const customConfigMap = yaml.safeLoad(
-      fs.readFileSync(path.join(__dirname, `../../config/${specConfigFileName}`), 'utf8')
-    );
+    const customConfigMap = yaml.safeLoad(fs.readFileSync(path.join(__dirname, `../../config/${specConfigFileName}`), 'utf8'));
     if (!customConfigMap) {
       return;
     }
@@ -77,9 +75,7 @@ class Configure {
   }
 
   public loadConfigureFromFile(specConfigFileName = 'custom.config.yaml') {
-    this.configMap = yaml.safeLoad(
-      fs.readFileSync(path.join(__dirname, '../../config/config.yaml'), 'utf8')
-    );
+    this.configMap = yaml.safeLoad(fs.readFileSync(path.join(__dirname, '../../config/config.yaml'), 'utf8'));
     this.overrideConfigKeyFromCustomConfig(specConfigFileName);
     this.overrideConfigKeyFromEnv();
   }

@@ -9,7 +9,7 @@ export function getMongoDB(): Promise<Db> {
       if (err) {
         return reject(err);
       }
-      console.log(`connect mongo db ${mongoUrl}`)
+      console.log(`connect mongo db ${mongoUrl}`);
       return resolve(client.db(mongoDb));
     });
   });

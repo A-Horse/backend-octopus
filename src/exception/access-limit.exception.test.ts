@@ -1,7 +1,4 @@
-import {
-  AccessLimitException,
-  instanceofAccessLimitException
-} from './access-limit.exception';
+import { AccessLimitException, instanceofAccessLimitException } from './access-limit.exception';
 test('AccessLimitException', () => {
   const error = new AccessLimitException();
   expect(instanceofAccessLimitException(error)).toBeTruthy();
