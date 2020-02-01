@@ -18,9 +18,9 @@ export class ProjectIssueApplicationService {
       type: createProjectIssueInput.type,
       creatorId: createProjectIssueInput.creatorId,
       assigneeId: createProjectIssueInput.assigneeId,
-      columnId: createProjectIssueInput.columnId,
-      kanbanId: createProjectIssueInput.kanbanId,
-      projectId: createProjectIssueInput.projectId,
+      columnId: createProjectIssueInput.columnID,
+      kanbanId: createProjectIssueInput.kanbanID,
+      projectId: createProjectIssueInput.projectID,
       createdAt: undefined,
       updatedAt: undefined
     });

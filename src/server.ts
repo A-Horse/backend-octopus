@@ -55,7 +55,9 @@ function initExpressApp(container: DIContainer): express.Application {
 
   app.use(KanbanRouter);
   app.use(KanbanColumnRouter);
-  app.use(ProjectIssueRouter);
+
+  const projectIssueRouter = new ProjectIssueRouter();
+  projectIssueRouter.setupRouter(app);
 
   app.use(StatusErrorHandleMiddle);
 

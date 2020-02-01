@@ -9,8 +9,8 @@ export interface CreateProjectIssueInput {
   content: string;
   type: ProjectIssueType | null;
   creatorId: number;
-  kanbanId: string;
-  projectId?: string;
+  kanbanID?: string;
+  columnID?: string;
+  projectID: string;
   assigneeId: number;
-  columnId: string;
 }

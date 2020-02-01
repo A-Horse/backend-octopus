@@ -21,6 +21,7 @@ export class ImageRouter {
   private getImage = async (req: express.Request, res: express.Response) => {
     const fileName = req.params.fileName;
     const stream = await this.container.imageService.getImage(fileName);
+    res.setHeader('Cache-Control', 'max-age=15552000')
     stream.pipe(res);
   };
 }

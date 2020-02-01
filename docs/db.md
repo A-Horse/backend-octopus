@@ -15,7 +15,7 @@ docker run --name some-mysql \
 ```
 
 create loaclhost mongodb container
-```
+``` bash
 docker run -d -p 27017:27017 -v mongo-data:/data/db --name mongodb mongo:3.6.0
 ```
 
