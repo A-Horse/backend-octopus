@@ -10,11 +10,11 @@ export class ProjectIssueApplicationService {
     return ProjectIssueRepository.getColumnCards(kanbanId, columnId);
   }
 
+  // TODO move to factory
   static async createIssue(createProjectIssueInput: CreateProjectIssueInput): Promise<string> {
     const issue = new ProjectIssue({
       id: null,
       title: createProjectIssueInput.title,
-      content: createProjectIssueInput.content,
       type: createProjectIssueInput.type,
       creatorId: createProjectIssueInput.creatorId,
       assigneeId: createProjectIssueInput.assigneeId,
@@ -24,13 +24,15 @@ export class ProjectIssueApplicationService {
       createdAt: undefined,
       updatedAt: undefined
     });
+    await issue.initID();
     issue.setDetail(
       new ProjectIssueDetail({
-        issueId: null
+        issueId: issue.id,
+        content: createProjectIssueInput.content
       })
     );
-    await issue.initCardId();
-    return ProjectIssueRepository.saveProjectIssue(issue);
+    // TODO move out repo
+    return ProjectIssueRepository.saveIssue(issue);
   }
 
   static async udpateIssue(issueId: string, partialIssueData: any): Promise<void> {

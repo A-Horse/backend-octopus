@@ -27,7 +27,7 @@ export class ProjectIssueRepository {
 
   static async udpateIssue(issue: ProjectIssue): Promise<void> {
     const column = new KanbanColumnEntity();
-    column.id = issue.columnId;
+    column.id = issue.columnID;
     await getConnection()
       .createQueryBuilder()
       .update(ProjectIssueEntity)
@@ -252,7 +252,7 @@ export class ProjectIssueRepository {
       .sort((a, b) => a.orderInKanban - b.orderInKanban);
   }
 
-  static async saveProjectIssue(issue: ProjectIssue): Promise<string> {
+  static async saveIssue(issue: ProjectIssue): Promise<string> {
     const issueEntity = new ProjectIssueEntity();
 
     const creator = new UserEntity();
@@ -260,27 +260,27 @@ export class ProjectIssueRepository {
     issueEntity.creator = creator;
 
     const projectEntity = new ProjectEntity();
-    projectEntity.id = issue.projectId;
+    projectEntity.id = issue.projectID;
     issueEntity.project = projectEntity;
 
-    let orderInkanbanEntity: ProjectIssueOrderInKanbanEntity;
+    let orderInKanbanEntity: ProjectIssueOrderInKanbanEntity;
 
-    if (issue.kanbanId) {
+    if (issue.kanbanID) {
       const kanbanEntity = new KanbanEntity();
-      kanbanEntity.id = issue.kanbanId;
+      kanbanEntity.id = issue.kanbanID;
       issueEntity.kanban = kanbanEntity;
 
       await issue.initOrderInKanban();
 
-      orderInkanbanEntity = new ProjectIssueOrderInKanbanEntity();
-      orderInkanbanEntity.issue = issueEntity;
-      orderInkanbanEntity.kanban = kanbanEntity;
-      orderInkanbanEntity.order = issue.orderInKanban;
+      orderInKanbanEntity = new ProjectIssueOrderInKanbanEntity();
+      orderInKanbanEntity.issue = issueEntity;
+      orderInKanbanEntity.kanban = kanbanEntity;
+      orderInKanbanEntity.order = issue.orderInKanban;
     }
 
-    if (issue.columnId) {
+    if (issue.columnID) {
       const kanbanColumnEntity = new KanbanColumnEntity();
-      kanbanColumnEntity.id = issue.columnId;
+      kanbanColumnEntity.id = issue.columnID;
       issueEntity.column = kanbanColumnEntity;
     }
 
@@ -290,8 +290,8 @@ export class ProjectIssueRepository {
     await getConnection().transaction(async (transactionalEntityManager: EntityManager) => {
       await transactionalEntityManager.save(issueEntity);
 
-      if (orderInkanbanEntity) {
-        await transactionalEntityManager.save(orderInkanbanEntity);
+      if (orderInKanbanEntity) {
+        await transactionalEntityManager.save(orderInKanbanEntity);
       }
 
       const mongoDB = await getMongoDB();
@@ -318,7 +318,7 @@ export class ProjectIssueRepository {
         order: issue.orderInKanban
       })
       .where('kanbanId = :kanbanId and issueId = :issueId', {
-        kanbanId: issue.kanbanId,
+        kanbanId: issue.kanbanID,
         issueId: issue.id
       })
       .execute();

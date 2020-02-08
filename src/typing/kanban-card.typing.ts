@@ -6,7 +6,7 @@ export enum ProjectIssueType {
 
 export interface CreateProjectIssueInput {
   title: string;
-  content: string;
+  content?: string;
   type: ProjectIssueType | null;
   creatorId: number;
   kanbanID?: string;

@@ -16,9 +16,9 @@ export class ProjectIssue implements JSONEntity {
   public assigneeId: number;
   public deadline?: Date;
   public deadlineDone?: boolean;
-  public columnId: string;
-  public kanbanId: string;
-  public projectId: string;
+  public columnID: string;
+  public kanbanID: string;
+  public projectID: string;
   public orderInKanban: number;
   public createdAt: Date;
   public updatedAt: Date;
@@ -38,10 +38,10 @@ export class ProjectIssue implements JSONEntity {
     this.type = type || ProjectIssueType.NORMAL;
     this.creatorId = creatorId;
     this.assigneeId = assigneeId;
-    this.columnId = columnId;
-    this.kanbanId = kanbanId;
+    this.columnID = columnId;
+    this.kanbanID = kanbanId;
     this.orderInKanban = orderInKanban;
-    this.projectId = projectId;
+    this.projectID = projectId;
     this.deadline = deadline;
     this.deadlineDone = deadlineDone;
     this.createdAt = createdAt;
@@ -66,21 +66,24 @@ export class ProjectIssue implements JSONEntity {
     });
   }
 
-  public async initCardId(): Promise<void> {
-    const cardCountInProject = await ProjectIssueRepository.getProjectIssueCount(this.projectId);
-    this.id = `${this.projectId}-${cardCountInProject.toString()}`;
+  public async initID(): Promise<void> {
+    if (!this.projectID) {
+      throw new Error('projectID not found!');
+    }
+    const cardCountInProject = await ProjectIssueRepository.getProjectIssueCount(this.projectID);
+    this.id = `${this.projectID}-${cardCountInProject.toString()}`;
   }
 
   public async initOrderInKanban(): Promise<void> {
-    this.orderInKanban = (await ProjectIssueRepository.getKanbanCardCount(this.kanbanId)) * PROJECT_CARD_ORDER_INIT_INTERVAL;
+    this.orderInKanban = (await ProjectIssueRepository.getKanbanCardCount(this.kanbanID)) * PROJECT_CARD_ORDER_INIT_INTERVAL;
   }
 
   public async calcPreviousOrderInKanban(): Promise<number | null> {
-    return await ProjectIssueRepository.getPreviousOrderInKanban(this.kanbanId, this.orderInKanban);
+    return await ProjectIssueRepository.getPreviousOrderInKanban(this.kanbanID, this.orderInKanban);
   }
 
   public async calcNextOrderInKanban(): Promise<number | null> {
-    return await ProjectIssueRepository.getNextOrderInKanban(this.kanbanId, this.orderInKanban);
+    return await ProjectIssueRepository.getNextOrderInKanban(this.kanbanID, this.orderInKanban);
   }
 
   public async pullDetail(): Promise<void> {
@@ -104,7 +107,7 @@ export class ProjectIssue implements JSONEntity {
       title: this.title,
       type: this.type,
       creatorId: this.creatorId,
-      columnId: this.columnId,
+      columnId: this.columnID,
       order: this.orderInKanban,
       deadline: this.deadline,
       deadlineDone: this.deadlineDone,

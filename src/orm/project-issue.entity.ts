@@ -16,7 +16,8 @@ export class ProjectIssueEntity {
   public id: string;
 
   @Column({
-    length: 150
+    length: 150,
+    nullable: false,
   })
   public title: string;
 
