@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:12.14.0-stretch'
-        }
-    }
+    agent none
     triggers {
         pollSCM('*/1 * * * *')
     }
