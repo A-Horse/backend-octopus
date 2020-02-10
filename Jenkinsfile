@@ -17,7 +17,6 @@ pipeline {
         docker_hub_password = credentials('docker_hub_password')
     }
     stages {
-        
         stage('AutoCheck') {
             agent {
                 docker {
@@ -25,7 +24,7 @@ pipeline {
                 }
             }
             stages {
-                stage {
+                stage('Install') {
                     steps {
                         sh 'npm install'
                     }
