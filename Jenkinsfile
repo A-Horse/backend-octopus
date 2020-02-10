@@ -13,16 +13,59 @@ pipeline {
         OCTO_MYSQL_USERNAME = credentials('jenkins-octopus-mysql-username')
         OCTO_MYSQL_PASSWORD = credentials('jenkins-octopus-mysql-password')
         OCTO_MONGO_URL      = credentials('jenkins-octopus-mongo-url')
+        docker_hub_username = credentials('docker_hub_username')
+        docker_hub_password = credentials('docker_hub_password')
     }
     stages {
-        stage('Npm install') {
-            steps {
-                sh 'npm install'
+        agent {
+            docker {
+                image 'node:12.14.0-stretch'
             }
         }
-        stage('Test') {
-            steps {
-                sh 'npm run test' 
+        stage('AutoCheck') {
+            stages {
+                stage {
+                    steps {
+                        sh 'npm install'
+                    }
+                }
+                stage('Test') {
+                    steps {
+                        sh 'npm test'
+                    }
+                }
+            }
+        }
+        stage('Dockerize') {
+            agent {
+                docker {
+                    image 'docker:19.03.5'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                }
+            }
+            stages {
+                stage('Build Image') {
+                    steps {
+                        sh "docker build . -t fwchen/octopus-backend:v0.0.$BUILD_NUMBER"
+                    }
+                }
+                stage('Registry Login') {
+                    steps {
+                        sh "echo $docker_hub_password | docker login -u $docker_hub_username --password-stdin"
+                    }
+                }
+                stage('Publish image') {
+                    steps {
+                        sh 'docker push fwchen/octopus-backend:v0.0.$BUILD_NUMBER'
+                        sh 'echo "fwchen/octopus-backend:v0.0.$BUILD_NUMBER" > .artifacts'
+                        archiveArtifacts(artifacts: '.artifacts')
+                    }
+                }
+                stage('Remove image') {
+                    steps {
+                        sh "docker image rm fwchen/octopus-backend:v0.0.$BUILD_NUMBER"
+                    }
+                }
             }
         }
     }
