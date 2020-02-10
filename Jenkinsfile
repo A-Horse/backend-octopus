@@ -17,12 +17,13 @@ pipeline {
         docker_hub_password = credentials('docker_hub_password')
     }
     stages {
-        agent {
-            docker {
-                image 'node:12.14.0-stretch'
-            }
-        }
+        
         stage('AutoCheck') {
+            agent {
+                docker {
+                    image 'node:12.14.0-stretch'
+                }
+            }
             stages {
                 stage {
                     steps {
