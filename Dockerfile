@@ -8,4 +8,5 @@ RUN npm install
 
 EXPOSE 5500
 EXPOSE 5501
+
 CMD ["npm", "start"]
