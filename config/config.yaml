@@ -5,7 +5,7 @@ DISABLE_SIGNUP: false
 
 JWT_EXP_HOURS: 480
 
-SECRET_KEY: "octopus" // CHANG ME
+SECRET_KEY: "octopus" # CHANG ME
 
 MYSQL_HOST: "localhost"
 MYSQL_USERNAME: "octopuese"
