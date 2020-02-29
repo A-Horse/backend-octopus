@@ -42,7 +42,7 @@ pipeline {
             stages {
                 stage('Build Image') {
                     steps {
-                        sh "docker build . -t fwchen/octopus-backend:v0.0.$BUILD_NUMBER"
+                        sh "docker build . -t fwchen/octopus-backend:latest"
                     }
                 }
                 stage('Registry Login') {
@@ -52,14 +52,14 @@ pipeline {
                 }
                 stage('Publish image') {
                     steps {
-                        sh 'docker push fwchen/octopus-backend:v0.0.$BUILD_NUMBER'
-                        sh 'echo "fwchen/octopus-backend:v0.0.$BUILD_NUMBER" > .artifacts'
+                        sh 'docker push fwchen/octopus-backend:latest'
+                        sh 'echo "fwchen/octopus-backend:latest" > .artifacts'
                         archiveArtifacts(artifacts: '.artifacts')
                     }
                 }
                 stage('Remove image') {
                     steps {
-                        sh "docker image rm fwchen/octopus-backend:v0.0.$BUILD_NUMBER"
+                        sh "docker image rm fwchen/octopus-backend:latest"
                     }
                 }
             }
