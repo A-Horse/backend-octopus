@@ -1,5 +1,5 @@
 import { createConnection, ConnectionOptions } from 'typeorm';
-import { getPostgresConfig } from '../src/config/typeorm-config';
+import { getTypeOrmConfig } from '../src/config/typeorm-config';
 import { configure } from '../src/config/configure';
 
 function getKnex(connectionOption: ConnectionOptions | any) {
@@ -39,7 +39,7 @@ function makeRandomString(length: number) {
 }
 
 export async function setupTestTypeorm(dbName: string): Promise<void> {
-  const connection = await createConnection(getPostgresConfig());
+  const connection = await createConnection(getTypeOrmConfig());
   await connection.query('CREATE DATABASE IF NOT EXISTS ' + dbName);
   await connection.synchronize(true);
 }
@@ -53,7 +53,7 @@ export async function setupTestDependency(): Promise<SetupTestResult> {
   configure.loadConfigureFromFile('test-config.yaml');
   configure.set('MYSQL_DB', testMysqlDBName);
 
-  const dbOption = getPostgresConfig();
+  const dbOption = getTypeOrmConfig();
 
   await createDatabase(dbOption, testMysqlDBName);
   await setupTestTypeorm(testMysqlDBName);
