@@ -1,5 +1,3 @@
-import { ConnectionOptions } from 'typeorm';
-
 import { configure } from './configure';
 
 export function getTypeOrmConfig(): any {
