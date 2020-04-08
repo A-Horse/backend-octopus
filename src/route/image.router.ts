@@ -8,20 +8,21 @@ export class ImageRouter {
 
   public setupRouter(app: express.Application) {
     const router = express.Router();
+    
+    /**
+     * @route GET /image/:fileName
+     * @group image - Operations about image
+     * @param {string} fileName.param.required - image file name
+     * @returns {object} 200
+     */
     router.get('/image/:fileName', validate([param('fileName').isString()]), this.getImage);
     app.use(router);
   }
 
-  /**
-   * @route GET /image/:fileName
-   * @group image - Operations about image
-   * @param {string} fileName.param.required - image file name
-   * @returns {object} 200
-   */
   private getImage = async (req: express.Request, res: express.Response) => {
     const fileName = req.params.fileName;
     const stream = await this.container.imageService.getImage(fileName);
-    res.setHeader('Cache-Control', 'max-age=15552000')
+    res.setHeader('Cache-Control', 'max-age=15552000');
     stream.pipe(res);
   };
 }
