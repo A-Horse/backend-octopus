@@ -4,6 +4,7 @@ pipeline {
         pollSCM('*/1 * * * *')
     }
     environment {
+        HOME = '.'
         CI = 'true' 
         OCTO_MYSQL_HOST     = credentials('jenkins-octopus-mysql-host')
         OCTO_MYSQL_USERNAME = credentials('jenkins-octopus-mysql-username')
