@@ -12,6 +12,7 @@ import { DIContainer } from './container/di-container';
 import { MinioClient } from './storage/minio-client';
 import { MinioStorage } from './storage/minio-storage';
 import { ImageService } from './service/image.service';
+import { ProjectRepository } from './domain/project/project-repository';
 
 async function main() {
   configure.loadConfigureFromFile();
@@ -27,6 +28,9 @@ async function main() {
   const imageService = new ImageService(minioStorage);
   diContainer.minioStorage = minioStorage;
   diContainer.imageService = imageService;
+
+  const projectRepository = new ProjectRepository();
+  diContainer.projectRepository = projectRepository;
 
   createConnection(dbConfig)
     .then(() => {

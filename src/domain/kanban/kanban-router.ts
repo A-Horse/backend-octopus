@@ -12,13 +12,13 @@ const KanbanRouter = express.Router();
 KanbanRouter.get('/project/:projectId/kanbans', validate([param('projectId').isString()]), authorizedRequestMiddle, async (req, res, next) => {
   try {
     const kanbans: Kanban[] = await kanbanApplicationService.getProjectKanbans(req.params.projectId);
-    res.json(kanbans.map((k) => k.toJSON()));
+    res.json(kanbans.map(k => k.toJSON()));
   } catch (error) {
     next(error);
   }
 });
 
-KanbanRouter.get('/kanban/:kanbanId/detail', validate([param('projectId').isString()]), authorizedRequestMiddle, async (req, res, next) => {
+KanbanRouter.get('/kanban/:kanbanId/detail', validate([param('kanbanId').isString()]), authorizedRequestMiddle, async (req, res, next) => {
   try {
     const kanbanDetailData = await kanbanApplicationService.getKanbanDetail(req.params.kanbanId);
     res.json(kanbanDetailData);
@@ -36,13 +36,13 @@ KanbanRouter.post(
       const newOrder: number = await kanbanApplicationService.rankCard({
         cardId: req.body.cardId,
         targetCardId: req.body.targetCardId,
-        isBefore: req.body.isBefore,
+        isBefore: req.body.isBefore
       });
       res.status(200).send([
         {
           cardId: req.body.cardId,
-          order: newOrder,
-        },
+          order: newOrder
+        }
       ]);
     } catch (error) {
       next(error);

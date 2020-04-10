@@ -12,6 +12,12 @@ import { UserEntity } from './user.entity';
   name: 'kanban'
 })
 export class KanbanEntity {
+  static fromID(id: string) {
+    const entity = new KanbanEntity();
+    entity.id = id;
+    return entity;
+  }
+
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 

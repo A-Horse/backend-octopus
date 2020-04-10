@@ -6,18 +6,18 @@ import { ProjectSetting } from './model/project-setting';
 import { ProjectRepository } from './project-repository';
 import { ImageService } from '../../service/image.service';
 import { DIContainer } from '../../container/di-container';
+import { UpdateProjectCommand } from './command/update-project-command';
 
 export class ProjectApplicationService {
-  private base64Service: ImageService;
-
   constructor(private container: DIContainer) {}
 
   static getUserProjects(userId: number): Promise<Project[]> {
     return ProjectRepository.getUserProjects(userId);
   }
 
-  static getProjectDetail(projectId: string): Promise<Project> {
-    return ProjectRepository.getProjectDetail(projectId);
+  getProjectDetail(projectId: string): Promise<Project> {
+    const projectRepo: ProjectRepository = this.container.projectRepository;
+    return projectRepo.findWithDetail(projectId);
   }
 
   static async createProject(projectData: any): Promise<string> {
@@ -40,26 +40,32 @@ export class ProjectApplicationService {
     return ProjectRepository.saveProject(project);
   }
 
-  static async createProjectKanban(createKanbanInput: CreateKanbanInput): Promise<KanbanId> {
-    const project: Project = await ProjectRepository.getProjectDetail(createKanbanInput.projectId);
-
+  async createProjectKanban(createKanbanInput: CreateKanbanInput): Promise<KanbanId> {
+    const projectRepo: ProjectRepository = this.container.projectRepository;
+    const project: Project = await projectRepo.findWithDetail(createKanbanInput.projectId);
     const kanban = await project.createKanban(createKanbanInput);
     return await KanbanRepository.saveKanban(kanban);
   }
 
-  static async setProjectDefaultKanban({ projectId, kanbanId }): Promise<void> {
-    const project: Project = await ProjectRepository.getProjectDetail(projectId);
-
+  async setProjectDefaultKanban({ projectId, kanbanId }): Promise<void> {
+    const projectRepo: ProjectRepository = this.container.projectRepository;
+    const project: Project = await projectRepo.findWithDetail(projectId);
     await project.setDefaultKanban(kanbanId);
   }
 
   async updateProjectCover(projectId: string, coverBase64: string) {
+    const projectRepo: ProjectRepository = this.container.projectRepository;
     const id: string = await this.container.imageService.saveBase64Image(coverBase64.replace(/^data:image\/png;base64,/, ''));
-
-    this.container.minioStorage.saveObject;
-    const project: Project = await ProjectRepository.getProjectDetail(projectId);
+    const project: Project = await projectRepo.findWithDetail(projectId);
     await project.setCoverBase64ID(id);
     await ProjectRepository.updateProjectSetting(project.setting);
     return id;
+  }
+
+  async updateProject(projectID: string, updateCommand: UpdateProjectCommand) {
+    const projectRepo: ProjectRepository = this.container.projectRepository;
+    const project: Project = await projectRepo.findWithDetail(projectID);
+    project.name = updateCommand.name || project.name;
+    await projectRepo.save(project);
   }
 }

@@ -8,7 +8,7 @@ export class ImageRouter {
 
   public setupRouter(app: express.Application) {
     const router = express.Router();
-    
+
     /**
      * @route GET /image/:fileName
      * @group image - Operations about image

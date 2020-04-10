@@ -6,6 +6,7 @@ import { Kanban } from '../../kanban/kanban';
 import { KanbanSetting } from '../../kanban/kanban-setting';
 import { ProjectRepository } from '../project-repository';
 import { ProjectSetting } from './project-setting';
+import { UserEntity } from '../../../orm/user.entity';
 
 export class Project {
   public id: string;
@@ -15,7 +16,7 @@ export class Project {
   public type: ProjectType;
   public status: ProjectStatus;
   public creatorId: number;
-  public ownerId: string;
+  public ownerId: number;
   public createdAt: Date;
   public updatedAt: Date;
 
@@ -32,7 +33,7 @@ export class Project {
   }
 
   public createKanban(createKanbanInput: CreateKanbanInput) {
-    const kanban = new Kanban({
+    return new Kanban({
       id: null,
       name: createKanbanInput.name,
       desc: createKanbanInput.desc,
@@ -45,7 +46,6 @@ export class Project {
         id: null
       })
     });
-    return kanban;
   }
 
   public createProjectIssue() {}
@@ -62,7 +62,7 @@ export class Project {
   static fromDataEntity(dataEntity: ProjectEntity): Project {
     const setting = ProjectSetting.fromDataEntity(dataEntity.setting);
 
-    const project = new Project({
+    return new Project({
       id: dataEntity.id,
       name: dataEntity.name,
       desc: dataEntity.desc,
@@ -73,7 +73,6 @@ export class Project {
       createdAt: dataEntity.createdAt,
       setting: setting
     });
-    return project;
   }
 
   public toJSON(): any {
@@ -88,5 +87,21 @@ export class Project {
       updatedAt: this.updatedAt,
       setting: this.setting.toJSON()
     };
+  }
+
+  public isPersistent(): boolean {
+    return !!this.id;
+  }
+
+  public convertToEntity(): ProjectEntity {
+    const projectEntity: ProjectEntity = new ProjectEntity();
+    projectEntity.id = this.id;
+    projectEntity.name = this.name;
+    projectEntity.desc = this.desc;
+    projectEntity.type = this.type;
+    projectEntity.owner = UserEntity.fromID(this.ownerId);
+    projectEntity.status = this.status;
+    projectEntity.setting = this.setting.convertToEntity();
+    return projectEntity;
   }
 }

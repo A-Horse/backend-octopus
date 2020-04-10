@@ -29,7 +29,7 @@ export class ProjectRepository {
     });
   }
 
-  static async getProjectDetail(projectId: string): Promise<Project> {
+  async findWithDetail(projectId: string): Promise<Project> {
     const projectEntity = await getRepository(ProjectEntity)
       .createQueryBuilder('project')
       .leftJoinAndSelect('project.setting', 'project_setting')
@@ -63,8 +63,16 @@ export class ProjectRepository {
       await transactionalEntityManager.save(projectSettingEntity);
       await transactionalEntityManager.save(projectEntity);
     });
-
     return projectEntity.id;
+  }
+
+  async save(project: Project) {
+    if (project.isPersistent()) {
+      const projectEntity = project.convertToEntity();
+      await getRepository(ProjectEntity).update(project.id, projectEntity);
+    } else {
+      // insert
+    }
   }
 
   static async updateProjectSetting(setting: ProjectSetting): Promise<void> {

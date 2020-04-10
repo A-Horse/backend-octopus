@@ -49,7 +49,7 @@ export class ProjectIssueRouter {
   public setupRouter(app: express.Application) {
     const router = express.Router();
     router.get('/kanban/:kanbanId/column/:columnId/issues', authorizedRequestMiddle, this.getColumnIssues);
-    router.post('/project/:projectId/issue',  validate([body('projectID').isString(), body('title').isString()]),authorizedRequestMiddle, this.postIssue);
+    router.post('/project/:projectId/issue', validate([body('projectID').isString(), body('title').isString()]), authorizedRequestMiddle, this.postIssue);
     router.get('/project/:projectId/issues', validate([query('pageSize').isInt(), query('pageNumber').isInt()]), authorizedRequestMiddle, this.getProjectIssue);
     // TODO 权限校验
     router.get('/issue/:issueId', authorizedRequestMiddle, this.getIssue);

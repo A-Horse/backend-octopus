@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 
 import { ProjectSettingEntity } from '../../../orm/project-setting.entity';
+import { KanbanEntity } from '../../../orm/kanban.entity';
 
 export class ProjectSetting {
   public id: string;
@@ -30,5 +31,14 @@ export class ProjectSetting {
       coverFileName: this.coverFileName,
       defaultKanbanId: this.defaultKanbanId
     };
+  }
+
+  public convertToEntity(): ProjectSettingEntity {
+    const projectSettingEntity = new ProjectSettingEntity();
+    projectSettingEntity.id = this.id;
+    projectSettingEntity.coverFileName = this.coverFileName;
+    projectSettingEntity.isStar = this.isStar;
+    projectSettingEntity.defaultKanban = this.defaultKanbanId ? KanbanEntity.fromID(this.defaultKanbanId) : undefined;
+    return projectSettingEntity;
   }
 }

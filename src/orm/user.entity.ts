@@ -4,6 +4,12 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateCol
   name: 'user'
 })
 export class UserEntity {
+  static fromID(id: number) {
+    const userEntity = new UserEntity();
+    userEntity.id = id;
+    return userEntity;
+  }
+
   @PrimaryGeneratedColumn()
   public id: number;
 

@@ -3,6 +3,7 @@ import { authorizedRequestMiddle } from '../../route/middle/auth-handle.middle';
 import { Project } from './model/project';
 import { ProjectApplicationService } from './project-application-service';
 import { DIContainer } from 'src/container/di-container';
+import { UpdateProjectCommand } from './command/update-project-command';
 
 const multipartMiddleware = require('connect-multiparty')();
 
@@ -17,6 +18,7 @@ export class ProjectRouter {
     const router = express.Router();
 
     router.get('/projects', authorizedRequestMiddle, this.getProjects);
+    router.patch('/project/:projectID', authorizedRequestMiddle, this.updateProject);
     router.post('/project', authorizedRequestMiddle, this.postProject);
     router.get('/project/:projectId', authorizedRequestMiddle, this.getProject);
     router.post('/project/:projectId/kanban', authorizedRequestMiddle, this.postProjectKanban);
@@ -31,17 +33,18 @@ export class ProjectRouter {
     app.use(router);
   }
 
-  private async getProjects(req, res, next) {
-    try {
-      const { jw } = req;
-      const projects: Project[] = await ProjectApplicationService.getUserProjects(jw.user.id);
-      res.json(projects.map(p => p.toJSON()));
-    } catch (error) {
-      next(error);
-    }
-  }
+  private getProjects = async (req, res) => {
+    const { jw } = req;
+    const projects: Project[] = await ProjectApplicationService.getUserProjects(jw.user.id);
+    res.json(projects.map(p => p.toJSON()));
+  };
 
-  private async postProject(req, res, next) {
+  private updateProject = async (req, res) => {
+    await this.projectApplicationService.updateProject(req.params.projectID, req.body as UpdateProjectCommand);
+    res.status(200).send();
+  };
+
+  private postProject = async (req, res) => {
     const { name } = req.body;
     const { jw } = req;
     await ProjectApplicationService.createProject({
@@ -49,19 +52,19 @@ export class ProjectRouter {
       creatorId: jw.user.id
     });
     res.status(200).send();
-  }
+  };
 
-  private async getProject(req, res, next) {
-    const project = await ProjectApplicationService.getProjectDetail(req.params.projectId);
+  private getProject = async (req, res, next) => {
+    const project = await this.projectApplicationService.getProjectDetail(req.params.projectId);
     res.status(200).send(project.toJSON());
-  }
+  };
 
   private async postProjectKanban(req, res, next) {
     const { name } = req.body;
     const { jw } = req;
 
     try {
-      const id = await ProjectApplicationService.createProjectKanban({
+      const id = await this.projectApplicationService.createProjectKanban({
         name,
         creatorId: jw.user.id,
         projectId: req.params.projectId
@@ -76,7 +79,7 @@ export class ProjectRouter {
     const { projectId, kanbanId } = req.params;
 
     try {
-      await ProjectApplicationService.setProjectDefaultKanban({
+      await this.projectApplicationService.setProjectDefaultKanban({
         projectId,
         kanbanId
       });
