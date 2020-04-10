@@ -6,6 +6,7 @@ import { ProjectEntity } from '../../orm/project.entity';
 import { UserEntity } from '../../orm/user.entity';
 import { Project } from './model/project';
 import { ProjectSetting } from './model/project-setting';
+import { EntityNotFoundException } from '../../exception/entity-not-found.exception';
 
 export class ProjectRepository {
   static async getAllProjectCount(): Promise<number> {
@@ -38,6 +39,10 @@ export class ProjectRepository {
       .leftJoinAndSelect('project.owner', 'user as owner')
       .where('project.id = :projectId', { projectId })
       .getOne();
+
+    if (!projectEntity) {
+      throw new EntityNotFoundException();
+    }
 
     return Project.fromDataEntity(projectEntity);
   }

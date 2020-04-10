@@ -21,7 +21,7 @@ export class ProjectRouter {
     router.patch('/project/:projectID', authorizedRequestMiddle, this.updateProject);
     router.post('/project', authorizedRequestMiddle, this.postProject);
     router.get('/project/:projectId', authorizedRequestMiddle, this.getProject);
-    router.post('/project/:projectId/kanban', authorizedRequestMiddle, this.postProjectKanban);
+    router.post('/project/:projectId/kanban', authorizedRequestMiddle, this.createProjectKanban);
     router.post('/project/:projectId/setting/default-kanban/:kanbanId', authorizedRequestMiddle, this.postProjectDefaultKanban);
 
     router.post('/project/:projectId/cover', multipartMiddleware, authorizedRequestMiddle, async (req, res, next) => {
@@ -59,7 +59,7 @@ export class ProjectRouter {
     res.status(200).send(project.toJSON());
   };
 
-  private async postProjectKanban(req, res, next) {
+  private createProjectKanban = async (req, res, next) => {
     const { name } = req.body;
     const { jw } = req;
 
@@ -73,9 +73,9 @@ export class ProjectRouter {
     } catch (error) {
       next(error);
     }
-  }
+  };
 
-  private async postProjectDefaultKanban(req, res, next) {
+  private postProjectDefaultKanban = async (req, res, next) => {
     const { projectId, kanbanId } = req.params;
 
     try {
@@ -87,5 +87,5 @@ export class ProjectRouter {
     } catch (error) {
       next(error);
     }
-  }
+  };
 }
