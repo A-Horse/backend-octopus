@@ -96,7 +96,7 @@ export class ProjectIssue implements JSONEntity {
 
   // TODO move it out
   public async save(): Promise<void> {
-    // TODO: udpate and save
+    // TODO: udpate and save, now only update
     await ProjectIssueRepository.udpateIssue(this);
   }
 
@@ -107,6 +107,7 @@ export class ProjectIssue implements JSONEntity {
       title: this.title,
       type: this.type,
       creatorId: this.creatorId,
+      assigneeId: this.assigneeId,
       columnId: this.columnID,
       order: this.orderInKanban,
       deadline: this.deadline,

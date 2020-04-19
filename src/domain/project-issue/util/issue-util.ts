@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
-
 import { ProjectIssue } from '../project-issue';
 import { ProjectIssueDetail } from '../project-issue-detail';
 
+// 适配器的逻辑渗透进来，这个应该放到 service 上做
 export function setPartialIssueData(projectIssue: ProjectIssue, partialIssueData: any): void {
   const keys = Object.keys(partialIssueData);
 

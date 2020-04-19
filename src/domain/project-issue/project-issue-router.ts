@@ -42,7 +42,6 @@ export class ProjectIssueRouter {
 
   private patchIssue = async (req, res) => {
     await ProjectIssueApplicationService.udpateIssue(req.params.issueId, req.body);
-
     res.status(201).send();
   };
 

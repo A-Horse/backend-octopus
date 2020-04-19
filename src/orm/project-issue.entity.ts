@@ -33,6 +33,11 @@ export class ProjectIssueEntity {
   @ManyToOne(() => UserEntity)
   public assignee: UserEntity;
 
+  @Column({
+    nullable: true
+  })
+  public assigneeId: number;
+
   @ManyToOne(
     () => KanbanColumnEntity,
     column => column.cards,

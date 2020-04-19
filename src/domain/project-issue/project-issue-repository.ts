@@ -35,6 +35,7 @@ export class ProjectIssueRepository {
         title: issue.title,
         deadline: issue.deadline,
         deadlineDone: issue.deadlineDone,
+        assigneeId: issue.assigneeId,
         column: column
       })
       .where({ id: issue.id })
