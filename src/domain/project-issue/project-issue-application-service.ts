@@ -1,9 +1,10 @@
-import { PagtiationList } from 'src/typing/pagtiation.typing';
+import {  PaginationList } from 'src/typing/pagtiation.typing';
 
 import { CreateProjectIssueInput } from '../../typing/kanban-card.typing';
 import { ProjectIssue } from './project-issue';
 import { ProjectIssueDetail } from './project-issue-detail';
 import { ProjectIssueRepository } from './project-issue-repository';
+import { PROJECT_CARD_ORDER_INIT_INTERVAL } from './constant';
 
 export class ProjectIssueApplicationService {
   static async getColumnIssues({ kanbanId, columnId }): Promise<ProjectIssue[]> {
@@ -35,7 +36,7 @@ export class ProjectIssueApplicationService {
     return ProjectIssueRepository.saveIssue(issue);
   }
 
-  static async udpateIssue(issueId: string, partialIssueData: any): Promise<void> {
+  static async updateIssue(issueId: string, partialIssueData: any): Promise<void> {
     const issue = await ProjectIssueApplicationService.getDetailedIssue(issueId);
     issue.setPartialField(partialIssueData);
     await issue.save();
@@ -47,7 +48,7 @@ export class ProjectIssueApplicationService {
     return issue;
   }
 
-  static async getProjectIssues({ projectId, pageSize, pageNumber }): Promise<PagtiationList<ProjectIssue>> {
+  static async getProjectIssues({ projectId, pageSize, pageNumber }): Promise<PaginationList<ProjectIssue>> {
     const issues = await ProjectIssueRepository.getProjectIssues({
       projectId,
       pageSize,
@@ -59,5 +60,30 @@ export class ProjectIssueApplicationService {
       total: await ProjectIssueRepository.getProjectIssueCount(projectId),
       data: issues
     };
+  }
+
+  async rankCard({ cardId, targetCardId, isBefore }): Promise<number> {
+    const issue = await ProjectIssueRepository.getIssue(cardId);
+    const targetIssue = await ProjectIssueRepository.getIssue(targetCardId);
+
+    if (isBefore) {
+      const previousOrderInKanban = await targetIssue.calcPreviousOrderInKanban();
+
+      if (previousOrderInKanban === null) {
+        issue.orderInKanban = (await ProjectIssueRepository.getMinOrderInKanban(issue.kanbanID)) - PROJECT_CARD_ORDER_INIT_INTERVAL;
+      } else {
+        issue.orderInKanban = targetIssue.orderInKanban - (targetIssue.orderInKanban - previousOrderInKanban) / 2;
+      }
+    } else {
+      const nextOrderInKanban = await targetIssue.calcNextOrderInKanban();
+      if (nextOrderInKanban === null) {
+        issue.orderInKanban = (await ProjectIssueRepository.getMaxOrderInKanban(issue.kanbanID)) + PROJECT_CARD_ORDER_INIT_INTERVAL;
+      } else {
+        issue.orderInKanban = targetIssue.orderInKanban + (nextOrderInKanban - targetIssue.orderInKanban) / 2;
+      }
+    }
+
+    await ProjectIssueRepository.updateCardOrderInKanban(issue);
+    return issue.orderInKanban;
   }
 }

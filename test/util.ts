@@ -48,6 +48,7 @@ export interface SetupTestResult {
   tearDown: Function;
 }
 
+// TODO do not create database
 export async function setupTestDependency(): Promise<SetupTestResult> {
   const testMysqlDBName = `octopus_test_${makeRandomString(14)}`;
   configure.loadConfigureFromFile('test-config.yaml');

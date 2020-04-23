@@ -1,7 +1,4 @@
 import { KanbanColumnRepository } from '../kanban-column/kanban-column-repository';
-import { PROJECT_CARD_ORDER_INIT_INTERVAL } from '../project-issue/constant';
-import { ProjectIssue } from '../project-issue/project-issue';
-import { ProjectIssueRepository } from '../project-issue/project-issue-repository';
 import { Kanban } from './kanban';
 import { KanbanRepository } from './kanban-repository';
 
@@ -19,31 +16,5 @@ export class kanbanApplicationService {
       ...kanban.toJSON(),
       columns: kanbanColumns.map(k => k.toJSON())
     };
-  }
-
-  // TODO move in to kanban
-  static async rankCard({ cardId, targetCardId, isBefore }): Promise<number> {
-    const issue = await ProjectIssueRepository.getIssue(cardId);
-    const targetIssue = await ProjectIssueRepository.getIssue(targetCardId);
-
-    if (isBefore) {
-      const previousOrderInKanban = await targetIssue.calcPreviousOrderInKanban();
-
-      if (previousOrderInKanban === null) {
-        issue.orderInKanban = (await ProjectIssueRepository.getMinOrderInKanban(issue.kanbanID)) - PROJECT_CARD_ORDER_INIT_INTERVAL;
-      } else {
-        issue.orderInKanban = targetIssue.orderInKanban - (targetIssue.orderInKanban - previousOrderInKanban) / 2;
-      }
-    } else {
-      const nextOrderInKanban = await targetIssue.calcNextOrderInKanban();
-      if (nextOrderInKanban === null) {
-        issue.orderInKanban = (await ProjectIssueRepository.getMaxOrderInKanban(issue.kanbanID)) + PROJECT_CARD_ORDER_INIT_INTERVAL;
-      } else {
-        issue.orderInKanban = targetIssue.orderInKanban + (nextOrderInKanban - targetIssue.orderInKanban) / 2;
-      }
-    }
-
-    await ProjectIssueRepository.updateCardOrderInKanban(issue);
-    return issue.orderInKanban;
   }
 }

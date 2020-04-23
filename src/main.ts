@@ -13,6 +13,7 @@ import { MinioClient } from './storage/minio-client';
 import { MinioStorage } from './storage/minio-storage';
 import { ImageService } from './service/image.service';
 import { ProjectRepository } from './domain/project/project-repository';
+import { ProjectIssueApplicationService } from './domain/project-issue/project-issue-application-service';
 
 async function main() {
   configure.loadConfigureFromFile();
@@ -28,6 +29,7 @@ async function main() {
   const imageService = new ImageService(minioStorage);
   diContainer.minioStorage = minioStorage;
   diContainer.imageService = imageService;
+  diContainer.projectIssueApplicationService = new ProjectIssueApplicationService();
 
   const projectRepository = new ProjectRepository();
   diContainer.projectRepository = projectRepository;
