@@ -8,7 +8,7 @@ import { ProjectIssueDetail } from './project-issue-detail';
 import { ProjectIssueRepository } from './project-issue-repository';
 import { setPartialIssueData } from './util/issue-util';
 
-export class ProjectIssue implements JSONEntity {
+export class ProjectIssue {
   public id: string;
   public title: string;
   public type: ProjectIssueType;
@@ -100,6 +100,7 @@ export class ProjectIssue implements JSONEntity {
     await ProjectIssueRepository.udpateIssue(this);
   }
 
+  // TODO move to DTO
   public toJSON() {
     const detailJSON = this.detail ? this.detail.toJSON() : null;
     return {
@@ -108,7 +109,7 @@ export class ProjectIssue implements JSONEntity {
       type: this.type,
       creatorId: this.creatorId,
       assigneeId: this.assigneeId,
-      columnId: this.columnID,
+      columnID: this.columnID,
       order: this.orderInKanban,
       deadline: this.deadline,
       deadlineDone: this.deadlineDone,

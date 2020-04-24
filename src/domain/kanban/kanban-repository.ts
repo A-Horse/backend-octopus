@@ -6,10 +6,11 @@ import { ProjectEntity } from '../../orm/project.entity';
 import { UserEntity } from '../../orm/user.entity';
 import { KanbanId } from '../../typing/kanban.typing';
 import { Kanban } from './kanban';
+import { EntityNotFoundException } from '../../exception/entity-not-found.exception';
 
 export class KanbanRepository {
   static async getProjectKanbans(projectId: string): Promise<Kanban[]> {
-    const KanbanEntitys = await getRepository(KanbanEntity)
+    const KanbanEntities = await getRepository(KanbanEntity)
       .createQueryBuilder('kanban')
       .where('projectId = :projectId', { projectId })
       .leftJoinAndSelect('kanban.creator', 'user')
@@ -17,7 +18,7 @@ export class KanbanRepository {
       .leftJoinAndSelect('kanban.project', 'project')
       .getMany();
 
-    return KanbanEntitys.map((kanbanEntity: KanbanEntity) => {
+    return KanbanEntities.map((kanbanEntity: KanbanEntity) => {
       return Kanban.fromDataEntity(kanbanEntity);
     });
   }
@@ -30,6 +31,10 @@ export class KanbanRepository {
       .leftJoinAndSelect('kanban.setting', 'kanban_setting')
       .leftJoinAndSelect('kanban.project', 'project')
       .getOne();
+
+    if (!kanbanEntity) {
+      throw new EntityNotFoundException();
+    }
 
     return Kanban.fromDataEntity(kanbanEntity);
   }
