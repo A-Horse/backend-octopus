@@ -51,7 +51,7 @@
     "rxjs": "^6.4.0",
     "typeorm": "^0.2.12-rc.2",
     "uuid": "^3.4.0",
-    "validator": "^5.5.0",
+    "validator": "^13.7.0",
     "winston": "^2.3.1",
     "xss-filters": "^1.2.6"
   },
